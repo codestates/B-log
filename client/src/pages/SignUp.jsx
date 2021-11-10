@@ -103,7 +103,6 @@ function SignUp() {
   };
   const signUpHandler = () => {
     if (isValid) {
-      console.log("signup click");
       axios
         .post("http://localhost:4000/auth/signup", {
           email: signupInfo.email,
@@ -155,7 +154,7 @@ function SignUp() {
     <>
       <h2>Sign Up</h2>
       <div className="id">
-        <div>Email</div>
+        <div>이메일</div>
         <input
           type="text"
           onChange={handleInputValue("email")}
@@ -177,7 +176,7 @@ function SignUp() {
         ></input>
       </div>
       <div className="password">
-        <div>PASSWORD</div>
+        <div>비밀번호</div>
         <input
           type="password"
           onChange={handleInputValue("password")}
@@ -191,7 +190,7 @@ function SignUp() {
         <PwdMent message={message}></PwdMent>
       )}
       <div className="password-check">
-        <div>PASSWORD CHECK</div>
+        <div>비밀번호 확인</div>
         <input
           type="password"
           onChange={handleInputValue("passwordCheck")}
@@ -204,9 +203,9 @@ function SignUp() {
       ) : (
         <PwdCheckMent message={message}></PwdCheckMent>
       )}
-      <button onClick={backHandler}>back</button>
+      <button onClick={backHandler}>뒤로가기</button>
       <SignUpButton onClick={signUpHandler} isValid={isValid}>
-        signUp
+        회원가입
       </SignUpButton>
     </>
   );
