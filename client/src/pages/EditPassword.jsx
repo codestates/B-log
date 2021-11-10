@@ -76,12 +76,16 @@ function EditPassword() {
       </div>
       <div>
         <span>새 비밀번호</span>
-        <input onChange={getPassword("fresh")} onBlur={checkValidation}></input>
+        <input
+          type="password"
+          onChange={getPassword("fresh")}
+          onBlur={checkValidation}
+        ></input>
         <span>{errorMessage.fresh}</span>
       </div>
       <div>
         <span>새 비밀번호 확인</span>
-        <input onChange={getPassword("check")}></input>
+        <input type="password" onChange={getPassword("check")}></input>
         <span>{errorMessage.check}</span>
       </div>
       <Link to="/mypage">
