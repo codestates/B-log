@@ -24,10 +24,6 @@ app.use('/auth', authRouter);
 app.use('/mypage', mypageRouter);
 app.use('api', apiRouter);
 
-// 화면 engine을 ejs로 설정
-app.set('view engine', 'ejs');
-app.engine('html', require('ejs').renderFile);
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
