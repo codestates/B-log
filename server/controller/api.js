@@ -4,7 +4,7 @@ require('dotenv').config();
 module.exports = {
 
   //페이지 수 받아오는 메소드 get요청 /api/:id
-  get: (req, res) => {
+  pages: (req, res) => {
     try {
       //path 파라미터 받아오기 문제 생기면 catch 블럭으로
       const isbn = req.params.id.split(':')[1];
@@ -105,8 +105,8 @@ module.exports = {
   },
 
 
-  //베스트셀러 도서 목록 받아오는 메소드. get 요청 /api/best10
-  best10: (req, res) => {
+  //베스트셀러 도서 목록 받아오는 메소드. get 요청 /api/bestseller
+  bestseller: (req, res) => {
     //알라딘 api로 요청
     axios({
       method: "get",

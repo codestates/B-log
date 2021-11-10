@@ -4,8 +4,8 @@ const apiController = require('../controller/api')
 
 router.get('/books/:keyword', apiController.books);
 
-router.get('/:id', apiController.get);
+router.get('/:id', apiController.pages);
 
-router.get('/best10', apiController.best10);
+router.get('/', apiController.bestsellers);
 
 module.exports = router;
