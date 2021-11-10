@@ -12,7 +12,7 @@ module.exports = {
       //알라딘 api로 요청
       axios({
         method: "get",
-        url: "http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx",
+        url: "https://www.aladin.co.kr/ttb/api/ItemLookUp.aspx",
         params: {
           ttbkey: process.env.ALADIN_API_KEY,
           itemIdType: "ISBN13",
@@ -61,7 +61,7 @@ module.exports = {
       //알라딘 api로 요청
       axios({
         method: "get",
-        url: "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx",
+        url: "https://www.aladin.co.kr/ttb/api/ItemSearch.aspx",
         params: {
           ttbkey: process.env.ALADIN_API_KEY,
           Query: keyword,
@@ -110,7 +110,7 @@ module.exports = {
     //알라딘 api로 요청
     axios({
       method: "get",
-      url: "http://www.aladin.co.kr/ttb/api/ItemList.aspx",
+      url: "https://www.aladin.co.kr/ttb/api/ItemList.aspx",
       params: {
         ttbkey: process.env.ALADIN_API_KEY,
         QueryType: "Bestseller",
