@@ -26,6 +26,9 @@ module.exports = {
       isbn13: {
         type: Sequelize.STRING
       },
+      pages: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
