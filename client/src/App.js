@@ -1,7 +1,8 @@
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import EditPassword from "./pages/EditPassword";
 import LogIn from "./pages/LogIn";
+import axios from "axios";
 import Main from "./pages/Main";
 import MyPage from "./pages/MyPage";
 import Search from "./pages/Search";
@@ -27,29 +28,22 @@ function App() {
   useEffect(() => {
     getBookmark();
   }, []);
+
+  const Redirect = () => {
+    return isLogin ? <MyPage myBooks={myBooks} /> : <Navigate to="/" />;
+  };
+
   return (
     <div>
       <Header />
-      <Switch>
-        <Route exact path="/">
-          <Main />
-        </Route>
-        <Route exact path="/mypage">
-          {isLogin ? <MyPage myBooks={myBooks} /> : <Redirect to="/" />}
-        </Route>
-        <Route exact path="/search">
-          <Search />
-        </Route>
-        <Route exact path="/login">
-          <LogIn />
-        </Route>
-        <Route exact path="/signup">
-          <SignUp />
-        </Route>
-        <Route exact path="/edit-password">
-          <EditPassword />
-        </Route>
-      </Switch>
+      <Routes>
+        <Route exact path="/" element={<Main />} />
+        <Route exact path="/mypage" element={<Redirect />} />
+        <Route exact path="/search" element={<Search />} />
+        <Route exact path="/login" element={<LogIn />} />
+        <Route exact path="/signup" element={<SignUp />} />
+        <Route exact path="/edit-password" element={<EditPassword />} />
+      </Routes>
     </div>
   );
 }
