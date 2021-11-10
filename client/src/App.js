@@ -8,7 +8,7 @@ import MyPage from "./pages/MyPage";
 import Search from "./pages/Search";
 import SignUp from "./pages/SignUp";
 import Header from "./components/Header";
-import Footer from "./components/Footer";
+import Button from "./components/Button";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -37,6 +37,7 @@ function App() {
   return (
     <div>
       <Header isLogin={isLogin} setIsLogin={setIsLogin} />
+      <Button message="비밀번호 변경" color="dark" />
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/mypage" element={<Redirect />} />
