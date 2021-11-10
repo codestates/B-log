@@ -22,7 +22,11 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 app.use('/mypage', mypageRouter);
+<<<<<<< HEAD
 app.use('api', apiRouter);
+=======
+app.use('/api', apiRouter);
+>>>>>>> c39e0c389f30930183c0d68865310ef42129af9d
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
