@@ -1,5 +1,6 @@
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import axios from "axios";
 import EditPassword from "./pages/EditPassword";
 import LogIn from "./pages/LogIn";
 import Main from "./pages/Main";
@@ -30,12 +31,12 @@ function App() {
   return (
     <div>
       <Header />
-      <Switch>
+      <Routes>
         <Route exact path="/">
           <Main />
         </Route>
         <Route exact path="/mypage">
-          {isLogin ? <MyPage myBooks={myBooks} /> : <Redirect to="/" />}
+          {isLogin ? <MyPage myBooks={myBooks} /> : <Navigate to="/" />}
         </Route>
         <Route exact path="/search">
           <Search />
@@ -49,7 +50,7 @@ function App() {
         <Route exact path="/edit-password">
           <EditPassword />
         </Route>
-      </Switch>
+      </Routes>
     </div>
   );
 }
