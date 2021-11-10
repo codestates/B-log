@@ -25,11 +25,11 @@ function App() {
       setIsLogin(false);
     }
   };
-  
+
   const Redirect = () => {
     return isLogin ? <MyPage myBooks={myBooks} /> : <Navigate to="/" />;
   };
-  
+
   useEffect(() => {
     getBookmark();
   }, []);
