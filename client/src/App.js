@@ -1,5 +1,6 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import axios from "axios";
 import EditPassword from "./pages/EditPassword";
 import LogIn from "./pages/LogIn";
 import axios from "axios";
@@ -24,25 +25,25 @@ function App() {
       setIsLogin(false);
     }
   };
-
-  useEffect(() => {
-    getBookmark();
-  }, []);
-
+  
   const Redirect = () => {
     return isLogin ? <MyPage myBooks={myBooks} /> : <Navigate to="/" />;
   };
+  
+  useEffect(() => {
+    getBookmark();
+  }, []);
 
   return (
     <div>
       <Header />
       <Routes>
-        <Route exact path="/" element={<Main />} />
-        <Route exact path="/mypage" element={<Redirect />} />
-        <Route exact path="/search" element={<Search />} />
-        <Route exact path="/login" element={<LogIn />} />
-        <Route exact path="/signup" element={<SignUp />} />
-        <Route exact path="/edit-password" element={<EditPassword />} />
+        <Route path="/" element={<Main />} />
+        <Route path="/mypage" element={<Redirect />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/login" element={<LogIn />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/edit-password" element={<EditPassword />} />
       </Routes>
     </div>
   );
