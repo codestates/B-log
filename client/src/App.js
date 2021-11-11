@@ -36,7 +36,7 @@ function App() {
 
   return (
     <div>
-      <Header />
+      <Header isLogin={isLogin} setIsLogin={setIsLogin} />
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/mypage" element={<Redirect />} />
