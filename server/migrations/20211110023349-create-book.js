@@ -9,6 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       title: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       author: {
@@ -24,9 +25,15 @@ module.exports = {
         type: Sequelize.STRING,
       },
       isbn13: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       pages: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
+      reffered: {
+        allowNull: false,
         type: Sequelize.INTEGER,
       },
       createdAt: {
