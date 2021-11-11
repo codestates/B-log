@@ -4,7 +4,7 @@ import { HeaderBox, LogoBox, Nav, Menu } from "./Header";
 
 const FooterBox = styled(HeaderBox)`
   height: 100px;
-  margin-top: 40px;
+  position: fixed;
 `;
 
 const TeamLogo = styled.img`
