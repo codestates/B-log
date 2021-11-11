@@ -1,5 +1,6 @@
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import axios from "axios";
 import EditPassword from "./pages/EditPassword";
 import LogIn from "./pages/LogIn";
 import Main from "./pages/Main";
@@ -7,6 +8,7 @@ import MyPage from "./pages/MyPage";
 import Search from "./pages/Search";
 import SignUp from "./pages/SignUp";
 import Header from "./components/Header";
+import "./App.css";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -24,32 +26,25 @@ function App() {
     }
   };
 
+  const Redirect = () => {
+    return isLogin ? <MyPage myBooks={myBooks} /> : <Navigate to="/" />;
+  };
+
   useEffect(() => {
     getBookmark();
   }, []);
+
   return (
     <div>
-      <Header />
-      <Switch>
-        <Route exact path="/">
-          <Main />
-        </Route>
-        <Route exact path="/mypage">
-          {isLogin ? <MyPage myBooks={myBooks} /> : <Redirect to="/" />}
-        </Route>
-        <Route exact path="/search">
-          <Search />
-        </Route>
-        <Route exact path="/login">
-          <LogIn />
-        </Route>
-        <Route exact path="/signup">
-          <SignUp />
-        </Route>
-        <Route exact path="/edit-password">
-          <EditPassword />
-        </Route>
-      </Switch>
+      <Header isLogin={isLogin} setIsLogin={setIsLogin} />
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/mypage" element={<Redirect />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/login" element={<LogIn setIsLogin={setIsLogin} />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/edit-password" element={<EditPassword />} />
+      </Routes>
     </div>
   );
 }

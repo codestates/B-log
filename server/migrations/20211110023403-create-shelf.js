@@ -8,10 +8,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      bookid: {
+      bookId: {
         type: Sequelize.INTEGER
       },
-      userid: {
+      userId: {
         type: Sequelize.INTEGER
       },
       review: {
@@ -19,11 +19,13 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("NOW()")
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("NOW()")
       }
     });
   },
