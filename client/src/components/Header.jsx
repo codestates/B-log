@@ -6,6 +6,7 @@ export const HeaderBox = styled.div`
   background-color: #e0e0d8;
   display: flex;
   align-items: center;
+  position: relative;
 `;
 
 export const LogoBox = styled.div`
