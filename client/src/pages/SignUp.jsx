@@ -4,16 +4,16 @@ import styled from "styled-components";
 import axios from "axios";
 
 const EmailMent = styled.div`
-  height: 28px;
+  height: 14px;
   color: ${(props) =>
     [0, 2].includes(props.message.emailMsg) ? "red" : "green"};
 `;
 const PwdMent = styled.div`
-  height: 28px;
+  height: 14px;
   color: ${(props) => ([3].includes(props.message.pwdMsg) ? "red" : "green")};
 `;
 const PwdCheckMent = styled.div`
-  height: 28px;
+  height: 14px;
   color: ${(props) =>
     [5].includes(props.message.pwdCheckMsg) ? "red" : "green"};
 `;

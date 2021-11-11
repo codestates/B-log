@@ -8,7 +8,7 @@ import MyPage from "./pages/MyPage";
 import Search from "./pages/Search";
 import SignUp from "./pages/SignUp";
 import Header from "./components/Header";
-import Footer from "./components/Footer";
+import "./App.css";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -41,7 +41,7 @@ function App() {
         <Route path="/" element={<Main />} />
         <Route path="/mypage" element={<Redirect />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/login" element={<LogIn />} />
+        <Route path="/login" element={<LogIn setIsLogin={setIsLogin} />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/edit-password" element={<EditPassword />} />
       </Routes>
