@@ -26,18 +26,22 @@ module.exports = {
               //조회한 배열을 순회한다
               racks.map((book, index) => {
                 //아이디에 해당하는 책 정보를 불러온다
-                Book.findByPk(book.dataValues.bookId).then((bookInfo) => {
-                  //필요 없는 데이터를 지우고 응답할 배열에 넣어 줌
-                  const data = bookInfo.dataValues;
-                  delete data.createdAt;
-                  delete data.updatedAt;
-                  bookList.push(data);
+                Book.findByPk(book.dataValues.bookId)
+                  .then((bookInfo) => {
+                    //필요 없는 데이터를 지우고 응답할 배열에 넣어 줌
+                    const data = bookInfo.dataValues;
+                    delete data.createdAt;
+                    delete data.updatedAt;
+                    bookList.push(data);
 
-                  //마지막 요소까지 순회했을 때 도서 정보 배열과 함께 200 코드로 응답
-                  if (index === racks.length - 1) {
-                    res.status(200).json({ book: bookList });
-                  }
-                });
+                    //마지막 요소까지 순회했을 때 도서 정보 배열과 함께 200 코드로 응답
+                    if (index === racks.length - 1) {
+                      res.status(200).json({ book: bookList });
+                    }
+                  })
+                  .catch((err) => {
+                    res.status(500).send();
+                  });
               });
             }
           } catch {
@@ -70,8 +74,10 @@ module.exports = {
       if (bookInfo) {
         //rack에 일치하는 레코드가 있는지 찾기
         const exist = await Rack.findOne({
-          bookId: bookInfo.dataValues.id,
-          userId: userId,
+          where: {
+            bookId: bookInfo.dataValues.id,
+            userId: userId,
+          },
         });
 
         //해당 유저의 rack에 이미 책이 있으면 403 금지 코드 응답
@@ -85,7 +91,7 @@ module.exports = {
             { reffered: bookInfo.dataValues.reffered + 1 },
             { where: { id: bookInfo.dataValues.id } }
           )
-            .then((bookInfo) => {
+            .then((updated) => {
               Rack.create({
                 bookId: bookInfo.dataValues.id,
                 userId: userId,
