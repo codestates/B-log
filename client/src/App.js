@@ -10,8 +10,6 @@ import SignUp from "./pages/SignUp";
 import Header from "./components/Header";
 import "./App.css";
 
-import SearchInput from "./components/SearchInput";
-
 function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [myBooks, setMyBooks] = useState({ rack: [], shelf: [] });
@@ -40,7 +38,6 @@ function App() {
   return (
     <div>
       <Header isLogin={isLogin} setIsLogin={setIsLogin} />
-      <SearchInput />
       <Routes>
         <Route path="/" element={<Main setSearchResult={setSearchResult} />} />
         <Route path="/mypage" element={<Redirect />} />
