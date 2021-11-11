@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Rack.init({
-    bookid: DataTypes.INTEGER,
-    userid: DataTypes.INTEGER
+    bookId: DataTypes.INTEGER,
+    userId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Rack',
