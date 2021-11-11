@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Shelf.init({
-    bookid: DataTypes.INTEGER,
-    userid: DataTypes.INTEGER,
+    bookId: DataTypes.INTEGER,
+    userId: DataTypes.INTEGER,
     review: DataTypes.STRING
   }, {
     sequelize,
