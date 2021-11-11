@@ -2,7 +2,7 @@ const axios = require("axios");
 require("dotenv").config();
 
 module.exports = {
-  //페이지 수 받아오는 메소드 get요청 /api/:id
+  //페이지 수 받아오는 메소드 get요청
   item: (req, res) => {
     try {
       //path 파라미터 받아오기 문제 생기면 catch 블럭으로
@@ -38,13 +38,13 @@ module.exports = {
 
         //axios 요청 에러 처리
         .catch((err) => {
-          //외부 api를 불러오는 과정에서 오류가 생긴 경우. 500코드로 응답
-          res.status(500).send();
+          //일치하는 책을 찾지 못함
+          res.status(404).send({ message: "Resource not found" });
         });
     } catch {
       //try문 에러 처리
-      //요청이 잘못되어 split 메소드를 불러올 수 없을 때 실행됨. 400 잘못된 요청.
-      res.status(400).send();
+      //요청이 잘못되어 split 메소드를 불러올 수 없을 때 실행됨.
+      res.status(500).send();
     }
   },
 
@@ -93,12 +93,11 @@ module.exports = {
         });
     } catch {
       //try문 에러 처리
-      //요청 파라미터 형식이 잘못되어 split 메소드를 불러올 수 없을 때 실행됨. 400 잘못된 요청.
+      //요청 파라미터 형식이 잘못되어 split 메소드를 불러올 수 없을 때 실행됨.
       res.status(500).send();
     }
   },
 
-  //베스트셀러 도서 목록 받아오는 메소드. get 요청 /api/bestseller
   bestseller: (req, res) => {
     //알라딘 api로 요청
     axios({
@@ -111,7 +110,7 @@ module.exports = {
         output: "js",
         Version: 20131101,
         Cover: "Big",
-        MaxResults: 30,
+        MaxResults: 10,
       },
     })
       .then((response) => {
@@ -127,7 +126,7 @@ module.exports = {
           };
         });
         //목록을 올바르게 받아서 전달하는 경우 200 코드로 응답
-        res.status(200).json(bestsellerList);
+        res.status(200).json({ books: bestsellerList });
       })
 
       //axios 요청 에러 처리

@@ -19,6 +19,10 @@ module.exports = {
       review: {
         type: Sequelize.STRING,
       },
+      isDoneReading: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

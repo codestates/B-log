@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       bookId: DataTypes.INTEGER,
       userId: DataTypes.INTEGER,
       review: DataTypes.STRING,
+      isDoneReading: DataTypes.BOOLEAN,
     },
     {
       sequelize,

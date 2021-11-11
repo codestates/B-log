@@ -1,10 +1,10 @@
-const { Rack, Book } = require("../../models");
+const { Shelf, Book } = require("../../models");
 //const {함수이름} = require('../serverFunctions');
 
 module.exports = {
   get: (req, res) => {
     //헤더 토큰 해독해서 로그인한 유저의 id 가져오기
-    const userId = 1; // isAuthorized(req).id;
+    const userId = 2; // isAuthorized(req).id;
 
     //토큰이 없거나 유효하지 않음 401 코드 응답
     if (!userId) {
@@ -14,17 +14,17 @@ module.exports = {
     //token decoded 성공한 경우
     else {
       //유저 아이디가 가지고 있는 모든 책의 아이디를 조회
-      Rack.findAll({
-        where: { userId: userId },
+      Shelf.findAll({
+        where: { userId: userId, isDoneReading: false },
       })
-        .then((racks) => {
+        .then((shelves) => {
           const bookList = [];
           try {
-            if (!racks.length) {
-              res.status(200).send({ book: bookList });
+            if (!shelves.length) {
+              res.status(200).send({ books: bookList });
             } else {
               //조회한 배열을 순회한다
-              racks.map((book, index) => {
+              shelves.map((book, index) => {
                 //아이디에 해당하는 책 정보를 불러온다
                 Book.findByPk(book.dataValues.bookId)
                   .then((bookInfo) => {
@@ -35,8 +35,8 @@ module.exports = {
                     bookList.push(data);
 
                     //마지막 요소까지 순회했을 때 도서 정보 배열과 함께 200 코드로 응답
-                    if (index === racks.length - 1) {
-                      res.status(200).json({ book: bookList });
+                    if (index === shelves.length - 1) {
+                      res.status(200).json({ books: bookList });
                     }
                   })
                   .catch((err) => {
@@ -56,7 +56,7 @@ module.exports = {
 
   post: async (req, res) => {
     //헤더 토큰 해독해서 로그인한 유저의 id 가져오기
-    const userId = 1; // isAuthorized(req).id;
+    const userId = 2; // isAuthorized(req).id;
 
     //토큰이 없거나 유효하지 않음 401 코드 응답
     if (!userId) {
@@ -70,34 +70,43 @@ module.exports = {
         where: { isbn13: req.body.isbn13 },
       });
 
-      //book 테이블에 있는 책이면 아이디를 받아서 rack 테이블에 있는지 조회, 없으면 추가
+      //book 테이블에 있는 책이면 아이디를 받아서 shelf 테이블에 있는지 조회, 없으면 추가
       if (bookInfo) {
-        //rack에 일치하는 레코드가 있는지 찾기
-        const exist = await Rack.findOne({
+        //shelf에 일치하는 레코드가 있는지 찾기
+        const exist = await Shelf.findOne({
           where: {
             bookId: bookInfo.dataValues.id,
             userId: userId,
           },
         });
 
-        //해당 유저의 rack에 이미 책이 있으면 403 금지 코드 응답
+        //해당 유저의 Shelf에 이미 책이 있으면 409 금지 코드 응답
         if (exist) {
-          res.status(403).send({ message: "already exist" });
+          res.status(409).send({
+            requestFailure: {
+              message: "already exist",
+              book: bookInfo.dataValues,
+            },
+          });
         }
 
-        //없으면 rack에 추가, 해당 책 book.reffered ++
+        //없으면 BookShelf에 추가, 해당 책 book.referred ++
         else {
           Book.update(
-            { reffered: bookInfo.dataValues.reffered + 1 },
+            { referred: bookInfo.dataValues.referred + 1 },
             { where: { id: bookInfo.dataValues.id } }
           )
-            .then((updated) => {
-              Rack.create({
+            .then((updatedBook) => {
+              Shelf.create({
                 bookId: bookInfo.dataValues.id,
                 userId: userId,
+                isDoneReading: false,
               })
                 .then((response) => {
-                  res.status(200).send({ message: "ok" });
+                  res.status(201).send({
+                    message: "Book is added to the rack",
+                    book: bookInfo.dataValues,
+                  });
                 })
                 .catch((err) => {
                   res.status(500).send();
@@ -109,19 +118,22 @@ module.exports = {
         }
       }
 
-      //book 테이블에 없으면 먼저 추가한 후 추가한 레코드의 아이디를 받아서 rack 테이블에 추가
+      //book 테이블에 없으면 먼저 추가한 후 추가한 레코드의 아이디를 받아서 Shelf 테이블에 추가
       else {
-        //book테이블에 추가
-        Book.create({ ...req.body, reffered: 1 })
+        Book.create({ ...req.body, referred: 1 })
           .then((newBook) => {
-            //rack 테이블에 추가
-            Rack.create({
+            //Shelf 테이블에 추가
+            Shelf.create({
               bookId: newBook.dataValues.id,
               userId: userId,
+              isDoneReading: false,
             });
           })
           .then((response) => {
-            res.status(200).send({ message: "ok" });
+            res.status(201).send({
+              message: "Book is added to the rack",
+              book: newBook.dataValues,
+            });
           })
           .catch((err) => {
             res.status(500).send();
@@ -132,7 +144,7 @@ module.exports = {
 
   delete: async (req, res) => {
     //헤더 토큰 해독해서 로그인한 유저의 id 가져오기
-    const userId = 1; // isAuthorized(req).id;
+    const userId = 2; // isAuthorized(req).id;
 
     //토큰이 없거나 유효하지 않음 401 코드 응답
     if (!userId) {
@@ -144,36 +156,37 @@ module.exports = {
       try {
         const bookId = req.params.bookid.split(":")[1];
 
-        //rack에서 책 삭제 요청
-        const deletedBook = await Rack.destroy({
+        //Shelf에서 책 삭제 요청
+        const deletedBook = await Shelf.destroy({
           where: {
             bookId: bookId,
             userId: userId,
+            isDoneReading: false,
           },
         });
 
-        //지울 책이 Rack에 없음 안지워짐
+        //지울 책이 Shelf에 없음 안지워짐
         if (!deletedBook) {
-          res.status(500).send({ message: "nothing deleted" });
+          res.status(410).send({ message: "Already deleted" });
         }
 
-        //Rack에서 지워진 경우 book에서도 지워야 할지 조회해야 함
+        //Shelf에서 지워진 경우 book에서도 지워야 할지 조회해야 함
         else {
           const bookInfo = await Book.findByPk(bookId);
 
           //참조횟수 - 1이 0보다 작은 경우 book에서 레코드 삭제
-          if (bookInfo.dataValues.reffered - 1 <= 0) {
+          if (bookInfo.dataValues.referred - 1 <= 0) {
             Book.destroy({ where: { id: bookId } }).then((response) => {
-              res.status(200).send({ message: "ok deleted!" });
+              res.status(204).send();
             });
           }
           //아니면 참조횟수만 1감소시킨 뒤 업데이트
           else {
             Book.update(
-              { reffered: bookInfo.dataValues.reffered - 1 },
+              { referred: bookInfo.dataValues.referred - 1 },
               { where: { id: bookId } }
             ).then((response) => {
-              res.status(205).send({ message: "ok deleted!" });
+              res.status(204).send();
             });
           }
         }

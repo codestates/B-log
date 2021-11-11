@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.STRING,
       isbn13: DataTypes.STRING,
       pages: DataTypes.INTEGER,
-      reffered: DataTypes.INTEGER,
+      referred: DataTypes.INTEGER,
     },
     {
       sequelize,

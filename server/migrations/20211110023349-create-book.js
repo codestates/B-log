@@ -32,7 +32,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
-      reffered: {
+      referred: {
         allowNull: false,
         type: Sequelize.INTEGER,
       },

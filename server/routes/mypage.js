@@ -18,6 +18,6 @@ router.delete("/shelf/:bookid", mypageController.shelf.delete);
 
 //router.patch('/review', mypageController.review.patch)
 
-//router.get('/mybooks', mypageController.mybooks.get)
+router.get("/mybooks", mypageController.mybooks.get);
 
 module.exports = router;
