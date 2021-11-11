@@ -1,5 +1,4 @@
-const { User, Rack, Book } = require("../../models");
-const book = require("../../models/book");
+const { Rack, Book } = require("../../models");
 //const {함수이름} = require('../serverFunctions');
 
 module.exports = {
@@ -20,23 +19,30 @@ module.exports = {
       })
         .then((racks) => {
           const bookList = [];
+          try {
+            if (!racks.length) {
+              res.status(200).send({ book: bookList });
+            } else {
+              //조회한 배열을 순회한다
+              racks.map((book, index) => {
+                //아이디에 해당하는 책 정보를 불러온다
+                Book.findByPk(book.dataValues.bookId).then((bookInfo) => {
+                  //필요 없는 데이터를 지우고 응답할 배열에 넣어 줌
+                  const data = bookInfo.dataValues;
+                  delete data.createdAt;
+                  delete data.updatedAt;
+                  bookList.push(data);
 
-          //조회한 배열을 순회한다
-          racks.map((rack, index) => {
-            //아이디에 해당하는 책 정보를 불러온다
-            Book.findByPk(rack.dataValues.bookId).then((bookInfo) => {
-              //필요 없는 데이터를 지우고 응답할 배열에 넣어 줌
-              const data = bookInfo.dataValues;
-              delete data.createdAt;
-              delete data.updatedAt;
-              bookList.push(data);
-
-              //마지막 요소까지 순회했을 때 도서 정보 배열과 함께 200 코드로 응답
-              if (index === racks.length - 1) {
-                res.status(200).json({ book: bookList });
-              }
-            });
-          });
+                  //마지막 요소까지 순회했을 때 도서 정보 배열과 함께 200 코드로 응답
+                  if (index === racks.length - 1) {
+                    res.status(200).json({ book: bookList });
+                  }
+                });
+              });
+            }
+          } catch {
+            res.status(500).send();
+          }
         })
         .catch((err) => {
           res.status(500).send();
@@ -161,7 +167,7 @@ module.exports = {
               { reffered: bookInfo.dataValues.reffered - 1 },
               { where: { id: bookId } }
             ).then((response) => {
-              res.status(200).send({ message: "ok deleted!" });
+              res.status(205).send({ message: "ok deleted!" });
             });
           }
         }
