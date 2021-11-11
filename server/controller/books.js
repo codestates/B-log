@@ -3,10 +3,10 @@ require("dotenv").config();
 
 module.exports = {
   //페이지 수 받아오는 메소드 get요청 /api/:id
-  pages: (req, res) => {
+  item: (req, res) => {
     try {
       //path 파라미터 받아오기 문제 생기면 catch 블럭으로
-      const isbn = req.params.id.split(":")[1];
+      const isbn = req.params.isbn.split(":")[1];
 
       //알라딘 api로 요청
       axios({
@@ -49,7 +49,7 @@ module.exports = {
   },
 
   //검색 결과 받아오는 메소드. get요청 api/books/:keyword
-  books: (req, res) => {
+  list: (req, res) => {
     try {
       //path 파라미터로 받은 키워드 가져오기. 문제가 생기면 catch 블럭으로
       const keyword = req.params.keyword.split(":")[1];
@@ -94,7 +94,7 @@ module.exports = {
     } catch {
       //try문 에러 처리
       //요청 파라미터 형식이 잘못되어 split 메소드를 불러올 수 없을 때 실행됨. 400 잘못된 요청.
-      res.status(400).send();
+      res.status(500).send();
     }
   },
 
@@ -111,6 +111,7 @@ module.exports = {
         output: "js",
         Version: 20131101,
         Cover: "Big",
+        MaxResults: 30,
       },
     })
       .then((response) => {

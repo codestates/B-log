@@ -14,8 +14,10 @@ router.post("/shelf", mypageController.shelf.post);
 
 router.delete("/shelf/:bookid", mypageController.shelf.delete);
 
-//router.get('review', mypageController.review.get)
+//router.get('/review', mypageController.review.get)
 
 //router.patch('/review', mypageController.review.patch)
+
+//router.get('/mybooks', mypageController.mybooks.get)
 
 module.exports = router;
