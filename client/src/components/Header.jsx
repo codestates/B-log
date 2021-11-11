@@ -1,4 +1,68 @@
-function Header() {
-  return <></>;
+import styled from "styled-components";
+
+export const HeaderBox = styled.div`
+  width: 100vw;
+  height: 80px;
+  background-color: #e0e0d8;
+  display: flex;
+  align-items: center;
+`;
+
+export const LogoBox = styled.div`
+  height: 60px;
+  display: flex;
+  align-items: center;
+  flex: 1 0 auto;
+`;
+
+const Logo = styled.a`
+  display: inline-block;
+  width: 120px;
+  height: 100%;
+  background-color: #44312b;
+  margin-left: 40px;
+`;
+
+export const Nav = styled.nav`
+  flex: 0 0 auto;
+`;
+
+export const Menu = styled.a`
+  @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap");
+  display: inline-block;
+  text-decoration: none;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #202123;
+  padding: 10px 20px;
+
+  &:last-child {
+    margin: 0px 40px;
+  }
+`;
+
+function Header({ isLogin, setIsLogin }) {
+  const logoutHandler = () => {
+    setIsLogin(false);
+  };
+
+  return (
+    <>
+      <HeaderBox>
+        <LogoBox>
+          <Logo href="/" />
+        </LogoBox>
+        <Nav>
+          {isLogin ? <Menu href="/mypage">내 책장</Menu> : null}
+          {isLogin ? (
+            <Menu onClick={logoutHandler}>로그아웃</Menu>
+          ) : (
+            <Menu href="/login">로그인</Menu>
+          )}
+        </Nav>
+      </HeaderBox>
+    </>
+  );
 }
 export default Header;
