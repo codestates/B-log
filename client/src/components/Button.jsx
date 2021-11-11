@@ -15,6 +15,7 @@ const StyledButton = styled.div`
   border-color: ${(props) =>
     props.color === "dark" ? "transparent" : "#594d49"};
   border-radius: 40px;
+  cursor: pointer;
 `;
 
 function Button({ message, color }) {
