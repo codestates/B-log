@@ -41,7 +41,7 @@ function App() {
         <Route path="/" element={<Main />} />
         <Route path="/mypage" element={<Redirect />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/login" element={<LogIn />} />
+        <Route path="/login" element={<LogIn setIsLogin={setIsLogin} />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/edit-password" element={<EditPassword />} />
       </Routes>
