@@ -8,6 +8,7 @@ import MyPage from "./pages/MyPage";
 import Search from "./pages/Search";
 import SignUp from "./pages/SignUp";
 import Header from "./components/Header";
+import "./App.css";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
