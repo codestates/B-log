@@ -2,13 +2,20 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 export const Notify = styled.div`
-  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e0e0d8;
+  border-radius: 3rem;
+  position: absolute;
+  width: 400px;
+  height: 50px;
   z-index: 999999;
-  left: 50%;
+  left: 50% - 200px;
   top: 10px;
   transition: transform 0.6s ease-in-out;
   animation: toast-in-right 0.6s;
-  transition: 0.3s ease;
+  transition: 0.6s ease;
 
   @keyframes toast-in-right {
     from {
@@ -20,7 +27,6 @@ export const Notify = styled.div`
   }
 
   > .message {
-    border: 1px solid grey;
     padding: 4px 12px;
     border-radius: 1rem;
   }
@@ -40,7 +46,7 @@ function Notification({ message, time }) {
       if (mounted) {
         setIsFading(true);
       }
-    }, time - 500);
+    }, time);
 
     return () => {
       mounted = false;
