@@ -18,6 +18,7 @@ function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [myBooks, setMyBooks] = useState(mybooks);
   const [searchResult, setSearchResult] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   const getBookmark = async () => {
     const rack = await axios.get("/mypage/rack");

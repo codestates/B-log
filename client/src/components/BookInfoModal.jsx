@@ -92,47 +92,43 @@ function BookInfoModal({ bookinfo, setInfoOpen }) {
 
   const clickHandler = (e) => {
     if (e.target.textContent === "읽고 있는 책") {
-      // axios
-      //   .post(
-      //     "http://localhost:4000/mypage/rack",
-      //     {
-      //       title,
-      //       author,
-      //       publisher,
-      //       coverimg,
-      //       description,
-      //       isbn13,
-      //       pages,
-      //     },
-      //     { withCredentials: true }
-      //   )
-      //   .then(() => {
-      //     setIsNotify(true);
-      //     setMessage("랙에 책이 추가되었습니다.");
-      //   });
-      setIsNotify(true);
-      setMessage("랙에 책이 추가되었습니다.");
+      axios
+        .post(
+          "http://localhost:4000/mypage/rack",
+          {
+            title,
+            author,
+            publisher,
+            coverimg,
+            description,
+            isbn13,
+            pages,
+          },
+          { withCredentials: true }
+        )
+        .then(() => {
+          setIsNotify(true);
+          setMessage("랙에 책이 추가되었습니다.");
+        });
     } else if (e.target.textContent === "다 읽은 책") {
-      // axios
-      //   .post(
-      //     "http://localhost:4000/mypage/shelf",
-      //     {
-      //       title,
-      //       author,
-      //       publisher,
-      //       coverimg,
-      //       description,
-      //       isbn13,
-      //       pages,
-      //     },
-      //     { withCredentials: true }
-      //   )
-      //   .then(() => {
-      //     setIsNotify(true);
-      //     setMessage("책장에 책이 추가되었습니다.");
-      //   });
-      setIsNotify(true);
-      setMessage("책장에 책이 추가되었습니다.");
+      axios
+        .post(
+          "http://localhost:4000/mypage/shelf",
+          {
+            title,
+            author,
+            publisher,
+            coverimg,
+            description,
+            isbn13,
+            pages,
+          },
+          { withCredentials: true }
+        )
+        .then(() => {
+          setIsNotify(true);
+          setMessage("책장에 책이 추가되었습니다.");
+        });
     }
   };
 
@@ -144,9 +140,7 @@ function BookInfoModal({ bookinfo, setInfoOpen }) {
 
   return (
     <Wrapper onClick={openModalHandler}>
-      {isNotify ? (
-        <Notification message={message} isNotify={isNotify} time={3000} />
-      ) : null}
+      {isNotify ? <Notification message={message} time={3000} /> : null}
       <ModalWrapper
         onClick={(e) => {
           e.stopPropagation();

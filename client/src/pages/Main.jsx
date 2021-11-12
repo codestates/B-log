@@ -24,12 +24,22 @@ const MainLogo = styled.div`
   margin-bottom: 20px;
 `;
 
-function Main({ myBooks, books }) {
+function Main({
+  myBooks,
+  books,
+  searchKeyword,
+  setSearchKeyword,
+  setSearchResult,
+}) {
   return (
     <>
       <Wrapper>
         <MainLogo>B-log</MainLogo>
-        <SearchInput />
+        <SearchInput
+          searchKeyword={searchKeyword}
+          setSearchKeyword={setSearchKeyword}
+          setSearchResult={setSearchResult}
+        />
         <Books myBooks={myBooks} books={books} row={2} col={5} />
       </Wrapper>
       <Footer />

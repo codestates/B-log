@@ -13,9 +13,14 @@ const TeamLogo = styled.img`
 
 const Member = styled(Menu)`
   padding: 10px 30px;
+
   &:last-child {
     padding-right: 20px;
     margin: 0 40px 0 0;
+  }
+
+  :hover {
+    font-weight: 700;
   }
 `;
 
