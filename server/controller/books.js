@@ -24,6 +24,7 @@ module.exports = {
     try {
       //path 파라미터로 받은 키워드 가져오기. 문제가 생기면 catch 블럭으로
       const keyword = req.params.keyword.split(":")[1];
+
       api.getSearchList(keyword, 20, (searchList) => {
         if (searchList) {
           res.status(200).json({ books: searchList });
