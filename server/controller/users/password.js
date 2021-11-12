@@ -17,23 +17,36 @@ module.exports = {
     // TODO: 그럼 db에 존재하는 데이터를 찾아서 변경하면 되려나
     // TODO: 비밀번호를 바꿔서 그걸 다시 토큰으로 바꿔서 던져하나?
     const { authorization } = req.cookies;
-    const { password } = isAuthorized(req);
-    if (!password) {
+    const { email, password } = isAuthorized(req);
+    console.log("토큰안에 데이터 :", email, password);
+    //TODO: 여기는 현재 비밀번호와 토큰안에 비밀번호가 일치하지않으면 FAIL
+    if (password !== req.body.current_password) {
       return res.status(401).send({ message: "Wrong password" });
     }
-    User.findOne({ where: { password } })
+    // User.findOne({ where: { password } })
+    //   .then((data) => {
+    //     if (!data) {
+    //       return res.status();
+    //     }
+
+    //     data.dataValues.password = req.body.new_password;
+    //     console.log("ㅇㅁㅅㅁ:", data.dataValues);
+
+    //     const accessToken = generateAccessToken(data.dataValues);
+    //     sendAccessToken(res, accessToken);
+    //     return res.send({ message: "ok" });
+    //     // data.dataValues.password = req.body.new_password;
+    //     // return res.send({ data, message: "ok" });
+    //   })
+    //   .catch((err) => {
+    //     return res.status(500).send("Server err");
+    //   });
+    //TODO: 여기가 비밀번호가 일치할경우 NEWPASSWORD로 데이터 변경해주는 UPDATE부분
+    User.update({ password: req.body.new_password }, { where: { email } })
       .then((data) => {
-        if (!data) {
-          return res.status();
-        }
-        data.dataValues.password = req.body.new_password;
-        console.log("ㅇㅁㅅㅁ:", data.dataValues);
-        const accessToken = generateAccessToken(data.dataValues);
-        sendAccessToken(res, accessToken);
         return res.send({ message: "ok" });
-        // data.dataValues.password = req.body.new_password;
-        // return res.send({ data, message: "ok" });
       })
+      // TODO: 여기는 서버에서 에러났을때 에러 잡아주는 부분
       .catch((err) => {
         return res.status(500).send("Server err");
       });
