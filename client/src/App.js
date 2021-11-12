@@ -13,6 +13,7 @@ import "./App.css";
 function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [myBooks, setMyBooks] = useState({ rack: [], shelf: [] });
+  const [searchResult, setSearchResult] = useState([]);
 
   const getBookmark = async () => {
     const rack = await axios.get("/mypage/rack");
@@ -38,9 +39,12 @@ function App() {
     <div>
       <Header isLogin={isLogin} setIsLogin={setIsLogin} />
       <Routes>
-        <Route path="/" element={<Main />} />
+        <Route path="/" element={<Main setSearchResult={setSearchResult} />} />
         <Route path="/mypage" element={<Redirect />} />
-        <Route path="/search" element={<Search />} />
+        <Route
+          path="/search"
+          element={<Search searchResult={searchResult} />}
+        />
         <Route path="/login" element={<LogIn setIsLogin={setIsLogin} />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/edit-password" element={<EditPassword />} />
