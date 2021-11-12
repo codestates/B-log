@@ -6,7 +6,7 @@ router.post("/login", authController.login.post);
 
 router.post("/logout", authController.logout.post);
 
-router.post("/checkuseremail", authController.checkuseremail.post);
+router.get("/checkuseremail/:email", authController.checkuseremail.get);
 
 router.post("/signup", authController.signup.post);
 
