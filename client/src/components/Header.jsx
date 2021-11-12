@@ -32,9 +32,15 @@ export const Menu = styled.a`
   display: inline-block;
   text-decoration: none;
   padding: 10px 20px;
+  color: #202123;
+  letter-spacing: 0.1em;
 
   &:last-child {
     margin: 0px 40px;
+  }
+
+  :hover {
+    font-weight: 700;
   }
 `;
 
