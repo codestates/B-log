@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import EditPassword from "./pages/EditPassword";
 import LogIn from "./pages/LogIn";
-import axios from "axios";
 import Main from "./pages/Main";
 import MyPage from "./pages/MyPage";
 import Search from "./pages/Search";
@@ -49,7 +48,9 @@ function App() {
             path="/"
             element={
               <Main
+                setSearchKeyword={setSearchKeyword}
                 setSearchResult={setSearchResult}
+                searchKeyword={searchKeyword}
                 myBooks={myBooks}
                 books={books}
               />
@@ -58,7 +59,13 @@ function App() {
           <Route path="/mypage" element={<Redirect />} />
           <Route
             path="/search"
-            element={<Search searchResult={searchResult} />}
+            element={
+              <Search
+                searchResult={searchResult}
+                searchKeyword={searchKeyword}
+                setSearchKeyword={setSearchKeyword}
+              />
+            }
           />
           <Route path="/login" element={<LogIn setIsLogin={setIsLogin} />} />
           <Route path="/signup" element={<SignUp />} />
