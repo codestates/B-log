@@ -71,6 +71,7 @@ function EditPassword() {
 
   useEffect(() => {
     checkMatched();
+    // eslint-disable-next-line
   }, [password.check]);
 
   return (

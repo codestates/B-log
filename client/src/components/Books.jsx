@@ -71,6 +71,7 @@ function Books({ myBooks, books, row, col }) {
   const [infoOpen, setInfoOpen] = useState(false);
   const [markOpen, setMarkOpen] = useState(false);
   const [bookinfo, setBookinfo] = useState({});
+  // eslint-disable-next-line
   const [read, _] = useState(
     [...myBooks.rack, ...myBooks.shelf].map((book) => book.isbn13)
   );

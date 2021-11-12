@@ -79,7 +79,7 @@ function SearchInput({ searchKeyword, setSearchKeyword, setSearchResult }) {
           onChange={getInput}
           onKeyUp={catchEnter}
         />
-        <Icon icon={faSearch} onClick={() => sendRequest(searchInput)} />
+        <Icon icon={faSearch} onClick={() => sendRequest(searchKeyword)} />
       </InputWrapper>
     </>
   );
