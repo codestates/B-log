@@ -24,8 +24,8 @@ module.exports = {
         .then((response) => {
           const book = response.data.item[0];
           const data = {
-            title: book.title,
-            author: book.author,
+            title: book.title.split(" - ")[0],
+            author: book.author.split(" (지은이)")[0],
             publisher: book.publisher,
             description: book.description,
             coverimg: book.cover,
@@ -74,8 +74,8 @@ module.exports = {
           //응답받은 객체의 item 배열에서 필요한 값만 남기기
           const searchList = response.data.item.map((book) => {
             return {
-              title: book.title,
-              author: book.author,
+              title: book.title.split(" - ")[0],
+              author: book.author.split(" (지은이)")[0],
               publisher: book.publisher,
               description: book.description,
               coverimg: book.cover,
@@ -117,8 +117,8 @@ module.exports = {
         //응답받은 객체의 배열에서 필요한 데이터만 남기기
         const bestsellerList = response.data.item.map((book) => {
           return {
-            title: book.title,
-            author: book.author,
+            title: book.title.split(" - ")[0],
+            author: book.author.split(" (지은이)")[0],
             publisher: book.publisher,
             description: book.description,
             coverimg: book.cover,
