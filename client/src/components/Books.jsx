@@ -5,7 +5,7 @@ import BookMarkModal from "./BookMarkModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons";
 
-const Container = styled.ol`
+const Container = styled.ul`
   padding: 30px;
   display: grid;
   grid-template-rows: ${(props) => `repeat(${props.row}, 1fr)`};
@@ -71,7 +71,7 @@ function Books({ myBooks, books, row, col }) {
   const [infoOpen, setInfoOpen] = useState(false);
   const [markOpen, setMarkOpen] = useState(false);
   const [bookinfo, setBookinfo] = useState({});
-  const [read, setRead] = useState(
+  const [read, _] = useState(
     [...myBooks.rack, ...myBooks.shelf].map((book) => book.isbn13)
   );
 
