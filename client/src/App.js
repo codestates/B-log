@@ -17,6 +17,7 @@ function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [myBooks, setMyBooks] = useState(mybooks);
   const [searchResult, setSearchResult] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   const getBookmark = async () => {
     const rack = await axios.get("/mypage/rack");
@@ -46,7 +47,9 @@ function App() {
           path="/"
           element={
             <Main
+              setSearchKeyword={setSearchKeyword}
               setSearchResult={setSearchResult}
+              searchKeyword={searchKeyword}
               myBooks={myBooks}
               books={books}
             />
@@ -55,7 +58,13 @@ function App() {
         <Route path="/mypage" element={<Redirect />} />
         <Route
           path="/search"
-          element={<Search searchResult={searchResult} />}
+          element={
+            <Search
+              searchResult={searchResult}
+              searchKeyword={searchKeyword}
+              setSearchKeyword={setSearchKeyword}
+            />
+          }
         />
         <Route path="/login" element={<LogIn setIsLogin={setIsLogin} />} />
         <Route path="/signup" element={<SignUp />} />
