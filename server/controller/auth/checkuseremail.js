@@ -3,7 +3,7 @@ const { User } = require("../../models");
 module.exports = {
   get: (req, res) => {
     try {
-      const useremail = req.params.email.split(":")[1];
+      const useremail = req.params.email;
 
       User.findOne({ where: { email: useremail } })
         .then((data) => {
