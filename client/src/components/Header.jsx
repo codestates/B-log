@@ -6,6 +6,7 @@ export const HeaderBox = styled.div`
   background-color: #e0e0d8;
   display: flex;
   align-items: center;
+  position: relative;
 `;
 
 export const LogoBox = styled.div`
@@ -28,13 +29,8 @@ export const Nav = styled.nav`
 `;
 
 export const Menu = styled.a`
-  @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap");
   display: inline-block;
   text-decoration: none;
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: 12px;
-  font-weight: 400;
-  color: #202123;
   padding: 10px 20px;
 
   &:last-child {
