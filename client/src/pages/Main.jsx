@@ -5,13 +5,12 @@ import Footer from "../components/Footer";
 import Qwigley from "../assets/fonts/Qwigley-Regular.woff";
 
 const Wrapper = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
   width: 100%;
   padding: 100px;
-  height: calc(100vh - 180px);
 `;
 
 const MainLogo = styled.div`
@@ -25,12 +24,22 @@ const MainLogo = styled.div`
   margin-bottom: 20px;
 `;
 
-function Main({ myBooks, books }) {
+function Main({
+  myBooks,
+  books,
+  searchKeyword,
+  setSearchKeyword,
+  setSearchResult,
+}) {
   return (
     <>
       <Wrapper>
         <MainLogo>B-log</MainLogo>
-        <SearchInput />
+        <SearchInput
+          searchKeyword={searchKeyword}
+          setSearchKeyword={setSearchKeyword}
+          setSearchResult={setSearchResult}
+        />
         <Books myBooks={myBooks} books={books} row={2} col={5} />
       </Wrapper>
       <Footer />
