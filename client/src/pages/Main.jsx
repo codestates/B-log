@@ -21,6 +21,7 @@ const MainLogo = styled.div`
   font-family: "Qwigley";
   font-size: 100px;
   font-weight: 400;
+  color: #594d49;
   margin-bottom: 20px;
 `;
 
