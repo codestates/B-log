@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { usersController } = require("../controller");
 
-router.get("/readuser", usersController.readuser.get);
+router.get("/", usersController.readuser.get);
 
 router.patch("/password", usersController.password.patch);
 
