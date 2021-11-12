@@ -39,29 +39,31 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <Header isLogin={isLogin} setIsLogin={setIsLogin} />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Main
-              setSearchResult={setSearchResult}
-              myBooks={myBooks}
-              books={books}
-            />
-          }
-        />
-        <Route path="/mypage" element={<Redirect />} />
-        <Route
-          path="/search"
-          element={<Search searchResult={searchResult} />}
-        />
-        <Route path="/login" element={<LogIn setIsLogin={setIsLogin} />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/edit-password" element={<EditPassword />} />
-      </Routes>
-    </div>
+    <>
+      <section className="app_section">
+        <Header isLogin={isLogin} setIsLogin={setIsLogin} />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Main
+                setSearchResult={setSearchResult}
+                myBooks={myBooks}
+                books={books}
+              />
+            }
+          />
+          <Route path="/mypage" element={<Redirect />} />
+          <Route
+            path="/search"
+            element={<Search searchResult={searchResult} />}
+          />
+          <Route path="/login" element={<LogIn setIsLogin={setIsLogin} />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/edit-password" element={<EditPassword />} />
+        </Routes>
+      </section>
+    </>
   );
 }
 
