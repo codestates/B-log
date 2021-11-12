@@ -1,5 +1,6 @@
 module.exports = {
-    rack: require('./rack'),
-    shelf: require('./shelf'),
-    review: require('./review')
-}
+  rack: require("./rack"),
+  shelf: require("./shelf"),
+  review: require("./review"),
+  mybooks: require("./mybooks"),
+};
