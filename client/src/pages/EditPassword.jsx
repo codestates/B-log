@@ -48,6 +48,12 @@ function EditPassword() {
     }
   };
 
+  const onKeyUpHandler = (event) => {
+    if (event.key === "Enter") {
+      sendRequest();
+    }
+  };
+
   const sendRequest = () => {
     // valid하지 않다면 요청을 보내지 않아야 한다.
     if (isValid.fresh && isValid.check) {
@@ -85,7 +91,11 @@ function EditPassword() {
       </div>
       <div>
         <span>새 비밀번호 확인</span>
-        <input type="password" onChange={getPassword("check")}></input>
+        <input
+          type="password"
+          onChange={getPassword("check")}
+          onKeyUp={onKeyUpHandler}
+        ></input>
         <span>{errorMessage.check}</span>
       </div>
       <Link to="/mypage">
