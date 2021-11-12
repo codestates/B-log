@@ -18,6 +18,7 @@ module.exports = {
       },
       review: {
         type: Sequelize.STRING,
+        defaultValue: "",
       },
       isDoneReading: {
         allowNull: false,

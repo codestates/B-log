@@ -12,7 +12,7 @@ export const Notify = styled.div`
   height: 50px;
   z-index: 999999;
   left: 50% - 200px;
-  top: 10px;
+  top: 30px;
   transition: transform 0.6s ease-in-out;
   animation: toast-in-right 0.6s;
   transition: 0.6s ease;

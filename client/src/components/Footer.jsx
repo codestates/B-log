@@ -3,8 +3,7 @@ import team_logo from "../assets/images/team_logo.png";
 import { HeaderBox, LogoBox, Nav, Menu } from "./Header";
 
 const FooterBox = styled(HeaderBox)`
-  height: 100px;
-  position: fixed;
+  padding: 20px 0;
 `;
 
 const TeamLogo = styled.img`

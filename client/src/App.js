@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import EditPassword from "./pages/EditPassword";
 import LogIn from "./pages/LogIn";
+import axios from "axios";
 import Main from "./pages/Main";
 import MyPage from "./pages/MyPage";
 import Search from "./pages/Search";
@@ -40,37 +41,31 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <Header isLogin={isLogin} setIsLogin={setIsLogin} />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Main
-              setSearchKeyword={setSearchKeyword}
-              setSearchResult={setSearchResult}
-              searchKeyword={searchKeyword}
-              myBooks={myBooks}
-              books={books}
-            />
-          }
-        />
-        <Route path="/mypage" element={<Redirect />} />
-        <Route
-          path="/search"
-          element={
-            <Search
-              searchResult={searchResult}
-              searchKeyword={searchKeyword}
-              setSearchKeyword={setSearchKeyword}
-            />
-          }
-        />
-        <Route path="/login" element={<LogIn setIsLogin={setIsLogin} />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/edit-password" element={<EditPassword />} />
-      </Routes>
-    </div>
+    <>
+      <section className="app_section">
+        <Header isLogin={isLogin} setIsLogin={setIsLogin} />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Main
+                setSearchResult={setSearchResult}
+                myBooks={myBooks}
+                books={books}
+              />
+            }
+          />
+          <Route path="/mypage" element={<Redirect />} />
+          <Route
+            path="/search"
+            element={<Search searchResult={searchResult} />}
+          />
+          <Route path="/login" element={<LogIn setIsLogin={setIsLogin} />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/edit-password" element={<EditPassword />} />
+        </Routes>
+      </section>
+    </>
   );
 }
 

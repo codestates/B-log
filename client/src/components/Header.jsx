@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const HeaderBox = styled.div`
   width: 100vw;
-  height: 80px;
+  padding: 10px 0;
   background-color: #e0e0d8;
   display: flex;
   align-items: center;
