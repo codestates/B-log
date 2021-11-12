@@ -1,0 +1,111 @@
+import { useState } from "react";
+import styled from "styled-components";
+import BookInfoModal from "./BookInfoModal";
+import BookMarkModal from "./BookMarkModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBookmark } from "@fortawesome/free-solid-svg-icons";
+
+const Container = styled.ol`
+  padding: 30px;
+  display: grid;
+  grid-template-rows: ${(props) => `repeat(${props.row}, 1fr)`};
+  grid-template-columns: ${(props) => `repeat(${props.col}, 1fr)`};
+`;
+
+const Book = styled.li`
+  height: 170px;
+  margin: 14px;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+`;
+
+const BookCover = styled.img`
+  width: 120px;
+  height: 170px;
+  object-fit: cover;
+  position: relative;
+`;
+
+const TextContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  padding: 6px;
+  top: 0;
+  opacity: 0;
+
+  :hover {
+    opacity: 1;
+    background-color: rgba(100, 100, 100, 0.7);
+  }
+`;
+
+const Bookmark = styled(FontAwesomeIcon)`
+  position: absolute;
+  right: 6px;
+  cursor: pointer;
+  color: ${(props) => (props.mark ? "orange" : "white")};
+`;
+
+const Title = styled.span`
+  display: inline-block;
+  position: absolute;
+  bottom: 40px;
+  color: #f5f5f5;
+  font-size: 16px;
+  font-weight: 600;
+`;
+
+const Author = styled.span`
+  display: inline-block;
+  position: absolute;
+  color: #f5f5f5;
+  bottom: 10px;
+`;
+
+// hover시 책이름, 저자명 표기
+// font awesome에서 북마크 아이콘 찾아서 넣기
+
+function Books({ myBooks, books, row, col }) {
+  const [infoOpen, setInfoOpen] = useState(false);
+  const [markOpen, setMarkOpen] = useState(false);
+  const [bookinfo, setBookinfo] = useState({});
+  const [read, setRead] = useState(
+    [...myBooks.rack, ...myBooks.shelf].map((book) => book.isbn13)
+  );
+
+  const infoModalHandler = (book) => {
+    setBookinfo(book);
+    setInfoOpen(true);
+  };
+
+  return (
+    <>
+      <Container row={row} col={col}>
+        {books.slice(0, 10).map((book) => (
+          <Book onClick={() => infoModalHandler(book)}>
+            <BookCover src={book.coverimg}></BookCover>
+            <TextContainer>
+              <Bookmark
+                icon={faBookmark}
+                mark={read.includes(book.isbn13) ? true : false}
+                size="2x"
+              />
+              <Title>{book.title}</Title>
+              <Author>{book.author}</Author>
+            </TextContainer>
+          </Book>
+        ))}
+      </Container>
+      {infoOpen && (
+        <BookInfoModal setInfoOpen={setInfoOpen} bookinfo={bookinfo} />
+      )}
+      {markOpen && (
+        <BookMarkModal setmarkOpen={setMarkOpen} bookinfo={bookinfo} />
+      )}
+    </>
+  );
+}
+
+export default Books;

@@ -1,5 +1,6 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import axios from "axios";
 import EditPassword from "./pages/EditPassword";
 import LogIn from "./pages/LogIn";
 import axios from "axios";
@@ -8,10 +9,15 @@ import MyPage from "./pages/MyPage";
 import Search from "./pages/Search";
 import SignUp from "./pages/SignUp";
 import Header from "./components/Header";
+import "./App.css";
+
+import books from "./assets/dummy/books";
+import mybooks from "./assets/dummy/mybooks";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
-  const [myBooks, setMyBooks] = useState({ rack: [], shelf: [] });
+  const [myBooks, setMyBooks] = useState(mybooks);
+  const [searchResult, setSearchResult] = useState([]);
 
   const getBookmark = async () => {
     const rack = await axios.get("/mypage/rack");
@@ -20,29 +26,41 @@ function App() {
       setMyBooks({ rack: rack.books, shelf: shelf.books });
       setIsLogin(true);
     } catch {
-      setMyBooks([]);
+      // setMyBooks({});
       setIsLogin(false);
     }
+  };
+
+  const Redirect = () => {
+    return isLogin ? <MyPage myBooks={myBooks} /> : <Navigate to="/" />;
   };
 
   useEffect(() => {
     getBookmark();
   }, []);
 
-  const Redirect = () => {
-    return isLogin ? <MyPage myBooks={myBooks} /> : <Navigate to="/" />;
-  };
-
   return (
     <div>
-      <Header />
+      <Header isLogin={isLogin} setIsLogin={setIsLogin} />
       <Routes>
-        <Route exact path="/" element={<Main />} />
-        <Route exact path="/mypage" element={<Redirect />} />
-        <Route exact path="/search" element={<Search />} />
-        <Route exact path="/login" element={<LogIn />} />
-        <Route exact path="/signup" element={<SignUp />} />
-        <Route exact path="/edit-password" element={<EditPassword />} />
+        <Route
+          path="/"
+          element={
+            <Main
+              setSearchResult={setSearchResult}
+              myBooks={myBooks}
+              books={books}
+            />
+          }
+        />
+        <Route path="/mypage" element={<Redirect />} />
+        <Route
+          path="/search"
+          element={<Search searchResult={searchResult} />}
+        />
+        <Route path="/login" element={<LogIn setIsLogin={setIsLogin} />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/edit-password" element={<EditPassword />} />
       </Routes>
     </div>
   );

@@ -1,0 +1,11 @@
+@font-face {
+  font-family: "Noto Sans KR";
+  src: url("./assets/fonts/NotoSansKR-Regular.woff") format("woff");
+}
+* {
+  font-family: "Noto Sans KR";
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+}
