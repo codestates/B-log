@@ -7,6 +7,7 @@ export const HeaderBox = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+  z-index: 1000;
 `;
 
 export const LogoBox = styled.div`
