@@ -15,6 +15,7 @@ const Wrapper = styled.div`
   position: fixed;
   left: 0;
 `;
+
 const ModalWrapper = styled.div`
   width: 800px;
   height: 500px;
@@ -26,6 +27,7 @@ const ModalWrapper = styled.div`
   background-color: white;
   position: relative;
 `;
+
 const TandW = styled.div`
   display: flex;
   align-items: center;
@@ -33,22 +35,27 @@ const TandW = styled.div`
   margin-left: 20px;
   margin-top: 32px;
 `;
+
 const Title = styled.div`
   font-size: 20px;
   font-weight: 700;
   color: #594d49;
   margin-left: 20px;
 `;
+
 const Writer = styled.div`
   font-size: 12px;
   margin-left: 20px;
 `;
+
 const CloseBtn = styled.div`
   position: absolute;
   top: 20px;
   right: 30px;
   cursor: pointer;
+  font-size: 26px;
 `;
+
 const Box = styled.div`
   display: flex;
   justify-content: space-around;
@@ -56,6 +63,7 @@ const Box = styled.div`
   margin-left: 20px;
   margin-right: 20px;
 `;
+
 const BookandBtn = styled.div`
   display: flex;
   flex-direction: column;
@@ -65,17 +73,20 @@ const BookandBtn = styled.div`
   justify-content: space-evenly;
   flex-basis: 10%;
 `;
+
 const BookImg = styled.img`
   height: 180px;
   width: 120px;
   box-shadow: 5px 5px 10px 5px grey;
 `;
+
 const BtnWrap = styled.div`
   display: flex;
   flex-direction: column;
-  height: 75px;
+  height: 100px;
   justify-content: space-between;
 `;
+
 const InputBox = styled.div`
   flex-basis: 70%;
   background: #f4f4f4;
@@ -85,12 +96,13 @@ const InputBox = styled.div`
   align-items: center;
   height: 80%;
 `;
+
 const InputEdit = styled.textarea`
-  /* text-align: center; */
   width: 97%;
   height: 95%;
   background: white;
 `;
+
 const Span = styled.span`
   left: 0;
   top: 0;
@@ -106,54 +118,68 @@ function BookReviewModal({ bookinfo, setInfoOpen }) {
   const [isNotify, setIsNotify] = useState(false);
   const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    if (isEditMode) {
-      inputEl.current.focus();
-    }
-  }, [isEditMode]);
-  const changeEditMode = () => {
-    setEditMode(!isEditMode);
-  };
   const clickHandler = (e) => {
     if (e.target.textContent === "리뷰 수정") {
       changeEditMode();
       //이 함수 내에서는 아직 isEditMode가 false이다. 즉 edit 모드가 열렸는데도 이 함수 내에서는 isEditMode가 false이기 때문에 isEditMode가 true이면 axios 요청을 보내야 한다.
       if (isEditMode === true) {
-        // axios.patch(
-        //   `http://localhost:4000/mypage/review/${bookinfo.id}`,
-        //   {
-        //     review: newValue,
-        //   },
-        //   { withCredentials: true }
-        // ).then(() => {
-        //   setIsNotify(true)
-        //   setMessage("리뷰가 수정 되었습니다.")
-        // });
-        setIsNotify(true);
-        setMessage("리뷰가 수정 되었습니다.");
+        axios
+          .patch(
+            `http://localhost:4000/mypage/review/${bookinfo.id}`,
+            {
+              review: newValue,
+            },
+            { withCredentials: true }
+          )
+          .then(() => {
+            setIsNotify(true);
+            setMessage("리뷰가 수정 되었습니다.");
+          });
       }
     } else if (e.target.textContent === "책장에서 삭제") {
-      // axios.delete(
-      //   `http://localhost:4000/mypage/shelf/${bookinfo.id}`,
-      //   {
-      //     review: newValue,
-      //   },
-      //   { withCredentials: true }
-      // ).then(() => {
-      //   setIsNotify(true)
-      //   setMessage("책장에서 책이 삭제되었습니다.")
-      //   setInfoOpen(false)
-      // });
-      setIsNotify(true);
-      setMessage("책장에서 책이 삭제되었습니다.");
+      axios
+        .delete(
+          `http://localhost:4000/mypage/shelf/${bookinfo.id}`,
+          {
+            review: newValue,
+          },
+          { withCredentials: true }
+        )
+        .then(() => {
+          setIsNotify(true);
+          setMessage("책장에서 책이 삭제되었습니다.");
+          setInfoOpen(false);
+        });
+    } else if (e.target.textContent === "리뷰 삭제") {
+      axios
+        .delete(`http://localhost:4000/mypage/review/${bookinfo.id}`, {
+          withCredentials: true,
+        })
+        .then(() => {
+          setIsNotify(true);
+          setMessage("리뷰가 삭제되었습니다.");
+          setNewValue("");
+        });
     }
   };
+
   const inputValueHandler = (e) => {
     setNewValue(e.target.value);
   };
+
   const openModalHandler = () => {
     setInfoOpen(false);
   };
+
+  const changeEditMode = () => {
+    setEditMode(!isEditMode);
+  };
+
+  useEffect(() => {
+    if (isEditMode) {
+      inputEl.current.focus();
+    }
+  }, [isEditMode]);
 
   useEffect(() => {
     if (isNotify) {
@@ -182,6 +208,7 @@ function BookReviewModal({ bookinfo, setInfoOpen }) {
             <BtnWrap>
               <Button message={"책장에서 삭제"} color={null} />
               <Button message={"리뷰 수정"} color={null} />
+              <Button message={"리뷰 삭제"} color={null} />
             </BtnWrap>
           </BookandBtn>
           <InputBox>
