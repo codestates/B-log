@@ -22,4 +22,6 @@ module.exports = {
       return null;
     }
   },
+  api: require("./api"),
+  mypage: require("./mypage"),
 };
