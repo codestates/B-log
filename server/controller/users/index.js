@@ -1,7 +1,5 @@
 module.exports = {
-  password: require('./password'),
-  username: require('./username'),
-  get: (req, res) => {
-    res.send()
-  }
-}
+  password: require("./password"),
+  username: require("./username"),
+  readuser: require("./readuser"),
+};
