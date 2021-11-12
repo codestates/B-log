@@ -39,6 +39,8 @@ const ButtonWrap = styled.div`
 `;
 
 function BookMarkModal({ bookinfo, setInfoOpen }) {
+  const { title, author, publisher, coverimg, description, isbn13, pages } =
+    bookinfo;
   const [isNotify, setIsNotify] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -47,47 +49,43 @@ function BookMarkModal({ bookinfo, setInfoOpen }) {
   };
   const clickHandler = (e) => {
     if (e.target.textContent === "읽고 있는 책") {
-      // axios
-      //   .post(
-      //     "http://localhost:4000/mypage/rack",
-      //     {
-      //       title,
-      //       author,
-      //       publisher,
-      //       coverimg,
-      //       description,
-      //       isbn13,
-      //       pages,
-      //     },
-      //     { withCredentials: true }
-      //   )
-      //   .then(() => {
-      //     setIsNotify(true);
-      //     setMessage("랙에 책이 추가되었습니다.");
-      //   });
-      setIsNotify(!isNotify);
-      setMessage("랙에 책이 추가되었습니다.");
+      axios
+        .post(
+          "http://localhost:4000/mypage/rack",
+          {
+            title,
+            author,
+            publisher,
+            coverimg,
+            description,
+            isbn13,
+            pages,
+          },
+          { withCredentials: true }
+        )
+        .then(() => {
+          setIsNotify(true);
+          setMessage("랙에 책이 추가되었습니다.");
+        });
     } else if (e.target.textContent === "다 읽은 책") {
-      // axios
-      //   .post(
-      //     "http://localhost:4000/mypage/shelf",
-      //     {
-      //       title,
-      //       author,
-      //       publisher,
-      //       coverimg,
-      //       description,
-      //       isbn13,
-      //       pages,
-      //     },
-      //     { withCredentials: true }
-      //   )
-      //   .then(() => {
-      //     setIsNotify(true);
-      //     setMessage("책장에 책이 추가되었습니다.");
-      //   });
-      setIsNotify(!isNotify);
-      setMessage("책장에 책이 추가되었습니다.");
+      axios
+        .post(
+          "http://localhost:4000/mypage/shelf",
+          {
+            title,
+            author,
+            publisher,
+            coverimg,
+            description,
+            isbn13,
+            pages,
+          },
+          { withCredentials: true }
+        )
+        .then(() => {
+          setIsNotify(true);
+          setMessage("책장에 책이 추가되었습니다.");
+        });
     }
   };
 
