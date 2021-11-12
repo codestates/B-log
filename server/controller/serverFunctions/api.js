@@ -75,7 +75,7 @@ module.exports = {
       url: "https://www.aladin.co.kr/ttb/api/ItemList.aspx",
       params: {
         ttbkey: process.env.ALADIN_API_KEY,
-        QueryType: "ItemEditorChoice",
+        QueryType: "BlogBest",
         SearchTarget: "Book",
         output: "js",
         Version: 20131101,

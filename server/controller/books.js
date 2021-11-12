@@ -6,7 +6,7 @@ module.exports = {
   item: (req, res) => {
     try {
       //path 파라미터 받아오기 문제 생기면 catch 블럭으로
-      const isbn = req.params.isbn.split(":")[1];
+      const isbn = req.params.isbn;
       api.getSearchedItem(isbn, (item) => {
         if (item) {
           res.status(200).send(item);
@@ -23,7 +23,8 @@ module.exports = {
   list: (req, res) => {
     try {
       //path 파라미터로 받은 키워드 가져오기. 문제가 생기면 catch 블럭으로
-      const keyword = req.params.keyword.split(":")[1];
+      console.log(req.params);
+      const keyword = req.params.keyword;
 
       api.getSearchList(keyword, 20, (searchList) => {
         if (searchList) {
