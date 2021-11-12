@@ -19,3 +19,8 @@ body {
   flex-direction: column;
   height: 100vh;
 }
+
+a {
+  color: #202123;
+  text-decoration: none;
+}
