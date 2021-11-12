@@ -6,27 +6,25 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons";
 
 const Container = styled.ol`
-  width: 700px;
+  padding: 30px;
   display: grid;
   grid-template-rows: ${(props) => `repeat(${props.row}, 1fr)`};
   grid-template-columns: ${(props) => `repeat(${props.col}, 1fr)`};
 `;
 
 const Book = styled.li`
+  height: 170px;
   margin: 14px;
   display: inline-block;
   position: relative;
+  cursor: pointer;
 `;
 
-const BookCover = styled.div`
+const BookCover = styled.img`
   width: 120px;
-  height: 180px;
-  background-image: url("https://image.aladin.co.kr/product/28170/22/cover/k032835560_1.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
+  height: 170px;
+  object-fit: cover;
   position: relative;
-  cursor: pointer;
 `;
 
 const TextContainer = styled.div`
@@ -47,7 +45,7 @@ const Bookmark = styled(FontAwesomeIcon)`
   position: absolute;
   right: 6px;
   cursor: pointer;
-  color: ${(props) => (props.mark ? "yellow" : "#8d8d8d")};
+  color: ${(props) => (props.mark ? "orange" : "white")};
 `;
 
 const Title = styled.span`
@@ -70,10 +68,6 @@ const Author = styled.span`
 // font awesome에서 북마크 아이콘 찾아서 넣기
 
 function Books({ myBooks, books, row, col }) {
-  // const books = new Array(15).fill("book");
-  // const col = 5;
-  // const row = 3;
-
   const [infoOpen, setInfoOpen] = useState(false);
   const [markOpen, setMarkOpen] = useState(false);
   const [bookinfo, setBookinfo] = useState({});
@@ -89,20 +83,17 @@ function Books({ myBooks, books, row, col }) {
   return (
     <>
       <Container row={row} col={col}>
-        {books.map((book) => (
-          <Book>
-            <BookCover
-              book_cover={book.coverimg}
-              onClick={() => infoModalHandler(book)}
-            ></BookCover>
+        {books.slice(0, 10).map((book) => (
+          <Book onClick={() => infoModalHandler(book)}>
+            <BookCover src={book.coverimg}></BookCover>
             <TextContainer>
               <Bookmark
                 icon={faBookmark}
-                mark={read.includes(book.isbn) ? true : false}
+                mark={read.includes(book.isbn13) ? true : false}
                 size="2x"
               />
-              <Title>지적대화를 위한 넓고 얕은 지식</Title> {/* book.title */}
-              <Author>채사장</Author> {/* book.author */}
+              <Title>{book.title}</Title>
+              <Author>{book.author}</Author>
             </TextContainer>
           </Book>
         ))}
@@ -113,7 +104,6 @@ function Books({ myBooks, books, row, col }) {
       {markOpen && (
         <BookMarkModal setmarkOpen={setMarkOpen} bookinfo={bookinfo} />
       )}
-      ;
     </>
   );
 }
