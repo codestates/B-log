@@ -17,6 +17,7 @@ module.exports = {
           res.status(401).send({ message: "Invalid user or Wrong password" });
         }
         //todo: access token 발급하고 쿠키에 담아서 전달
+        delete data.dataValues.password;
         const accessToken = generateAccessToken(data.dataValues);
         sendAccessToken(res, accessToken);
         res.send({ message: "ok" });
