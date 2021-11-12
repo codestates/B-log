@@ -14,9 +14,11 @@ router.post("/shelf", mypageController.shelf.post);
 
 router.delete("/shelf/:bookid", mypageController.shelf.delete);
 
-//router.get('/review', mypageController.review.get)
+router.get("/review/:bookid", mypageController.review.get);
 
-//router.patch('/review', mypageController.review.patch)
+router.patch("/review/:bookid", mypageController.review.patch);
+
+router.delete("/review/:bookid", mypageController.review.delete);
 
 router.get("/mybooks", mypageController.mybooks.get);
 
