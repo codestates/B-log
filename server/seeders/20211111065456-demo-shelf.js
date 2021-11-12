@@ -14,6 +14,7 @@ module.exports = {
           bookId: 2,
           userId: 2,
           isDoneReading: true,
+          review: "리뷰 데이터",
         },
         {
           bookId: 3,
