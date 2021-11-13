@@ -15,7 +15,7 @@ import "./App.css";
 require("dotenv").config();
 
 function App() {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const [myBooks, setMyBooks] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -30,8 +30,8 @@ function App() {
       .then((res) => {
         setMyBooks(res.data.books);
         setIsLogin(true);
-      })
-      .catch((err) => setIsLogin(false));
+      });
+    // .catch((err) => setIsLogin(false));
   };
 
   const Redirect = () => {
