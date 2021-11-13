@@ -4,8 +4,6 @@ import Books from "../components/Books";
 import Footer from "../components/Footer";
 import Qwigley from "../assets/fonts/Qwigley-Regular.woff";
 
-import BookReviewModal from "../components/BookReviewModal";
-
 const Wrapper = styled.div`
   flex: 1;
   display: flex;
