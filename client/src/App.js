@@ -11,7 +11,6 @@ import Header from "./components/Header";
 import Notification from "./components/Notification";
 import "./App.css";
 
-import books from "./assets/dummy/books";
 // import mybooks from "./assets/dummy/mybooks";
 require("dotenv").config();
 
@@ -23,23 +22,16 @@ function App() {
   const [isNotify, setIsNotify] = useState(false);
   const [notify, setNotify] = useState("");
 
-  const getBookmark = async () => {
-    await axios
+  const getBookmark = () => {
+    axios
       .get(`${process.env_REACT_APP_API_URL}/mypage/mybooks`, {
         withCredentials: true,
       })
       .then((res) => {
-        setMyBooks(res.books);
+        setMyBooks(res.data.books);
         setIsLogin(true);
       })
       .catch((err) => setIsLogin(false));
-    try {
-      setMyBooks({ rack: rack.books, shelf: shelf.books });
-      setIsLogin(true);
-    } catch {
-      // setMyBooks({});
-      setIsLogin(false);
-    }
   };
 
   const Redirect = () => {
@@ -72,7 +64,6 @@ function App() {
                 setSearchResult={setSearchResult}
                 searchKeyword={searchKeyword}
                 myBooks={myBooks}
-                books={books}
               />
             }
           />
