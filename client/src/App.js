@@ -11,7 +11,6 @@ import Header from "./components/Header";
 import Notification from "./components/Notification";
 import "./App.css";
 
-import books from "./assets/dummy/books";
 // import mybooks from "./assets/dummy/mybooks";
 require("dotenv").config();
 
@@ -29,7 +28,7 @@ function App() {
         withCredentials: true,
       })
       .then((res) => {
-        setMyBooks(res.books);
+        setMyBooks(res.data.books);
         setIsLogin(true);
       });
     // .catch((err) => setIsLogin(false));
@@ -65,7 +64,6 @@ function App() {
                 setSearchResult={setSearchResult}
                 searchKeyword={searchKeyword}
                 myBooks={myBooks}
-                books={books}
               />
             }
           />

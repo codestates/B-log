@@ -1,8 +1,13 @@
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import SearchInput from "../components/SearchInput";
 import Books from "../components/Books";
 import Footer from "../components/Footer";
 import Qwigley from "../assets/fonts/Qwigley-Regular.woff";
+import axios from "axios";
+
+// import books from "./assets/dummy/books";
+import { noTop10 } from "../assets/dummy/noResponse";
 
 const Wrapper = styled.div`
   flex: 1;
@@ -32,8 +37,24 @@ function Main({
   setSearchKeyword,
   setSearchResult,
   myBooks,
-  books,
 }) {
+  const [top10, setTop10] = useState(noTop10);
+
+  const getTop10 = () => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/books`)
+      .then((res) => {
+        setTop10(res.data.books);
+      })
+      .catch(() => {
+        setTop10(noTop10);
+      });
+  };
+
+  useEffect(() => {
+    getTop10();
+  }, []);
+
   return (
     <>
       <Wrapper>
@@ -47,7 +68,7 @@ function Main({
           setIsNotify={setIsNotify}
           setNotify={setNotify}
           myBooks={myBooks}
-          books={books}
+          books={top10}
           row={2}
           col={5}
         />
