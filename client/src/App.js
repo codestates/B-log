@@ -8,6 +8,7 @@ import MyPage from "./pages/MyPage";
 import Search from "./pages/Search";
 import SignUp from "./pages/SignUp";
 import Header from "./components/Header";
+import Notification from "./components/Notification";
 import "./App.css";
 
 import books from "./assets/dummy/books";
@@ -18,6 +19,8 @@ function App() {
   const [myBooks, setMyBooks] = useState(mybooks);
   const [searchResult, setSearchResult] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [isNotify, setIsNotify] = useState(false);
+  const [notify, setNotify] = useState("");
 
   const getBookmark = async () => {
     const rack = await axios.get("/mypage/rack");
@@ -39,10 +42,17 @@ function App() {
     getBookmark();
   }, []);
 
+  useEffect(() => {
+    if (isNotify) {
+      setTimeout(() => setIsNotify(false), 3000);
+    }
+  }, [isNotify]);
+
   return (
     <>
+      <Header isLogin={isLogin} setIsLogin={setIsLogin} />
       <section className="app_section">
-        <Header isLogin={isLogin} setIsLogin={setIsLogin} />
+        {isNotify ? <Notification message={notify} time={3000} /> : null}
         <Routes>
           <Route
             path="/"
@@ -68,7 +78,10 @@ function App() {
             }
           />
           <Route path="/login" element={<LogIn setIsLogin={setIsLogin} />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route
+            path="/signup"
+            element={<SignUp setIsNotify={setIsNotify} setNotify={setNotify} />}
+          />
           <Route path="/edit-password" element={<EditPassword />} />
         </Routes>
       </section>
