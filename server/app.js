@@ -10,12 +10,20 @@ const mypageRouter = require("./routes/mypage");
 const booksRouter = require("./routes/books");
 const cors = require("cors");
 const app = express();
+require("dotenv").config();
 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "https://localhost:3000",
+    credentials: true,
+    samesite: "none",
+    secure: true,
+  })
+);
 
 //경로 설정
 app.use("/", indexRouter);

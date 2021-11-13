@@ -106,7 +106,7 @@ function BookReviewModal({ setIsNotify, setNotify, bookinfo, setInfoOpen }) {
     } else if (e.target.textContent === "책장에서 삭제") {
       axios
         .delete(
-          `http://localhost:4000/mypage/shelf/${bookinfo.id}`,
+          `${process.env_REACT_APP_API_URL}/mypage/shelf/${bookinfo.id}`,
           {
             review: newValue,
           },
@@ -119,9 +119,12 @@ function BookReviewModal({ setIsNotify, setNotify, bookinfo, setInfoOpen }) {
         });
     } else if (e.target.textContent === "리뷰 삭제") {
       axios
-        .delete(`http://localhost:4000/mypage/review/${bookinfo.id}`, {
-          withCredentials: true,
-        })
+        .delete(
+          `${process.env_REACT_APP_API_URL}/mypage/review/${bookinfo.id}`,
+          {
+            withCredentials: true,
+          }
+        )
         .then(() => {
           setIsNotify(true);
           setNotify("리뷰가 삭제되었습니다.");
@@ -142,18 +145,18 @@ function BookReviewModal({ setIsNotify, setNotify, bookinfo, setInfoOpen }) {
     setEditMode(!isEditMode);
     //이 함수 내에서는 아직 isEditMode가 false이다. 즉 edit 모드가 열렸는데도 이 함수 내에서는 isEditMode가 false이기 때문에 isEditMode가 true이면 axios 요청을 보내야 한다.
     if (isEditMode === true) {
-      // axios
-      //   .patch(
-      //     `http://localhost:4000/mypage/review/${bookinfo.id}`,
-      //     {
-      //       review: newValue,
-      //     },
-      //     { withCredentials: true }
-      //   )
-      //   .then(() => {
-      //     setIsNotify(true);
-      //     setNotify("리뷰가 수정 되었습니다.");
-      //   });
+      axios
+        .patch(
+          `${process.env.REACT_APP_API_URL}/mypage/review/${bookinfo.id}`,
+          {
+            review: newValue,
+          },
+          { withCredentials: true }
+        )
+        .then(() => {
+          setIsNotify(true);
+          setNotify("리뷰가 수정 되었습니다.");
+        });
       setIsNotify(true);
       setNotify("리뷰가 수정 되었습니다.");
     }

@@ -77,10 +77,14 @@ function EditPassword({ setIsNotify, setNotify }) {
       currentPwInput.current.focus();
     } else if (isRequest && isValid.fresh && isValid.check) {
       axios
-        .patch("/users/password", {
-          current_password: password.current,
-          new_password: password.fresh,
-        })
+        .patch(
+          `${process.env.REACT_APP_API_URL}/users/password`,
+          {
+            currentPassword: password.current,
+            newPassword: password.fresh,
+          },
+          { withCredentials: true }
+        )
         .then((res) => {
           setNotify("비밀번호가 변경되었습니다.");
           setIsNotify(true);

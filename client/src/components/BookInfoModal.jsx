@@ -66,7 +66,7 @@ function BookInfoModal({ setIsNotify, setNotify, bookinfo, setInfoOpen }) {
     if (e.target.textContent === "읽고 있는 책") {
       axios
         .post(
-          "http://localhost:4000/mypage/rack",
+          `${process.env_REACT_APP_API_URL}/mypage/rack`,
           {
             ...bookinfo,
           },
@@ -74,14 +74,14 @@ function BookInfoModal({ setIsNotify, setNotify, bookinfo, setInfoOpen }) {
         )
         .then(() => {
           setIsNotify(true);
-          setNotify("랙에 책이 추가되었습니다.");
+          setNotify("읽고 있는 책이 추가되었습니다.");
         });
       // setIsNotify(true);
       // setNotify("랙에 책이 추가되었습니다.");
     } else if (e.target.textContent === "다 읽은 책") {
       axios
         .post(
-          "http://localhost:4000/mypage/shelf",
+          `${process.env_REACT_APP_API_URL}/mypage/shelf`,
           {
             ...bookinfo,
           },
