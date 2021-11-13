@@ -14,7 +14,6 @@ const LoginSection = styled.section`
   justify-content: center;
   align-items: center;
   height: 100%;
-  position: relative;
 `;
 
 const ImgAndLogin = styled.div`
