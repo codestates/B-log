@@ -23,5 +23,5 @@ module.exports = {
     }
   },
   api: require("./api"),
-  mypage: require("./mypage"),
+  random: require("./random"),
 };

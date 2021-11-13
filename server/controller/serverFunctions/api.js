@@ -80,7 +80,7 @@ module.exports = {
         output: "js",
         Version: 20131101,
         Cover: "Big",
-        MaxResults: 10,
+        MaxResults: 20,
       },
     })
       .then((response) => {
