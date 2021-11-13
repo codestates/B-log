@@ -6,15 +6,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons";
 
 const Container = styled.ul`
-  padding: 30px;
   display: grid;
   grid-template-rows: ${(props) => `repeat(${props.row}, 1fr)`};
   grid-template-columns: ${(props) => `repeat(${props.col}, 1fr)`};
 `;
 
 const Book = styled.li`
-  height: 170px;
-  margin: 14px;
+  height: 180px;
   display: inline-block;
   position: relative;
   cursor: pointer;
@@ -22,9 +20,10 @@ const Book = styled.li`
 
 const BookCover = styled.img`
   width: 120px;
-  height: 170px;
+  height: 180px;
   object-fit: cover;
   position: relative;
+  margin: 0 20px;
 `;
 
 const TextContainer = styled.div`
@@ -86,7 +85,7 @@ function Books({ setIsNotify, setNotify, myBooks, books, row, col }) {
   return (
     <>
       <Container row={row} col={col}>
-        {books.slice(0, 10).map((book) => (
+        {books.slice(0, 3).map((book) => (
           <Book onClick={() => infoModalHandler(book)}>
             <BookCover src={book.coverimg} alt="book_cover"></BookCover>
             <TextContainer>

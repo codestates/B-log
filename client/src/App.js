@@ -16,30 +16,23 @@ import books from "./assets/dummy/books";
 require("dotenv").config();
 
 function App() {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const [myBooks, setMyBooks] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [isNotify, setIsNotify] = useState(false);
   const [notify, setNotify] = useState("");
 
-  const getBookmark = async () => {
-    await axios
+  const getBookmark = () => {
+    axios
       .get(`${process.env_REACT_APP_API_URL}/mypage/mybooks`, {
         withCredentials: true,
       })
       .then((res) => {
         setMyBooks(res.books);
         setIsLogin(true);
-      })
-      .catch((err) => setIsLogin(false));
-    try {
-      setMyBooks({ rack: rack.books, shelf: shelf.books });
-      setIsLogin(true);
-    } catch {
-      // setMyBooks({});
-      setIsLogin(false);
-    }
+      });
+    // .catch((err) => setIsLogin(false));
   };
 
   const Redirect = () => {
