@@ -2,7 +2,6 @@ import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import Notification from "../components/Notification";
 import Button from "../components/Button";
 import {
   Container,
@@ -15,7 +14,7 @@ import {
   ButtonContainer,
 } from "../components/Reusable";
 
-function EditPassword() {
+function EditPassword({ setIsNotify, setNotify }) {
   const currentPwInput = useRef(null);
   const newPwInput = useRef(null);
   const [password, setPassword] = useState({
@@ -24,13 +23,10 @@ function EditPassword() {
     check: "",
   });
   const [errorMessage, setErrorMessage] = useState({ fresh: "", check: "" });
-  const [requestError, setRequestError] = useState("");
   const [isValid, setIsValid] = useState({ fresh: false, check: false });
-  // const [isFirstTime, setIsFirstTime] = useState({fresh: true, check: false})
-  const [isNotify, setIsNotify] = useState(false);
 
   const navigate = useNavigate();
-  const regExpPwd = /^(?=.*?[a-z])(?=.*?[0-9]).{8,}$/;
+  const regExpPwd = /^(?=.*?[a-z])(?=.*?[0-9]).{8,16}$/;
 
   const getPassword = (key) => (e) => {
     setPassword({ ...password, [key]: e.target.value });
@@ -51,15 +47,18 @@ function EditPassword() {
 
   const checkMatched = () => {
     const { fresh, check } = password;
-    if ((fresh === check && fresh.length) || !(fresh.length && check.length)) {
-      setErrorMessage({ ...errorMessage, check: "" });
-      setIsValid({ ...isValid, check: true });
-    } else {
+    if (fresh !== check && fresh.length) {
       setErrorMessage({
         ...errorMessage,
         check: "비밀번호가 일치하지 않습니다.",
       });
       setIsValid({ ...isValid, check: false });
+    } else if (!(fresh.length && check.length)) {
+      setErrorMessage({ ...errorMessage, check: "" });
+      setIsValid({ ...isValid, check: false });
+    } else {
+      setErrorMessage({ ...errorMessage, check: "" });
+      setIsValid({ ...isValid, check: true });
     }
   };
 
@@ -72,20 +71,30 @@ function EditPassword() {
   const sendRequest = (event) => {
     const isRequest =
       event.target.textContent === "회원정보 수정" ? true : false;
-    if (isRequest && isValid.fresh && isValid.check) {
+    if (!password.current.length) {
+      setNotify("현재 비밀번호를 입력해주세요.");
+      setIsNotify(true);
+      currentPwInput.current.focus();
+    } else if (isRequest && isValid.fresh && isValid.check) {
       axios
         .patch("/users/password", {
           current_password: password.current,
           new_password: password.fresh,
         })
-        .then((res) => navigate("/mypage"))
-        .catch((err) => {
-          setRequestError("현재 비밀번호가 일치하지 않습니다.");
+        .then((res) => {
+          setNotify("비밀번호가 변경되었습니다.");
           setIsNotify(true);
+          navigate("/mypage");
+        })
+        .catch((err) => {
+          setNotify("현재 비밀번호가 일치하지 않습니다.");
+          setIsNotify(true);
+          currentPwInput.current.focus();
         });
     } else {
-      setRequestError("새 비밀번호를 바르게 입력해주세요.");
+      setNotify("새 비밀번호를 바르게 입력해주세요.");
       setIsNotify(true);
+      newPwInput.current.focus();
     }
   };
 
@@ -94,21 +103,9 @@ function EditPassword() {
     // eslint-disable-next-line
   }, [password.check]);
 
-  useEffect(() => {
-    if (isNotify) {
-      if (requestError === "현재 비밀번호가 일치하지 않습니다.") {
-        currentPwInput.current.focus();
-      } else if (requestError === "새 비밀번호를 바르게 입력해주세요.") {
-        newPwInput.current.focus();
-      }
-      setTimeout(() => setIsNotify(false), 3000);
-    }
-  }, [isNotify, requestError]);
-
   return (
     <>
       <Container>
-        {isNotify ? <Notification message={requestError} time={3000} /> : null}
         <Section>
           <Title>Password</Title>
           <InputContainer>

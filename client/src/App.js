@@ -82,7 +82,12 @@ function App() {
             path="/signup"
             element={<SignUp setIsNotify={setIsNotify} setNotify={setNotify} />}
           />
-          <Route path="/edit-password" element={<EditPassword />} />
+          <Route
+            path="/edit-password"
+            element={
+              <EditPassword setIsNotify={setIsNotify} setNotify={setNotify} />
+            }
+          />
         </Routes>
       </section>
     </>
