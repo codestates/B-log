@@ -1,19 +1,7 @@
 import styled from "styled-components";
 import Button from "./Button";
 import axios from "axios";
-
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  background-color: rgb(0, 0, 0, 0.5);
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-`;
+import { ModalBackground, CloseBtn } from "../components/Reusable";
 
 const ModalWrapper = styled.div`
   width: 700px;
@@ -24,14 +12,6 @@ const ModalWrapper = styled.div`
   background-color: white;
   position: relative;
   padding: 15px;
-`;
-
-const CloseBtn = styled.div`
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  cursor: pointer;
-  font-size: 26px;
 `;
 
 const BookImg = styled.img`
@@ -78,9 +58,6 @@ const ButtonWrap = styled.div`
 `;
 
 function BookInfoModal({ setIsNotify, setNotify, bookinfo, setInfoOpen }) {
-  const { title, author, publisher, coverimg, description, isbn13, pages } =
-    bookinfo;
-
   const openModalHandler = () => {
     setInfoOpen(false);
   };
@@ -91,13 +68,7 @@ function BookInfoModal({ setIsNotify, setNotify, bookinfo, setInfoOpen }) {
         .post(
           `${process.env_REACT_APP_API_URL}/mypage/rack`,
           {
-            title,
-            author,
-            publisher,
-            coverimg,
-            description,
-            isbn13,
-            pages,
+            ...bookinfo,
           },
           { withCredentials: true }
         )
@@ -112,13 +83,7 @@ function BookInfoModal({ setIsNotify, setNotify, bookinfo, setInfoOpen }) {
         .post(
           `${process.env_REACT_APP_API_URL}/mypage/shelf`,
           {
-            title,
-            author,
-            publisher,
-            coverimg,
-            description,
-            isbn13,
-            pages,
+            ...bookinfo,
           },
           { withCredentials: true }
         )
@@ -130,27 +95,27 @@ function BookInfoModal({ setIsNotify, setNotify, bookinfo, setInfoOpen }) {
   };
 
   return (
-    <Wrapper onClick={openModalHandler}>
+    <ModalBackground onClick={openModalHandler}>
       <ModalWrapper
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
         <CloseBtn onClick={openModalHandler}>&times;</CloseBtn>
-        <BookImg src={coverimg} alt="book_cover" />
+        <BookImg src={bookinfo.coverimg} alt="book_cover" />
         <DescWapper>
-          <Title>{title}</Title>
+          <Title>{bookinfo.title}</Title>
           <Writer>
-            {author} | {publisher}
+            {bookinfo.author} | {bookinfo.publisher}
           </Writer>
-          <Description>{description}</Description>
+          <Description>{bookinfo.description}</Description>
           <ButtonWrap onClick={clickHandler}>
             <Button message={"읽고 있는 책"} color={null} />
             <Button message={"다 읽은 책"} color={"dark"} />
           </ButtonWrap>
         </DescWapper>
       </ModalWrapper>
-    </Wrapper>
+    </ModalBackground>
   );
 }
 export default BookInfoModal;
