@@ -52,7 +52,9 @@ function SignUp({ setIsNotify, setNotify }) {
       setIsValid({ ...isValid, email: false });
     } else if (regExpEmail.test(signupInfo.email)) {
       axios
-        .get(`http://localhost:4000/auth/checkuseremail/${signupInfo.email}`)
+        .get(
+          `${process.env.REACT_APP_API_URL}/auth/checkuseremail/${signupInfo.email}`
+        )
         .then(() => {
           setMessage({ ...message, email: "" });
           setIsValid({ ...isValid, email: true });
@@ -99,7 +101,7 @@ function SignUp({ setIsNotify, setNotify }) {
     const isRequest = e.target.textContent === "회원가입" ? true : false;
     if (isRequest && email && password && check && username) {
       axios
-        .post("http://localhost:4000/auth/signup", {
+        .post(`${process.env.REACT_APP_API_URL}/auth/signup`, {
           email: signupInfo.email,
           username: signupInfo.username,
           password: signupInfo.password,

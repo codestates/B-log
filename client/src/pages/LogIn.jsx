@@ -102,7 +102,7 @@ function LogIn({ setIsLogin }) {
     } else {
       axios
         .post(
-          "http://localhost:4000/auth/login",
+          `${process.env.REACT_APP_API_URL}/auth/login`,
           { email: loginInfo.email, password: loginInfo.password },
           { withCredentials: true }
         )

@@ -71,9 +71,7 @@ function Books({ setIsNotify, setNotify, myBooks, books, row, col }) {
   const [infoOpen, setInfoOpen] = useState(false);
   const [markOpen, setMarkOpen] = useState(false);
   const [bookinfo, setBookinfo] = useState({});
-  const [read] = useState(
-    [...myBooks.rack, ...myBooks.shelf].map((book) => book.isbn13)
-  );
+  const [read] = useState(myBooks.map((book) => book.isbn13));
 
   const infoModalHandler = (book) => {
     setBookinfo(book);
