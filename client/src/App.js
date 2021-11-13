@@ -12,19 +12,27 @@ import Notification from "./components/Notification";
 import "./App.css";
 
 import books from "./assets/dummy/books";
-import mybooks from "./assets/dummy/mybooks";
+// import mybooks from "./assets/dummy/mybooks";
+require("dotenv").config();
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
-  const [myBooks, setMyBooks] = useState(mybooks);
+  const [myBooks, setMyBooks] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [isNotify, setIsNotify] = useState(false);
   const [notify, setNotify] = useState("");
 
   const getBookmark = async () => {
-    const rack = await axios.get("/mypage/rack");
-    const shelf = await axios.get("/mypage/shelf");
+    await axios
+      .get(`${process.env_REACT_APP_API_URL}/mypage/mybooks`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setMyBooks(res.books);
+        setIsLogin(true);
+      })
+      .catch((err) => setIsLogin(false));
     try {
       setMyBooks({ rack: rack.books, shelf: shelf.books });
       setIsLogin(true);
