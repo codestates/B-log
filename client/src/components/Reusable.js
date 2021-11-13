@@ -65,3 +65,24 @@ export const ButtonContainer = styled.div`
   justify-content: space-between;
   width: 250px;
 `;
+
+export const ModalBackground = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+`;
+
+export const CloseBtn = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  cursor: pointer;
+  font-size: 26px;
+`;
