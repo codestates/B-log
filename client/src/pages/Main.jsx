@@ -4,6 +4,8 @@ import Books from "../components/Books";
 import Footer from "../components/Footer";
 import Qwigley from "../assets/fonts/Qwigley-Regular.woff";
 
+import BookReviewModal from "../components/BookReviewModal";
+
 const Wrapper = styled.div`
   flex: 1;
   display: flex;
@@ -26,11 +28,13 @@ const MainLogo = styled.div`
 `;
 
 function Main({
-  myBooks,
-  books,
+  setIsNotify,
+  setNotify,
   searchKeyword,
   setSearchKeyword,
   setSearchResult,
+  myBooks,
+  books,
 }) {
   return (
     <>
@@ -41,7 +45,14 @@ function Main({
           setSearchKeyword={setSearchKeyword}
           setSearchResult={setSearchResult}
         />
-        <Books myBooks={myBooks} books={books} row={2} col={5} />
+        <Books
+          setIsNotify={setIsNotify}
+          setNotify={setNotify}
+          myBooks={myBooks}
+          books={books}
+          row={2}
+          col={5}
+        />
       </Wrapper>
       <Footer />
     </>

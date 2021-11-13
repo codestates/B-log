@@ -1,8 +1,6 @@
-import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Button from "./Button";
 import axios from "axios";
-import Notification from "./Notification";
 
 const Wrapper = styled.div`
   display: flex;
@@ -38,14 +36,12 @@ const ButtonWrap = styled.div`
   height: 50%;
 `;
 
-function BookMarkModal({ bookinfo, setInfoOpen }) {
+function BookMarkModal({ setIsNotify, setNotify, bookinfo, setMarkOpen }) {
   const { title, author, publisher, coverimg, description, isbn13, pages } =
     bookinfo;
-  const [isNotify, setIsNotify] = useState(false);
-  const [message, setMessage] = useState("");
 
   const openModalHandler = () => {
-    setInfoOpen(false);
+    setMarkOpen(false);
   };
   const clickHandler = (e) => {
     if (e.target.textContent === "읽고 있는 책") {
@@ -65,8 +61,10 @@ function BookMarkModal({ bookinfo, setInfoOpen }) {
         )
         .then(() => {
           setIsNotify(true);
-          setMessage("랙에 책이 추가되었습니다.");
+          setNotify("랙에 책이 추가되었습니다.");
         });
+      // setIsNotify(true);
+      // setNotify("랙에 책이 추가되었습니다.");
     } else if (e.target.textContent === "다 읽은 책") {
       axios
         .post(
@@ -84,22 +82,13 @@ function BookMarkModal({ bookinfo, setInfoOpen }) {
         )
         .then(() => {
           setIsNotify(true);
-          setMessage("책장에 책이 추가되었습니다.");
+          setNotify("책장에 책이 추가되었습니다.");
         });
     }
   };
 
-  useEffect(() => {
-    if (isNotify) {
-      setTimeout(() => setIsNotify(!isNotify), 3000);
-    }
-  }, [isNotify]);
-
   return (
     <Wrapper onClick={openModalHandler}>
-      {isNotify ? (
-        <Notification message={message} isNotify={isNotify} time={3000} />
-      ) : null}
       <ModalWrapper
         onClick={(e) => {
           e.stopPropagation();
