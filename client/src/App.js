@@ -58,6 +58,8 @@ function App() {
             path="/"
             element={
               <Main
+                setIsNotify={setIsNotify}
+                setNotify={setNotify}
                 setSearchKeyword={setSearchKeyword}
                 setSearchResult={setSearchResult}
                 searchKeyword={searchKeyword}
@@ -71,13 +73,24 @@ function App() {
             path="/search"
             element={
               <Search
+                setIsNotify={setIsNotify}
+                setNotify={setNotify}
                 searchResult={searchResult}
                 searchKeyword={searchKeyword}
                 setSearchKeyword={setSearchKeyword}
               />
             }
           />
-          <Route path="/login" element={<LogIn setIsLogin={setIsLogin} />} />
+          <Route
+            path="/login"
+            element={
+              <LogIn
+                setIsNotify={setIsNotify}
+                setNotify={setNotify}
+                setIsLogin={setIsLogin}
+              />
+            }
+          />
           <Route
             path="/signup"
             element={<SignUp setIsNotify={setIsNotify} setNotify={setNotify} />}
