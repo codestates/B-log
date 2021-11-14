@@ -26,7 +26,7 @@ function App() {
 
   const getBookmark = () => {
     axios
-      .get(`${process.env_REACT_APP_API_URL}/mypage/mybooks`, {
+      .get(`${process.env.REACT_APP_API_URL}/mypage/mybooks`, {
         withCredentials: true,
       })
       .then((res) => {
