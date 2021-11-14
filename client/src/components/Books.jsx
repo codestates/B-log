@@ -85,8 +85,8 @@ function Books({ setIsNotify, setNotify, myBooks, books, row, col }) {
   return (
     <>
       <Container row={row} col={col}>
-        {books.slice(0, 3).map((book) => (
-          <Book onClick={() => infoModalHandler(book)}>
+        {books.slice(0, 10).map((book, idx) => (
+          <Book onClick={() => infoModalHandler(book)} key={idx}>
             <BookCover src={book.coverimg} alt="book_cover"></BookCover>
             <TextContainer>
               <div onClick={(event) => event.stopPropagation()}>
