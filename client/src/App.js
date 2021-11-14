@@ -17,33 +17,8 @@ import "./App.css";
 require("dotenv").config();
 
 function App() {
-  const state = useSelector((state) => state.loginReducer);
-  const dispatch = useDispatch();
-  const { isLogIn } = state;
-  const [myBooks, setMyBooks] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
-
-  const getBookmark = () => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/mypage/mybooks`, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        setMyBooks(res.data.books);
-        dispatch(loginStateChange(true));
-      });
-    // .catch((err) => setIsLogin(false));
-  };
-
-  const Redirect = () => {
-    return isLogIn ? <MyPage myBooks={myBooks} /> : <Navigate to="/" />;
-  };
-
-  useEffect(() => {
-    getBookmark();
-    // eslint-disable-next-line
-  }, []);
 
   return (
     <>
@@ -58,11 +33,10 @@ function App() {
                 setSearchKeyword={setSearchKeyword}
                 setSearchResult={setSearchResult}
                 searchKeyword={searchKeyword}
-                myBooks={myBooks}
               />
             }
           />
-          <Route path="/mypage" element={<Redirect />} />
+          <Route path="/mypage" element={<MyPage />} />
           <Route
             path="/search"
             element={

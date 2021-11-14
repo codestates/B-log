@@ -1,4 +1,4 @@
-import { notify, removeRackBook } from "../actions/index";
+import { notify, removeFromRack } from "../actions/index";
 import { useDispatch, useSelector } from "react-redux";
 import { ModalBackground, CloseBtn } from "../components/Reusable";
 import styled from "styled-components";
@@ -82,7 +82,7 @@ function BookMarkModal({ bookinfo, setMarkOpen }) {
             withCredentials: true,
           })
           .then(() => {
-            dispatch(removeRackBook(exist.id));
+            dispatch(removeFromRack(exist.id));
             axios
               .post(
                 `${process.env.REACT_APP_API_URL}/mypage/shelf`,

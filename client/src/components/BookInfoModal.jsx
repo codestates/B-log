@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Button from "./Button";
 import axios from "axios";
 import { ModalBackground, CloseBtn } from "../components/Reusable";
-import { notify, removeRackBook } from "../actions/index";
+import { notify, removeFromRack } from "../actions/index";
 import { useSelector, useDispatch } from "react-redux";
 
 const ModalWrapper = styled.div`
@@ -116,7 +116,7 @@ function BookInfoModal({ bookinfo, setInfoOpen, isMypage }) {
             withCredentials: true,
           })
           .then(() => {
-            dispatch(removeRackBook(exist.id));
+            dispatch(removeFromRack(exist.id));
             axios
               .post(
                 `${process.env.REACT_APP_API_URL}/mypage/shelf`,
@@ -144,7 +144,7 @@ function BookInfoModal({ bookinfo, setInfoOpen, isMypage }) {
           withCredentials: true,
         })
         .then(() => {
-          dispatch(removeRackBook(bookinfo.id));
+          dispatch(removeFromRack(bookinfo.id));
           closeModalHandler();
           dispatch(notify("삭제 되었습니다."));
         })

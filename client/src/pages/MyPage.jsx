@@ -1,7 +1,12 @@
 import { useSelector, useDispatch } from "react-redux";
-import { getRackBooks, notify } from "../actions/index";
+import {
+  updateRack,
+  updateShelf,
+  loginStateChange,
+  notify,
+} from "../actions/index";
 import { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { faSearchPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
@@ -105,18 +110,25 @@ const Shelf = styled.section`
 
 function MyPage() {
   const state = useSelector((state) => state.bookReducer);
+  const loginState = useSelector((state) => state.loginReducer);
   const dispatch = useDispatch();
   const inputEl = useRef(null);
+  const navigate = useNavigate();
+  const { isLogIn } = loginState;
   const { rack, shelf } = state;
   const [username, setUserName] = useState("닉네임");
   const [isEditMode, setEditMode] = useState(false);
   const [withdrawModalOpen, setWithdrawModalOpen] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
   const [bookinfo, setBookinfo] = useState({});
-
+  console.log(isLogIn);
   const infoModalHandler = (book) => {
     setBookinfo(book);
     setInfoOpen(true);
+  };
+
+  const withdrawHandler = () => {
+    setWithdrawModalOpen(true);
   };
 
   const inputValueHandler = (e) => {
@@ -143,8 +155,25 @@ function MyPage() {
     }
   };
 
-  const withdrawHandler = () => {
-    setWithdrawModalOpen(true);
+  const getMyBooks = async () => {
+    const rackRes = await axios.get(
+      `${process.env.REACT_APP_API_URL}/mypage/rack`,
+      { withCredentials: true }
+    );
+    const shelfRes = await axios.get(
+      `${process.env.REACT_APP_API_URL}/mypage/shelf`,
+      { withCredentials: true }
+    );
+    try {
+      dispatch(updateRack(rackRes.data.books));
+      dispatch(updateShelf(shelfRes.data.books));
+      dispatch(loginStateChange(true));
+    } catch (err) {
+      dispatch(loginStateChange(false));
+      dispatch(updateRack([]));
+      dispatch(updateShelf([]));
+      navigate("/");
+    }
   };
 
   useEffect(() => {
@@ -153,24 +182,19 @@ function MyPage() {
     }
   }, [isEditMode]);
 
-  useEffect(async () => {
-    const rackData = await axios.get(
-      `${process.env.REACT_APP_API_URL}/mypage/rack`
-    );
-    if (rackData) {
-      dispatch(getRackBooks(rackData.data.books));
-    }
-    const shelfData = await axios.get(
-      `${process.env.REACT_APP_API_URL}/mypage/shelf`
-    );
+  useEffect(() => {
+    getMyBooks();
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/users`).then((res) => {
-      setUserName(res.data.username);
-    });
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/users`, { withCredentials: true })
+      .then((res) => {
+        setUserName(res.data.username);
+      });
   }, [username]);
+
   return (
     <WindowSection>
       {infoOpen ? (
