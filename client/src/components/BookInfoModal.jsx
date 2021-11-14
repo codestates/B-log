@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Button from "./Button";
 import axios from "axios";
 import { ModalBackground, CloseBtn } from "../components/Reusable";
-import { notify } from "../actions/index";
+import { notify, removeRackbook } from "../actions/index";
 import { useDispatch } from "react-redux";
 
 const ModalWrapper = styled.div`
@@ -59,7 +59,13 @@ const ButtonWrap = styled.div`
   justify-content: space-between;
 `;
 
-function BookInfoModal({ setIsNotify, setNotify, bookinfo, setInfoOpen }) {
+function BookInfoModal({
+  setIsNotify,
+  setNotify,
+  bookinfo,
+  setInfoOpen,
+  isMypage,
+}) {
   const dispatch = useDispatch();
   const openModalHandler = () => {
     setInfoOpen(false);
@@ -88,16 +94,47 @@ function BookInfoModal({ setIsNotify, setNotify, bookinfo, setInfoOpen }) {
       // setNotify("랙에 책이 추가되었습니다.");
     } else if (e.target.textContent === "다 읽은 책") {
       axios
-        .post(
-          `${process.env_REACT_APP_API_URL}/mypage/shelf`,
-          {
-            ...bookinfo,
-          },
-          { withCredentials: true }
-        )
+        .delete(`${process.env.REACT_APP_API_URL}/mypage/rack/${bookinfo.id}`, {
+          withCredentials: true,
+        })
         .then(() => {
-          setIsNotify(true);
-          setNotify("책장에 책이 추가되었습니다.");
+          dispatch(removeRackbook(bookinfo.id));
+          axios
+            .post(
+              `${process.env.REACT_APP_API_URL}/mypage/shelf`,
+              {
+                ...bookinfo,
+              },
+              { withCredentials: true }
+            )
+            .then(() => {
+              setInfoOpen(false);
+              dispatch(notify("책장에 책이 추가되었습니다."));
+            });
+        })
+        .catch((err) => {
+          if (err.response.status === 401)
+            dispatch(notify("다시 로그인 해주세요."));
+          if (err.response.status === 409)
+            dispatch(notify("이미 책장에 있는 책입니다."));
+          if (err.response.status === 410)
+            dispatch(notify("이미 삭제된 책입니다."));
+        });
+    } else if (e.target.textContent === "삭제") {
+      axios
+        .delete(`${process.env.REACT_APP_API_URL}/mypage/rack/${bookinfo.id}`, {
+          withCredentials: true,
+        })
+        .then(() => {
+          dispatch(removeRackbook(bookinfo.id));
+          setInfoOpen(false);
+          dispatch(notify("삭제 되었습니다."));
+        })
+        .catch((err) => {
+          if (err.response.status === 401)
+            dispatch(notify("다시 로그인 해주세요."));
+          if (err.response.status === 410)
+            dispatch(notify("이미 삭제된 책입니다."));
         });
     }
   };
@@ -118,7 +155,7 @@ function BookInfoModal({ setIsNotify, setNotify, bookinfo, setInfoOpen }) {
           </Writer>
           <Description>{bookinfo.description}</Description>
           <ButtonWrap onClick={clickHandler}>
-            <Button message={"읽고 있는 책"} color={null} />
+            <Button message={isMypage ? "삭제" : "읽고 있는 책"} color={null} />
             <Button message={"다 읽은 책"} color={"dark"} />
           </ButtonWrap>
         </DescWapper>
