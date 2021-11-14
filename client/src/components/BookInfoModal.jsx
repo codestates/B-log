@@ -2,6 +2,8 @@ import styled from "styled-components";
 import Button from "./Button";
 import axios from "axios";
 import { ModalBackground, CloseBtn } from "../components/Reusable";
+import { notify } from "../actions/index";
+import { useDispatch } from "react-redux";
 
 const ModalWrapper = styled.div`
   width: 700px;
@@ -58,23 +60,29 @@ const ButtonWrap = styled.div`
 `;
 
 function BookInfoModal({ setIsNotify, setNotify, bookinfo, setInfoOpen }) {
+  const dispatch = useDispatch();
   const openModalHandler = () => {
     setInfoOpen(false);
   };
-
+  console.log(bookinfo);
   const clickHandler = (e) => {
     if (e.target.textContent === "읽고 있는 책") {
       axios
         .post(
-          `${process.env_REACT_APP_API_URL}/mypage/rack`,
+          `${process.env.REACT_APP_API_URL}/mypage/rack`,
           {
             ...bookinfo,
           },
           { withCredentials: true }
         )
         .then(() => {
-          setIsNotify(true);
-          setNotify("읽고 있는 책이 추가되었습니다.");
+          dispatch(notify("읽고 있는 책이 추가되었습니다."));
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.response.status === 409) {
+            dispatch(notify("이미 읽고있는 책입니다."));
+          }
         });
       // setIsNotify(true);
       // setNotify("랙에 책이 추가되었습니다.");
