@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { notify } from "../actions/index";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 import Button from "../components/Button";
 import {
@@ -13,8 +15,9 @@ import {
   ButtonContainer,
 } from "../components/Reusable";
 
-function SignUp({ setIsNotify, setNotify }) {
+function SignUp() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [signupInfo, setSignupInfo] = useState({
     email: "",
     password: "",
@@ -107,17 +110,15 @@ function SignUp({ setIsNotify, setNotify }) {
           password: signupInfo.password,
         })
         .then(() => {
-          setNotify("회원가입이 완료되었습니다.");
-          setIsNotify(true);
+          dispatch(notify("회원가입이 완료되었습니다."));
           navigate("/login");
         });
     }
-    setNotify("회원가입이 완료되었습니다.");
-    setIsNotify(true);
   };
 
   useEffect(() => {
     checkMatched();
+    // eslint-disable-next-line
   }, [signupInfo.check]);
 
   return (

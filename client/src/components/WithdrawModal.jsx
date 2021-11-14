@@ -88,9 +88,9 @@ function WithdrawModal({ setWithdrawModalOpen }) {
             onChange={inputValueHandler}
           />
         )}
-        <a onClick={confirmHandler}>
+        <div onClick={confirmHandler}>
           <Button message={confirm ? "확인" : "회원 탈퇴"} />
-        </a>
+        </div>
       </ModalWrapper>
     </ModalBackground>
   );

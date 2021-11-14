@@ -17,41 +17,8 @@ import "./App.css";
 require("dotenv").config();
 
 function App() {
-  const state = useSelector((state) => state.loginReducer);
-  const dispatch = useDispatch();
-  const { isLogIn } = state;
-  console.log(isLogIn);
-  const [myBooks, setMyBooks] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [isNotify, setIsNotify] = useState(false);
-  const [notify, setNotify] = useState("");
-
-  const getBookmark = () => {
-    axios
-      .get(`${process.env_REACT_APP_API_URL}/mypage/mybooks`, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        setMyBooks(res.data.books);
-        dispatch(loginStateChange(true));
-      });
-    // .catch((err) => setIsLogin(false));
-  };
-
-  const Redirect = () => {
-    return isLogIn ? <MyPage myBooks={myBooks} /> : <Navigate to="/" />;
-  };
-
-  useEffect(() => {
-    getBookmark();
-  }, []);
-
-  useEffect(() => {
-    if (isNotify) {
-      setTimeout(() => setIsNotify(false), 3000);
-    }
-  }, [isNotify]);
 
   return (
     <>
@@ -63,22 +30,17 @@ function App() {
             path="/"
             element={
               <Main
-                setIsNotify={setIsNotify}
-                setNotify={setNotify}
                 setSearchKeyword={setSearchKeyword}
                 setSearchResult={setSearchResult}
                 searchKeyword={searchKeyword}
-                myBooks={myBooks}
               />
             }
           />
-          <Route path="/mypage" element={<Redirect />} />
+          <Route path="/mypage" element={<MyPage />} />
           <Route
             path="/search"
             element={
               <Search
-                setIsNotify={setIsNotify}
-                setNotify={setNotify}
                 searchResult={searchResult}
                 searchKeyword={searchKeyword}
                 setSearchKeyword={setSearchKeyword}
@@ -86,16 +48,8 @@ function App() {
             }
           />
           <Route path="/login" element={<LogIn />} />
-          <Route
-            path="/signup"
-            element={<SignUp setIsNotify={setIsNotify} setNotify={setNotify} />}
-          />
-          <Route
-            path="/edit-password"
-            element={
-              <EditPassword setIsNotify={setIsNotify} setNotify={setNotify} />
-            }
-          />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/edit-password" element={<EditPassword />} />
         </Routes>
       </section>
     </>
