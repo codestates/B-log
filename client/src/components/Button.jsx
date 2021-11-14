@@ -16,6 +16,9 @@ const StyledButton = styled.div`
     props.color === "dark" ? "transparent" : "#594d49"};
   border-radius: 40px;
   cursor: pointer;
+  :hover {
+    box-shadow: 5px 5px 25px 0.5px #8d8d8d;
+  }
 `;
 
 function Button({ message, color }) {

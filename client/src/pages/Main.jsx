@@ -8,7 +8,6 @@ import Footer from "../components/Footer";
 import Qwigley from "../assets/fonts/Qwigley-Regular.woff";
 import axios from "axios";
 
-// import books from "./assets/dummy/books";
 import { noTop10 } from "../assets/dummy/noResponse";
 
 const Wrapper = styled.div`
