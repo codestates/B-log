@@ -2,12 +2,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { getRackBooks, notify } from "../actions/index";
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import { faSearchPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import Button from "../components/Button";
 import axios from "axios";
 import WithdrawModal from "../components/WithdrawModal";
-import Books from "../components/Books";
-import books from "../assets/dummy/books";
+import Book from "../components/Book";
+import BookInfoModal from "../components/BookInfoModal";
 
 const WindowSection = styled.section`
   display: flex;
@@ -58,6 +60,9 @@ const Rack = styled.section`
   width: 600px;
   height: 500px;
   margin: 50px 0;
+  > .search_icon {
+    cursor: pointer;
+  }
 `;
 
 const Row = styled.div`
@@ -71,20 +76,12 @@ const Row = styled.div`
 
 const BookWrapper = styled.div`
   display: flex;
-  > a {
-    height: 170px;
+  > div {
+    height: 180px;
+    margin: 0 30px;
   }
 `;
 
-const Book = styled.div`
-  height: 170px;
-  width: 120px;
-  margin: 0 30px;
-  background-image: url(${(props) => props.img});
-  background-size: cover;
-  background-position: center;
-  border: solid 1px;
-`;
 const Bar = styled.div`
   width: 100%;
   height: 15px;
@@ -97,6 +94,7 @@ const ButtonBox = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
+  margin-right: 37.5px;
 `;
 
 const Shelf = styled.section`
@@ -105,17 +103,20 @@ const Shelf = styled.section`
   height: 100%;
 `;
 
-function MyPage({ setIsNotify, setNotify, myBooks }) {
+function MyPage() {
   const state = useSelector((state) => state.bookReducer);
   const dispatch = useDispatch();
+  const inputEl = useRef(null);
   const { rack, shelf } = state;
   const [username, setUserName] = useState("닉네임");
-  const inputEl = useRef(null);
   const [isEditMode, setEditMode] = useState(false);
   const [withdrawModalOpen, setWithdrawModalOpen] = useState(false);
+  const [infoOpen, setInfoOpen] = useState(false);
+  const [bookinfo, setBookinfo] = useState({});
 
-  const bookClickHandler = () => {
-    console.log("먹히는지 보자");
+  const infoModalHandler = (book) => {
+    setBookinfo(book);
+    setInfoOpen(true);
   };
 
   const inputValueHandler = (e) => {
@@ -153,16 +154,11 @@ function MyPage({ setIsNotify, setNotify, myBooks }) {
   }, [isEditMode]);
 
   useEffect(async () => {
-    if (rack.length < 6) {
-      const rackData = await axios.get(
-        `${process.env.REACT_APP_API_URL}/mypage/rack`
-      );
-      if (rackData) {
-        console.log(rackData.data.books);
-        dispatch(getRackBooks(rackData.data.books));
-      }
-    } else if (rack.length >= 6) {
-      dispatch(notify("읽고 있는 책이 너무 많습니다."));
+    const rackData = await axios.get(
+      `${process.env.REACT_APP_API_URL}/mypage/rack`
+    );
+    if (rackData) {
+      dispatch(getRackBooks(rackData.data.books));
     }
     const shelfData = await axios.get(
       `${process.env.REACT_APP_API_URL}/mypage/shelf`
@@ -170,16 +166,19 @@ function MyPage({ setIsNotify, setNotify, myBooks }) {
   }, []);
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/users`)
-      .then((res) => {
-        console.log(res);
-        // setUserName()
-      })
-      .catch((err) => console.log(err));
+    axios.get(`${process.env.REACT_APP_API_URL}/users`).then((res) => {
+      setUserName(res.data.username);
+    });
   }, [username]);
   return (
     <WindowSection>
+      {infoOpen ? (
+        <BookInfoModal
+          isMypage={true}
+          bookinfo={bookinfo}
+          setInfoOpen={setInfoOpen}
+        />
+      ) : null}
       <RackSection>
         <SpanBox>
           <div>
@@ -204,9 +203,13 @@ function MyPage({ setIsNotify, setNotify, myBooks }) {
           <Row>
             <BookWrapper>
               {rack.slice(0, 3).map((book) => (
-                <a onClick={bookClickHandler} key={book.id}>
-                  <Book img={book.coverimg} />
-                </a>
+                <div key={book.id}>
+                  <Book
+                    bookinfo={book}
+                    isMypage={true}
+                    infoModalHandler={() => infoModalHandler(book)}
+                  />
+                </div>
               ))}
             </BookWrapper>
             <Bar />
@@ -214,25 +217,31 @@ function MyPage({ setIsNotify, setNotify, myBooks }) {
           <Row>
             <BookWrapper>
               {rack.slice(3, 6).map((book) => (
-                <a onClick={bookClickHandler} key={book.id}>
-                  <Book img={book.coverimg} />
-                </a>
+                <div key={book.id}>
+                  <Book
+                    bookinfo={book}
+                    isMypage={true}
+                    infoModalHandler={() => infoModalHandler(book)}
+                  />
+                </div>
               ))}
             </BookWrapper>
-            {/* <Books row={1} col={3} books={books} myBooks={myBooks} /> */}
             <Bar />
           </Row>
+          <a className="search_icon" href="/search">
+            <FontAwesomeIcon icon={faSearchPlus} size="2x" />
+          </a>
         </Rack>
         <ButtonBox>
-          <a onClick={editModeChange}>
+          <div onClick={editModeChange}>
             <Button message="닉네임 변경" />
-          </a>
+          </div>
           <Link to="/edit-password">
             <Button message="비밀번호 변경" />
           </Link>
-          <a onClick={withdrawHandler}>
+          <div onClick={withdrawHandler}>
             <Button message="회원 탈퇴하기" />
-          </a>
+          </div>
         </ButtonBox>
       </RackSection>
       <Shelf></Shelf>
