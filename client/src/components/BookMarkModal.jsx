@@ -1,7 +1,9 @@
+import { notify, removeRackBook } from "../actions/index";
+import { useDispatch, useSelector } from "react-redux";
+import { ModalBackground, CloseBtn } from "../components/Reusable";
 import styled from "styled-components";
 import Button from "./Button";
 import axios from "axios";
-import { ModalBackground, CloseBtn } from "../components/Reusable";
 
 const ModalWrapper = styled.div`
   width: 300px;
@@ -21,66 +23,101 @@ const ButtonWrap = styled.div`
   height: 50%;
 `;
 
-function BookMarkModal({ setIsNotify, setNotify, bookinfo, setMarkOpen }) {
-  const { title, author, publisher, coverimg, description, isbn13, pages } =
-    bookinfo;
+function BookMarkModal({ bookinfo, setMarkOpen }) {
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state.bookReducer);
+  const { rack } = state;
 
-  const openModalHandler = () => {
+  const closeModalHandler = () => {
     setMarkOpen(false);
   };
+
   const clickHandler = (e) => {
     if (e.target.textContent === "읽고 있는 책") {
       axios
         .post(
           `${process.env_REACT_APP_API_URL}/mypage/rack`,
           {
-            title,
-            author,
-            publisher,
-            coverimg,
-            description,
-            isbn13,
-            pages,
+            ...bookinfo,
           },
           { withCredentials: true }
         )
         .then(() => {
-          setIsNotify(true);
-          setNotify("읽고 있는 책이 추가되었습니다.");
+          closeModalHandler();
+          dispatch(notify("읽고 있는 책이 추가되었습니다."));
+        })
+        .catch((err) => {
+          if (err.response.status === 401) {
+            dispatch(notify("로그인이 필요합니다."));
+          } else if (err.response.status === 409) {
+            dispatch(notify("이미 읽고있는 책입니다."));
+          }
         });
     } else if (e.target.textContent === "다 읽은 책") {
-      axios
-        .post(
-          `${process.env_REACT_APP_API_URL}/mypage/shelf`,
-          {
-            title,
-            author,
-            publisher,
-            coverimg,
-            description,
-            isbn13,
-            pages,
-          },
-          { withCredentials: true }
-        )
-        .then(() => {
-          setIsNotify(true);
-          setNotify("책장에 책이 추가되었습니다.");
-        });
+      const isbns = rack.map((book) => book.isbn13);
+      if (!isbns.includes(bookinfo.isbn13)) {
+        axios
+          .post(
+            `${process.env.REACT_APP_API_URL}/mypage/shelf`,
+            {
+              ...bookinfo,
+            },
+            { withCredentials: true }
+          )
+          .then(() => {
+            closeModalHandler();
+            dispatch(notify("책장에 책이 추가되었습니다."));
+          })
+          .catch((err) => {
+            if (err.response.status === 401) {
+              dispatch(notify("로그인이 필요합니다."));
+            } else if (err.response.status === 409) {
+              dispatch(notify("이미 책장에 있는 책입니다."));
+            }
+          });
+      } else {
+        const exist = rack.filter((book) => book.isbn13 === bookinfo.isbn13)[0];
+        axios
+          .delete(`${process.env.REACT_APP_API_URL}/mypage/rack/${exist.id}`, {
+            withCredentials: true,
+          })
+          .then(() => {
+            dispatch(removeRackBook(exist.id));
+            axios
+              .post(
+                `${process.env.REACT_APP_API_URL}/mypage/shelf`,
+                {
+                  ...bookinfo,
+                },
+                { withCredentials: true }
+              )
+              .then(() => {
+                closeModalHandler();
+                dispatch(notify("책장에 책이 추가되었습니다."));
+              })
+              .catch((err) => {
+                if (err.response.status === 401) {
+                  dispatch(notify("로그인이 필요합니다."));
+                } else if (err.response.status === 409) {
+                  dispatch(notify("이미 책장에 있는 책입니다."));
+                }
+              });
+          });
+      }
     }
   };
 
   return (
-    <ModalBackground onClick={openModalHandler}>
+    <ModalBackground onClick={closeModalHandler}>
       <ModalWrapper
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
-        <CloseBtn onClick={openModalHandler}>&times;</CloseBtn>
+        <CloseBtn onClick={closeModalHandler}>&times;</CloseBtn>
         <ButtonWrap onClick={clickHandler}>
-          <Button message={"읽고 있는 책"} color={null} />
-          <Button message={"다 읽은 책"} color={"dark"} />
+          <Button message="읽고 있는 책" />
+          <Button message="다 읽은 책" color="dark" />
         </ButtonWrap>
       </ModalWrapper>
     </ModalBackground>

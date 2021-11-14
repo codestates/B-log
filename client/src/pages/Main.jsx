@@ -35,14 +35,7 @@ const MainLogo = styled.div`
   margin-bottom: 20px;
 `;
 
-function Main({
-  setIsNotify,
-  setNotify,
-  searchKeyword,
-  setSearchKeyword,
-  setSearchResult,
-  myBooks,
-}) {
+function Main({ searchKeyword, setSearchKeyword, setSearchResult, myBooks }) {
   const [infoOpen, setInfoOpen] = useState(false);
   const [markOpen, setMarkOpen] = useState(false);
   const [bookinfo, setBookinfo] = useState({});
@@ -95,20 +88,10 @@ function Main({
       </Wrapper>
       <Footer />
       {infoOpen && (
-        <BookInfoModal
-          setIsNotify={setIsNotify}
-          setNotify={setNotify}
-          setInfoOpen={setInfoOpen}
-          bookinfo={bookinfo}
-        />
+        <BookInfoModal setInfoOpen={setInfoOpen} bookinfo={bookinfo} />
       )}
       {markOpen && (
-        <BookMarkModal
-          setIsNotify={setIsNotify}
-          setNotify={setNotify}
-          setMarkOpen={setMarkOpen}
-          bookinfo={bookinfo}
-        />
+        <BookMarkModal setMarkOpen={setMarkOpen} bookinfo={bookinfo} />
       )}
     </>
   );

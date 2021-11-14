@@ -20,7 +20,7 @@ export const getRackBooks = (books) => {
   };
 };
 
-export const removeRackbook = (bookId) => {
+export const removeRackBook = (bookId) => {
   return {
     type: REMOVE_RACK_BOOK,
     payload: {
@@ -36,7 +36,7 @@ export const getShelfBooks = (books) => {
   };
 };
 
-export const removeShelfbook = (bookId) => {
+export const removeShelfBook = (bookId) => {
   return {
     type: REMOVE_SHELF_BOOK,
     payload: {
