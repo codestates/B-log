@@ -1,5 +1,5 @@
 export const initialState = {
-  isLogIn: true,
+  isLogIn: false,
   rack: [],
   shelf: [],
   notifications: [],

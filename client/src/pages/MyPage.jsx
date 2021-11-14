@@ -163,6 +163,7 @@ function MyPage() {
     const shelfData = await axios.get(
       `${process.env.REACT_APP_API_URL}/mypage/shelf`
     );
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {

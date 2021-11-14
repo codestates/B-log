@@ -20,12 +20,9 @@ function App() {
   const state = useSelector((state) => state.loginReducer);
   const dispatch = useDispatch();
   const { isLogIn } = state;
-  console.log(isLogIn);
   const [myBooks, setMyBooks] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [isNotify, setIsNotify] = useState(false);
-  const [notify, setNotify] = useState("");
 
   const getBookmark = () => {
     axios
@@ -45,13 +42,8 @@ function App() {
 
   useEffect(() => {
     getBookmark();
+    // eslint-disable-next-line
   }, []);
-
-  useEffect(() => {
-    if (isNotify) {
-      setTimeout(() => setIsNotify(false), 3000);
-    }
-  }, [isNotify]);
 
   return (
     <>
@@ -63,8 +55,6 @@ function App() {
             path="/"
             element={
               <Main
-                setIsNotify={setIsNotify}
-                setNotify={setNotify}
                 setSearchKeyword={setSearchKeyword}
                 setSearchResult={setSearchResult}
                 searchKeyword={searchKeyword}
@@ -77,8 +67,6 @@ function App() {
             path="/search"
             element={
               <Search
-                setIsNotify={setIsNotify}
-                setNotify={setNotify}
                 searchResult={searchResult}
                 searchKeyword={searchKeyword}
                 setSearchKeyword={setSearchKeyword}
@@ -86,16 +74,8 @@ function App() {
             }
           />
           <Route path="/login" element={<LogIn />} />
-          <Route
-            path="/signup"
-            element={<SignUp setIsNotify={setIsNotify} setNotify={setNotify} />}
-          />
-          <Route
-            path="/edit-password"
-            element={
-              <EditPassword setIsNotify={setIsNotify} setNotify={setNotify} />
-            }
-          />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/edit-password" element={<EditPassword />} />
         </Routes>
       </section>
     </>

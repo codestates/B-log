@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { notify } from "../actions/index";
 import { useDispatch } from "react-redux";
@@ -6,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import axios from "axios";
-import Notification from "./Notification";
 
 const InputWrapper = styled.div`
   width: 540px;
