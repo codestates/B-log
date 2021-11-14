@@ -91,7 +91,7 @@ module.exports = {
         }
 
         //없으면 BookShelf에 추가, 해당 책 book.referred ++
-        else {
+        else if (req.body.pages && req.body.isbn13) {
           Book.update(
             { referred: bookInfo.dataValues.referred + 1 },
             { where: { id: bookInfo.dataValues.id } }
@@ -115,6 +115,8 @@ module.exports = {
             .catch((err) => {
               res.status(500).send();
             });
+        } else {
+          res.status(500).send();
         }
       }
 

@@ -119,7 +119,7 @@ module.exports = {
       }
 
       //book 테이블에 없으면 먼저 추가한 후 추가한 레코드의 아이디를 받아서 Shelf 테이블에 추가
-      else {
+      else if (req.body.pages && req.body.isbn13) {
         Book.create({ ...req.body, referred: 1 })
           .then((newBook) => {
             //Shelf 테이블에 추가
@@ -138,6 +138,8 @@ module.exports = {
           .catch((err) => {
             res.status(500).send();
           });
+      } else {
+        res.status(500).send();
       }
     }
   },
