@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { updateRack, updateShelf, loginStateChange } from "../actions/index";
 import styled from "styled-components";
 import SearchInput from "../components/SearchInput";
 import BookGrid from "../components/BookGrid";
@@ -8,7 +10,6 @@ import Footer from "../components/Footer";
 import Qwigley from "../assets/fonts/Qwigley-Regular.woff";
 import axios from "axios";
 
-// import books from "./assets/dummy/books";
 import { noTop10 } from "../assets/dummy/noResponse";
 
 const Wrapper = styled.div`
@@ -36,18 +37,16 @@ const MainLogo = styled.div`
   margin-bottom: 20px;
 `;
 
-function Main({
-  setIsNotify,
-  setNotify,
-  searchKeyword,
-  setSearchKeyword,
-  setSearchResult,
-  myBooks,
-}) {
+function Main({ searchKeyword, setSearchKeyword, setSearchResult }) {
+  const state = useSelector((state) => state.bookReducer);
+  const loginState = useSelector((state) => state.loginReducer);
+  const dispatch = useDispatch();
+  const { rack, shelf } = state;
   const [infoOpen, setInfoOpen] = useState(false);
   const [markOpen, setMarkOpen] = useState(false);
   const [bookinfo, setBookinfo] = useState({});
   const [top10, setTop10] = useState(noTop10);
+  const myBooks = [...rack, ...shelf];
 
   const getTop10 = () => {
     axios
@@ -58,6 +57,26 @@ function Main({
       .catch(() => {
         setTop10(noTop10);
       });
+  };
+
+  const getMyBooks = async () => {
+    const rackRes = await axios.get(
+      `${process.env.REACT_APP_API_URL}/mypage/rack`,
+      { withCredentials: true }
+    );
+    const shelfRes = await axios.get(
+      `${process.env.REACT_APP_API_URL}/mypage/shelf`,
+      { withCredentials: true }
+    );
+    try {
+      dispatch(updateRack(rackRes.data.books));
+      dispatch(updateShelf(shelfRes.data.books));
+      dispatch(loginStateChange(true));
+    } catch (err) {
+      dispatch(loginStateChange(false));
+      dispatch(updateRack([]));
+      dispatch(updateShelf([]));
+    }
   };
 
   const infoModalHandler = (book) => {
@@ -72,6 +91,7 @@ function Main({
 
   useEffect(() => {
     getTop10();
+    getMyBooks();
   }, []);
 
   return (
@@ -96,20 +116,10 @@ function Main({
       </Wrapper>
       <Footer />
       {infoOpen && (
-        <BookInfoModal
-          setIsNotify={setIsNotify}
-          setNotify={setNotify}
-          setInfoOpen={setInfoOpen}
-          bookinfo={bookinfo}
-        />
+        <BookInfoModal setInfoOpen={setInfoOpen} bookinfo={bookinfo} />
       )}
       {markOpen && (
-        <BookMarkModal
-          setIsNotify={setIsNotify}
-          setNotify={setNotify}
-          setMarkOpen={setMarkOpen}
-          bookinfo={bookinfo}
-        />
+        <BookMarkModal setMarkOpen={setMarkOpen} bookinfo={bookinfo} />
       )}
     </>
   );

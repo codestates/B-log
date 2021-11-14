@@ -36,11 +36,10 @@ export const Menu = styled.a`
   display: inline-block;
   padding: 10px 20px;
   letter-spacing: 0.1em;
-
+  cursor: pointer;
   &:last-child {
     margin: 0px 40px;
   }
-
   :hover {
     font-weight: 700;
   }
@@ -63,21 +62,19 @@ function Header() {
   };
 
   return (
-    <>
-      <HeaderBox>
-        <LogoBox>
-          <Logo href="/" />
-        </LogoBox>
-        <Nav>
-          {isLogIn ? <Menu href="/mypage">내 책장</Menu> : null}
-          {isLogIn ? (
-            <Menu onClick={logoutHandler}>로그아웃</Menu>
-          ) : (
-            <Menu href="/login">로그인</Menu>
-          )}
-        </Nav>
-      </HeaderBox>
-    </>
+    <HeaderBox>
+      <LogoBox>
+        <Logo href="/" />
+      </LogoBox>
+      <Nav>
+        {isLogIn ? <Menu href="/mypage">내 책장</Menu> : null}
+        {isLogIn ? (
+          <Menu onClick={logoutHandler}>로그아웃</Menu>
+        ) : (
+          <Menu href="/login">로그인</Menu>
+        )}
+      </Nav>
+    </HeaderBox>
   );
 }
 export default Header;
