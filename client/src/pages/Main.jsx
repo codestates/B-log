@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import SearchInput from "../components/SearchInput";
-import Books from "../components/Books";
+import BookGrid from "../components/BookGrid";
+import BookInfoModal from "../components/BookInfoModal";
+import BookMarkModal from "../components/BookMarkModal";
 import Footer from "../components/Footer";
 import Qwigley from "../assets/fonts/Qwigley-Regular.woff";
 import axios from "axios";
@@ -15,7 +17,11 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: 100px;
+  padding: 60px;
+
+  .grid_container {
+    padding: 40px;
+  }
 `;
 
 const MainLogo = styled.div`
@@ -38,6 +44,9 @@ function Main({
   setSearchResult,
   myBooks,
 }) {
+  const [infoOpen, setInfoOpen] = useState(false);
+  const [markOpen, setMarkOpen] = useState(false);
+  const [bookinfo, setBookinfo] = useState({});
   const [top10, setTop10] = useState(noTop10);
 
   const getTop10 = () => {
@@ -49,6 +58,16 @@ function Main({
       .catch(() => {
         setTop10(noTop10);
       });
+  };
+
+  const infoModalHandler = (book) => {
+    setBookinfo(book);
+    setInfoOpen(true);
+  };
+
+  const markModalHandler = (book) => {
+    setBookinfo(book);
+    setMarkOpen(true);
   };
 
   useEffect(() => {
@@ -64,16 +83,34 @@ function Main({
           setSearchKeyword={setSearchKeyword}
           setSearchResult={setSearchResult}
         />
-        <Books
-          setIsNotify={setIsNotify}
-          setNotify={setNotify}
-          myBooks={myBooks}
-          books={top10}
-          row={2}
-          col={5}
-        />
+        <div className="grid_container">
+          <BookGrid
+            infoModalHandler={infoModalHandler}
+            markModalHandler={markModalHandler}
+            myBooks={myBooks}
+            books={top10}
+            row={2}
+            col={5}
+          />
+        </div>
       </Wrapper>
       <Footer />
+      {infoOpen && (
+        <BookInfoModal
+          setIsNotify={setIsNotify}
+          setNotify={setNotify}
+          setInfoOpen={setInfoOpen}
+          bookinfo={bookinfo}
+        />
+      )}
+      {markOpen && (
+        <BookMarkModal
+          setIsNotify={setIsNotify}
+          setNotify={setNotify}
+          setMarkOpen={setMarkOpen}
+          bookinfo={bookinfo}
+        />
+      )}
     </>
   );
 }
