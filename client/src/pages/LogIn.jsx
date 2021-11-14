@@ -1,7 +1,75 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import styled from "styled-components";
+import welcome from "../assets/images/welcome-page.jpg";
+import Qwigley from "../assets/fonts/Qwigley-Regular.woff";
+import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Notification from "../components/Notification";
+import Button from "../components/Button";
+
+const LoginSection = styled.section`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+`;
+
+const ImgAndLogin = styled.div`
+  height: 700px;
+  width: 1000px;
+  display: flex;
+`;
+
+const Img = styled.img`
+  width: 50%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+const LoginWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f4f4f4;
+  width: 50%;
+  height: 100%;
+  > a {
+    color: #202123;
+    text-decoration: none;
+    :hover {
+      font-weight: 700;
+    }
+  }
+`;
+
+const LoginLogo = styled.h2`
+  @font-face {
+    font-family: "Qwigley";
+    src: local("Qwigley"), url(${Qwigley}) format("woff");
+  }
+  font-family: "Qwigley";
+  font-size: 80px;
+  font-weight: 400;
+  margin-bottom: 40px;
+  letter-spacing: 2px;
+`;
+
+const LoginInput = styled.input`
+  margin-bottom: 40px;
+  border: none;
+  border-bottom: 1px solid #8d8d8d;
+  outline: none;
+  width: 180px;
+  height: 24px;
+  background-color: transparent;
+`;
+
+const LoginBtn = styled.div`
+  margin: 40px 0;
+`;
 
 function LogIn({ setIsLogin }) {
   const navigate = useNavigate();
@@ -34,7 +102,7 @@ function LogIn({ setIsLogin }) {
     } else {
       axios
         .post(
-          "http://localhost:4000/auth/login",
+          `${process.env.REACT_APP_API_URL}/auth/login`,
           { email: loginInfo.email, password: loginInfo.password },
           { withCredentials: true }
         )
@@ -58,6 +126,7 @@ function LogIn({ setIsLogin }) {
       loginHandler();
     }
   };
+
   useEffect(() => {
     if (isNotify) {
       setTimeout(() => setIsNotify(!isNotify), 3000);
@@ -65,35 +134,42 @@ function LogIn({ setIsLogin }) {
   }, [isNotify]);
   return (
     <>
-      {isNotify ? (
-        <Notification
-          message={message[msgState]}
-          isNotify={isNotify}
-          time={3000}
-        ></Notification>
-      ) : null}
-      <div>Login</div>
-      <div className="login_id">
-        <div>이메일</div>
-        <input
-          type="text"
-          placeholder="이메일을 입력해주세요."
-          onChange={handleInputValue("email")}
-        ></input>
-      </div>
-      <div className="login_password">
-        <div>비밀번호</div>
-        <input
-          type="password"
-          placeholder="비밀번호를 입력해주세요."
-          onChange={handleInputValue("password")}
-          onKeyUp={(e) => pressEnter(e)}
-        ></input>
-      </div>
-      <button onClick={loginHandler}>로그인</button>
-      <div>
-        <a href="/signup">회원가입</a>
-      </div>
+      <LoginSection>
+        {isNotify ? (
+          <Notification
+            message={message[msgState]}
+            isNotify={isNotify}
+            time={3000}
+          ></Notification>
+        ) : null}
+        <ImgAndLogin>
+          <Img src={welcome} alt="welcome page" />
+          <LoginWrapper>
+            <LoginLogo>Login</LoginLogo>
+            <div>
+              <LoginInput
+                type="text"
+                placeholder=" 이메일"
+                onChange={handleInputValue("email")}
+              />
+              <FontAwesomeIcon icon={faUser} />
+            </div>
+            <div>
+              <LoginInput
+                type="password"
+                placeholder=" 비밀번호"
+                onChange={handleInputValue("password")}
+                onKeyUp={(e) => pressEnter(e)}
+              />
+              <FontAwesomeIcon icon={faLock} />
+            </div>
+            <LoginBtn onClick={loginHandler}>
+              <Button message={"로그인"} />
+            </LoginBtn>
+            <a href="/signup">회원가입</a>
+          </LoginWrapper>
+        </ImgAndLogin>
+      </LoginSection>
     </>
   );
 }

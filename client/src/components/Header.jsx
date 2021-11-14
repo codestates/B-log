@@ -2,11 +2,12 @@ import styled from "styled-components";
 
 export const HeaderBox = styled.div`
   width: 100vw;
-  height: 80px;
+  padding: 10px 0;
   background-color: #e0e0d8;
   display: flex;
   align-items: center;
   position: relative;
+  z-index: 1000;
 `;
 
 export const LogoBox = styled.div`
@@ -30,11 +31,15 @@ export const Nav = styled.nav`
 
 export const Menu = styled.a`
   display: inline-block;
-  text-decoration: none;
   padding: 10px 20px;
+  letter-spacing: 0.1em;
 
   &:last-child {
     margin: 0px 40px;
+  }
+
+  :hover {
+    font-weight: 700;
   }
 `;
 

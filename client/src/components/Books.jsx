@@ -5,16 +5,14 @@ import BookMarkModal from "./BookMarkModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons";
 
-const Container = styled.ol`
-  padding: 30px;
+const Container = styled.ul`
   display: grid;
   grid-template-rows: ${(props) => `repeat(${props.row}, 1fr)`};
   grid-template-columns: ${(props) => `repeat(${props.col}, 1fr)`};
 `;
 
 const Book = styled.li`
-  height: 170px;
-  margin: 14px;
+  height: 180px;
   display: inline-block;
   position: relative;
   cursor: pointer;
@@ -22,9 +20,10 @@ const Book = styled.li`
 
 const BookCover = styled.img`
   width: 120px;
-  height: 170px;
+  height: 180px;
   object-fit: cover;
   position: relative;
+  margin: 0 20px;
 `;
 
 const TextContainer = styled.div`
@@ -67,31 +66,37 @@ const Author = styled.span`
 // hover시 책이름, 저자명 표기
 // font awesome에서 북마크 아이콘 찾아서 넣기
 
-function Books({ myBooks, books, row, col }) {
+function Books({ setIsNotify, setNotify, myBooks, books, row, col }) {
   const [infoOpen, setInfoOpen] = useState(false);
   const [markOpen, setMarkOpen] = useState(false);
   const [bookinfo, setBookinfo] = useState({});
-  const [read, setRead] = useState(
-    [...myBooks.rack, ...myBooks.shelf].map((book) => book.isbn13)
-  );
+  const [read] = useState(myBooks.map((book) => book.isbn13));
 
   const infoModalHandler = (book) => {
     setBookinfo(book);
     setInfoOpen(true);
   };
 
+  const markModalHandler = (book) => {
+    setBookinfo(book);
+    setMarkOpen(true);
+  };
+
   return (
     <>
       <Container row={row} col={col}>
-        {books.slice(0, 10).map((book) => (
+        {books.slice(0, 3).map((book) => (
           <Book onClick={() => infoModalHandler(book)}>
-            <BookCover src={book.coverimg}></BookCover>
+            <BookCover src={book.coverimg} alt="book_cover"></BookCover>
             <TextContainer>
-              <Bookmark
-                icon={faBookmark}
-                mark={read.includes(book.isbn13) ? true : false}
-                size="2x"
-              />
+              <div onClick={(event) => event.stopPropagation()}>
+                <Bookmark
+                  onClick={() => markModalHandler(book)}
+                  icon={faBookmark}
+                  mark={read.includes(book.isbn13) ? true : false}
+                  size="2x"
+                />
+              </div>
               <Title>{book.title}</Title>
               <Author>{book.author}</Author>
             </TextContainer>
@@ -99,10 +104,20 @@ function Books({ myBooks, books, row, col }) {
         ))}
       </Container>
       {infoOpen && (
-        <BookInfoModal setInfoOpen={setInfoOpen} bookinfo={bookinfo} />
+        <BookInfoModal
+          setIsNotify={setIsNotify}
+          setNotify={setNotify}
+          setInfoOpen={setInfoOpen}
+          bookinfo={bookinfo}
+        />
       )}
       {markOpen && (
-        <BookMarkModal setmarkOpen={setMarkOpen} bookinfo={bookinfo} />
+        <BookMarkModal
+          setIsNotify={setIsNotify}
+          setNotify={setNotify}
+          setMarkOpen={setMarkOpen}
+          bookinfo={bookinfo}
+        />
       )}
     </>
   );

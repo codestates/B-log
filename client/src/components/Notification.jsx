@@ -5,14 +5,15 @@ export const Notify = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #e0e0d8;
+  background-color: #f5f5f5;
   border-radius: 3rem;
   position: absolute;
   width: 400px;
   height: 50px;
   z-index: 999999;
   left: 50% - 200px;
-  top: 10px;
+  top: 30px;
+  box-shadow: 5px 5px 50px 0.5px #8d8d8d;
   transition: transform 0.6s ease-in-out;
   animation: toast-in-right 0.6s;
   transition: 0.6s ease;
