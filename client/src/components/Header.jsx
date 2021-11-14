@@ -1,4 +1,7 @@
+import { useSelector, useDispatch } from "react-redux";
+import { loginStateChange, notify } from "../actions/index";
 import styled from "styled-components";
+import axios from "axios";
 
 export const HeaderBox = styled.div`
   width: 100vw;
@@ -43,9 +46,20 @@ export const Menu = styled.a`
   }
 `;
 
-function Header({ isLogin, setIsLogin }) {
+function Header() {
+  const state = useSelector((state) => state.loginReducer);
+  const dispatch = useDispatch();
+  const { isLogIn } = state;
+
   const logoutHandler = () => {
-    setIsLogin(false);
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/auth/logout`, null, {
+        withCredentials: true,
+      })
+      .then(() => {
+        dispatch(loginStateChange(false));
+        dispatch(notify("로그아웃 되었습니다."));
+      });
   };
 
   return (
@@ -55,8 +69,8 @@ function Header({ isLogin, setIsLogin }) {
           <Logo href="/" />
         </LogoBox>
         <Nav>
-          {isLogin ? <Menu href="/mypage">내 책장</Menu> : null}
-          {isLogin ? (
+          {isLogIn ? <Menu href="/mypage">내 책장</Menu> : null}
+          {isLogIn ? (
             <Menu onClick={logoutHandler}>로그아웃</Menu>
           ) : (
             <Menu href="/login">로그인</Menu>
