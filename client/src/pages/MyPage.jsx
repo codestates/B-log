@@ -15,6 +15,7 @@ import axios from "axios";
 import WithdrawModal from "../components/WithdrawModal";
 import Book from "../components/Book";
 import BookInfoModal from "../components/BookInfoModal";
+import BookReviewModal from "../components/BookReviewModal";
 
 const WindowSection = styled.section`
   display: flex;
@@ -29,7 +30,7 @@ const RackSection = styled.section`
   align-items: end;
   height: 100%;
   position: relative;
-  margin-right: 100px;
+  margin-right: 50px;
 `;
 
 const SpanBox = styled.div`
@@ -102,10 +103,92 @@ const ButtonBox = styled.div`
   margin-right: 37.5px;
 `;
 
-const Shelf = styled.section`
+const ShelfSection = styled.section`
   flex: 1;
   display: flex;
+  flex-direction: column;
+  align-items: start;
+  margin-left: 50px;
+`;
+
+const Shelf = styled.section`
+  width: 80%;
+  min-width: 450px;
+  max-width: 600px;
+  height: 705px;
+  margin-top: 40px;
+  position: relative;
+  background-color: #e1e1d7;
+`;
+
+const FrameH = styled.div`
+  width: 100%;
+  height: 15px;
+  background-color: #594d49;
+  z-index: 100;
+`;
+
+const FrameVBox = styled.div`
+  width: 100%;
+  height: calc(100% - 30px);
+  display: flex;
+  justify-content: space-between;
+`;
+
+const FrameV = styled.div`
+  width: 15px;
   height: 100%;
+  background-color: #594d49;
+  z-index: 100;
+`;
+
+const FrameInnerH1 = styled.div`
+  position: absolute;
+  top: 172.5px;
+  left: 15px;
+  padding: 7.5px;
+  width: calc(100% - 30px);
+  background-color: #594d49;
+`;
+
+const FrameInnerH2 = styled(FrameInnerH1)`
+  top: 345px;
+`;
+
+const FrameInnerH3 = styled(FrameInnerH1)`
+  top: 517.5px;
+`;
+
+const InnerFrame = styled.div`
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  width: calc(100% - 30px);
+  height: calc(100% - 30px);
+  display: flex;
+  align-content: start;
+  flex-wrap: wrap;
+`;
+
+const ShelfBook = styled.div`
+  height: 157.5px;
+  width: ${(props) => (props.page <= 300 ? "30px" : `${props.page * 0.1}px`)};
+  margin: 0 2px 15px 1px;
+  /* box-shadow: 5px 5px 25px 1px #8d8d8d; */
+  background-color: ${(props) => props.color};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  cursor: pointer;
+  :hover {
+    box-shadow: 5px 5px 25px 1px #8d8d8d;
+  }
+  > span {
+    display: inline-block;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
 `;
 
 function MyPage() {
@@ -116,15 +199,27 @@ function MyPage() {
   const navigate = useNavigate();
   const { isLogIn } = loginState;
   const { rack, shelf } = state;
-  const [username, setUserName] = useState("닉네임");
+  const [newUserName, setNewUserName] = useState("");
   const [isEditMode, setEditMode] = useState(false);
   const [withdrawModalOpen, setWithdrawModalOpen] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
+  const [reviewOpen, setReviewOpen] = useState(false);
   const [bookinfo, setBookinfo] = useState({});
-  console.log(isLogIn);
+
+  const randomColor = () => {
+    const color = ["red", "orange", "green", "gray", "blue"];
+    const randomIndex = Math.floor(Math.random() * 5);
+    return color[randomIndex];
+  };
+
   const infoModalHandler = (book) => {
     setBookinfo(book);
     setInfoOpen(true);
+  };
+
+  const reviewHandler = (book) => {
+    setBookinfo(book);
+    setReviewOpen(true);
   };
 
   const withdrawHandler = () => {
@@ -132,7 +227,7 @@ function MyPage() {
   };
 
   const inputValueHandler = (e) => {
-    setUserName(e.target.value);
+    setNewUserName(e.target.value);
   };
 
   const editModeChange = () => {
@@ -142,11 +237,12 @@ function MyPage() {
         .patch(
           `${process.env.REACT_APP_API_URL}/users/username`,
           {
-            username,
+            username: newUserName,
           },
           { withCredentials: true }
         )
         .then(() => {
+          setEditMode(!isEditMode);
           dispatch(notify("닉네임이 수정되었습니다."));
         })
         .catch((err) => {
@@ -191,9 +287,9 @@ function MyPage() {
     axios
       .get(`${process.env.REACT_APP_API_URL}/users`, { withCredentials: true })
       .then((res) => {
-        setUserName(res.data.username);
+        setNewUserName(res.data.username);
       });
-  }, [username]);
+  }, []);
 
   return (
     <WindowSection>
@@ -211,14 +307,16 @@ function MyPage() {
               <UserNameInput
                 ref={inputEl}
                 onChange={inputValueHandler}
-                value={username}
+                value={newUserName}
                 onBlur={editModeChange}
                 onKeyUp={(e) => {
                   if (e.key === "Enter") editModeChange();
                 }}
               />
             ) : (
-              <UserNameSpan onClick={editModeChange}>{username}</UserNameSpan>
+              <UserNameSpan onClick={editModeChange}>
+                {newUserName}
+              </UserNameSpan>
             )}
             <span>님</span>
           </div>
@@ -269,9 +367,36 @@ function MyPage() {
           </div>
         </ButtonBox>
       </RackSection>
-      <Shelf></Shelf>
+      <ShelfSection>
+        <Shelf>
+          <FrameH />
+          <FrameVBox>
+            <FrameV />
+            <FrameV />
+          </FrameVBox>
+          <FrameH />
+          <FrameInnerH1 />
+          <FrameInnerH2 />
+          <FrameInnerH3 />
+          <InnerFrame>
+            {shelf.map((book, idx) => (
+              <ShelfBook
+                key={idx}
+                page={book.pages}
+                color={randomColor()}
+                onClick={() => reviewHandler(book)}
+              >
+                <span>{book.title}</span>
+              </ShelfBook>
+            ))}
+          </InnerFrame>
+        </Shelf>
+      </ShelfSection>
       {withdrawModalOpen ? (
         <WithdrawModal setWithdrawModalOpen={setWithdrawModalOpen} />
+      ) : null}
+      {reviewOpen ? (
+        <BookReviewModal setReviewOpen={setReviewOpen} bookinfo={bookinfo} />
       ) : null}
     </WindowSection>
   );
