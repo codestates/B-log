@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   loginStateChange,
   updateRack,
@@ -8,6 +8,7 @@ import {
 } from "../actions/index";
 import styled from "styled-components";
 import axios from "axios";
+import logo from "../assets/images/logo.svg";
 
 export const HeaderBox = styled.div`
   width: 100vw;
@@ -26,11 +27,12 @@ export const LogoBox = styled.div`
   flex: 1 0 auto;
 `;
 
-const Logo = styled.a`
+const Logo = styled.img`
   display: inline-block;
   width: 120px;
-  height: 100%;
-  background-color: #44312b;
+  height: 60px;
+  /* background-color: #44312b; */
+  background-image: ${(props) => props.image};
   margin-left: 40px;
 `;
 
@@ -74,7 +76,9 @@ function Header() {
   return (
     <HeaderBox>
       <LogoBox>
-        <Logo href="/" />
+        <Link to="/">
+          <Logo src={logo} />
+        </Link>
       </LogoBox>
       <Nav>
         {isLogIn ? <Menu href="/mypage">내 책장</Menu> : null}
