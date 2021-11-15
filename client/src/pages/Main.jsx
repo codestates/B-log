@@ -37,9 +37,8 @@ const MainLogo = styled.div`
   margin-bottom: 20px;
 `;
 
-function Main({ searchKeyword, setSearchKeyword, setSearchResult }) {
+function Main() {
   const state = useSelector((state) => state.bookReducer);
-  const loginState = useSelector((state) => state.loginReducer);
   const dispatch = useDispatch();
   const { rack, shelf } = state;
   const [infoOpen, setInfoOpen] = useState(false);
@@ -98,11 +97,7 @@ function Main({ searchKeyword, setSearchKeyword, setSearchResult }) {
     <>
       <Wrapper>
         <MainLogo>B-log</MainLogo>
-        <SearchInput
-          searchKeyword={searchKeyword}
-          setSearchKeyword={setSearchKeyword}
-          setSearchResult={setSearchResult}
-        />
+        <SearchInput />
         <div className="grid_container">
           <BookGrid
             infoModalHandler={infoModalHandler}
