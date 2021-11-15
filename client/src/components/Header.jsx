@@ -31,8 +31,6 @@ const Logo = styled.img`
   display: inline-block;
   width: 120px;
   height: 60px;
-  /* background-color: #44312b; */
-  background-image: ${(props) => props.image};
   margin-left: 40px;
 `;
 
