@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
-import { notify } from "../actions/index";
-import { useDispatch } from "react-redux";
+import { getSearchKeyword, getSearchResult, notify } from "../actions/index";
+import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
@@ -41,11 +41,13 @@ const Icon = styled(FontAwesomeIcon)`
   }
 `;
 
-function SearchInput({ searchKeyword, setSearchKeyword, setSearchResult }) {
+function SearchInput() {
+  const state = useSelector((state) => state.searchReducer);
+  const { searchKeyword } = state;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const getInput = (event) => setSearchKeyword(event.target.value);
+  const getInput = (event) => dispatch(getSearchKeyword(event.target.value));
 
   const catchEnter = (event) =>
     event.key === "Enter" && sendRequest(searchKeyword);
@@ -55,7 +57,7 @@ function SearchInput({ searchKeyword, setSearchKeyword, setSearchResult }) {
       axios
         .get(`${process.env_REACT_APP_API_URL}/books/list/${keyword}`)
         .then((res) => {
-          setSearchResult(res.books);
+          dispatch(getSearchResult(res.data.books));
           navigate("/search");
         });
     } else {
