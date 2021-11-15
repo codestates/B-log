@@ -1,9 +1,9 @@
-import { LOGIN_STATE_CHANGE } from "../actions/index";
+import { CHANGE_LOGIN_STATE } from "../actions/index";
 import { initialState } from "./initialState";
 
 const loginReducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOGIN_STATE_CHANGE:
+    case CHANGE_LOGIN_STATE:
       return Object.assign({}, state, {
         isLogIn: action.payload,
       });
