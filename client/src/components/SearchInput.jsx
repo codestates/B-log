@@ -42,7 +42,7 @@ const Icon = styled(FontAwesomeIcon)`
   }
 `;
 
-function SearchInput() {
+function SearchInput({ isSearchPage }) {
   const state = useSelector((state) => state.searchReducer);
   const { searchKeyword } = state;
   const dispatch = useDispatch();
@@ -59,7 +59,7 @@ function SearchInput() {
         .get(`${process.env.REACT_APP_API_URL}/books/list/${keyword}`)
         .then((res) => {
           dispatch(getSearchResult(res.data.books));
-          navigate("/search");
+          !isSearchPage && navigate("/search");
         });
     } else {
       dispatch(notify("검색어를 입력해주세요."));
