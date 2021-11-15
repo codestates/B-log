@@ -2,22 +2,21 @@ const { User } = require("../../models");
 
 module.exports = {
   get: (req, res) => {
-    try {
-      const useremail = req.params.email;
-
-      User.findOne({ where: { email: useremail } })
+    const email = req.params.email;
+    if (email) {
+      User.findOne({ where: { email } })
         .then((data) => {
           if (data) {
-            return res.status(409).send({ message: "email exist" });
+            res.status(409).send({ message: "email exist" });
           } else {
-            return res.send({ email: useremail, message: "ok" });
+            res.send({ email: email, message: "ok" });
           }
         })
         .catch((err) => {
-          return res.status(500).send({ err, message: "Server err" });
+          res.status(500).send({ err, message: "Server err" });
         });
-    } catch {
-      return res.status(500).send({ err, message: "Server err" });
+    } else {
+      res.status(500).send();
     }
   },
 };
