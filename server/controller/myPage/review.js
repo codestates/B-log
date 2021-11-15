@@ -1,10 +1,10 @@
 const { Shelf } = require("../../models");
-const { isAuthorized } = require("../serverFunctions");
+const { token } = require("../serverFunctions");
 
 module.exports = {
   get: (req, res) => {
     //헤더 토큰 해독해서 로그인한 유저의 id 가져오기
-    const userId = isAuthorized(req).id;
+    const userId = token.isAuthorized(req).id;
 
     //토큰이 없거나 유효하지 않음 401 코드 응답
     if (!userId) {
@@ -30,7 +30,7 @@ module.exports = {
 
   patch: (req, res) => {
     //헤더 토큰 해독해서 로그인한 유저의 id 가져오기
-    const userId = isAuthorized(req).id;
+    const userId = token.isAuthorized(req).id;
 
     if (!userId) {
       res.status(401).send({ message: "access token expired" });
@@ -62,7 +62,7 @@ module.exports = {
   },
 
   delete: (req, res) => {
-    const userId = isAuthorized(req).id;
+    const userId = token.isAuthorized(req).id;
 
     if (!userId) {
       res.status(401).send({ message: "access token expired" });
