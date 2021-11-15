@@ -8,6 +8,8 @@ module.exports = {
   sendAccessToken: (res, accessToken) => {
     res.cookie("authorization", accessToken, {
       httpOnly: true,
+      samesite: "none",
+      secure: true,
     });
   },
   isAuthorized: (req) => {
@@ -23,5 +25,5 @@ module.exports = {
     }
   },
   api: require("./api"),
-  mypage: require("./mypage"),
+  random: require("./random"),
 };

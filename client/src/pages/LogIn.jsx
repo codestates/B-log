@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { notify, loginStateChange } from "../actions/index";
 import { useDispatch } from "react-redux";
@@ -8,7 +8,6 @@ import welcome from "../assets/images/welcome-page.jpg";
 import Qwigley from "../assets/fonts/Qwigley-Regular.woff";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Notification from "../components/Notification";
 import Button from "../components/Button";
 
 const LoginSection = styled.section`
@@ -79,19 +78,11 @@ function LogIn({ setIsLogin }) {
   const regExpEmail =
     /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
   const [loginInfo, setLoginInfo] = useState({ email: "", password: "" });
-  // const [isNotify, setIsNotify] = useState(false);
-  // const [msgState, setMsgState] = useState(0);
-  // const message = [
-  //   "이메일을 입력해주세요.",
-  //   "비밀번호를 입력해주세요.",
-  //   "올바른 이메일 형식이 아닙니다.",
-  //   "잘못된 아이디 이거나 비밀번호가 틀렸습니다.",
-  //   "네트워크 환경이 불안정 합니다.",
-  // ];
 
   const handleInputValue = (key) => (e) => {
     setLoginInfo({ ...loginInfo, [key]: e.target.value });
   };
+
   const loginHandler = () => {
     if (!loginInfo.email.length) {
       dispatch(notify("이메일을 입력해주세요."));
@@ -119,6 +110,7 @@ function LogIn({ setIsLogin }) {
         });
     }
   };
+
   const pressEnter = (e) => {
     if (e.key === "Enter") {
       loginHandler();
@@ -126,37 +118,35 @@ function LogIn({ setIsLogin }) {
   };
 
   return (
-    <>
-      <LoginSection>
-        <ImgAndLogin>
-          <Img src={welcome} alt="welcome page" />
-          <LoginWrapper>
-            <LoginLogo>Login</LoginLogo>
-            <div>
-              <LoginInput
-                type="text"
-                placeholder=" 이메일"
-                onChange={handleInputValue("email")}
-              />
-              <FontAwesomeIcon icon={faUser} />
-            </div>
-            <div>
-              <LoginInput
-                type="password"
-                placeholder=" 비밀번호"
-                onChange={handleInputValue("password")}
-                onKeyUp={(e) => pressEnter(e)}
-              />
-              <FontAwesomeIcon icon={faLock} />
-            </div>
-            <LoginBtn onClick={loginHandler}>
-              <Button message={"로그인"} />
-            </LoginBtn>
-            <a href="/signup">회원가입</a>
-          </LoginWrapper>
-        </ImgAndLogin>
-      </LoginSection>
-    </>
+    <LoginSection>
+      <ImgAndLogin>
+        <Img src={welcome} alt="welcome page" />
+        <LoginWrapper>
+          <LoginLogo>Login</LoginLogo>
+          <div>
+            <LoginInput
+              type="text"
+              placeholder=" 이메일"
+              onChange={handleInputValue("email")}
+            />
+            <FontAwesomeIcon icon={faUser} />
+          </div>
+          <div>
+            <LoginInput
+              type="password"
+              placeholder=" 비밀번호"
+              onChange={handleInputValue("password")}
+              onKeyUp={(e) => pressEnter(e)}
+            />
+            <FontAwesomeIcon icon={faLock} />
+          </div>
+          <LoginBtn onClick={loginHandler}>
+            <Button message={"로그인"} />
+          </LoginBtn>
+          <a href="/signup">회원가입</a>
+        </LoginWrapper>
+      </ImgAndLogin>
+    </LoginSection>
   );
 }
 export default LogIn;
