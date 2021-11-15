@@ -6,7 +6,6 @@ import {
   notify,
   addToRack,
   addToShelf,
-  removeFromShelf,
   removeFromRack,
 } from "../actions/index";
 import { useSelector, useDispatch } from "react-redux";

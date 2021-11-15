@@ -22,7 +22,7 @@ module.exports = {
       console.log(req.params);
       const keyword = req.params.keyword;
 
-      api.getSearchList(keyword, 20, (searchList) => {
+      api.getSearchList(keyword, 28, (searchList) => {
         if (searchList) {
           res.status(200).json({ books: searchList });
         } else {

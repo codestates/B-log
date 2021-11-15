@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import team_logo from "../assets/images/team_logo.png";
+import team_logo from "../assets/images/team_logo.svg";
 import { HeaderBox, LogoBox, Nav, Menu } from "./Header";
 
 const FooterBox = styled(HeaderBox)`
