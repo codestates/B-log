@@ -6,13 +6,14 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import axios from "axios";
 
-const InputWrapper = styled.div`
+const Container = styled.div`
   width: 540px;
   height: 40px;
   display: flex;
   justify-content: left;
   align-items: center;
   padding: 10px 20px;
+  margin: 0px 20px 20px;
   border-radius: 40px;
   border-style: solid;
   border-color: #594d49;
@@ -55,7 +56,7 @@ function SearchInput() {
   const sendRequest = (keyword) => {
     if (searchKeyword.length) {
       axios
-        .get(`${process.env_REACT_APP_API_URL}/books/list/${keyword}`)
+        .get(`${process.env.REACT_APP_API_URL}/books/list/${keyword}`)
         .then((res) => {
           dispatch(getSearchResult(res.data.books));
           navigate("/search");
@@ -66,14 +67,15 @@ function SearchInput() {
   };
 
   return (
-    <InputWrapper>
+    <Container>
       <Input
+        value={searchKeyword}
         placeholder="도서명 또는 저자명으로 검색하기"
         onChange={getInput}
         onKeyUp={catchEnter}
       />
       <Icon icon={faSearch} onClick={() => sendRequest(searchKeyword)} />
-    </InputWrapper>
+    </Container>
   );
 }
 
