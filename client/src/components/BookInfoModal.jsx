@@ -86,6 +86,7 @@ function BookInfoModal({ bookinfo, setInfoOpen, isMypage }) {
             }
           )
           .then((res) => {
+            console.log(res.data);
             axios
               .post(
                 `${process.env.REACT_APP_API_URL}/mypage/rack`,

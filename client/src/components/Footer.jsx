@@ -4,6 +4,7 @@ import { HeaderBox, LogoBox, Nav, Menu } from "./Header";
 
 const FooterBox = styled(HeaderBox)`
   padding: 20px 0;
+  background: rgb(214, 170, 125, 0.3);
 `;
 
 const TeamLogo = styled.img`
