@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { notify, removeShelfBook } from "../actions/index";
+import { notify, removeFromShelf } from "../actions/index";
 import { useDispatch } from "react-redux";
 import { ModalBackground, CloseBtn } from "../components/Reusable";
 import styled from "styled-components";
@@ -96,7 +96,7 @@ const Span = styled.span`
   position: absolute;
 `;
 
-function BookReviewModal({ bookinfo, setInfoOpen }) {
+function BookReviewModal({ bookinfo, setReviewOpen }) {
   const inputEl = useRef(null);
   const dispatch = useDispatch();
   const [isEditMode, setEditMode] = useState(false);
@@ -108,21 +108,18 @@ function BookReviewModal({ bookinfo, setInfoOpen }) {
     } else if (e.target.textContent === "책장에서 삭제") {
       axios
         .delete(
-          `${process.env_REACT_APP_API_URL}/mypage/shelf/${bookinfo.id}`,
-          {
-            review: newValue,
-          },
+          `${process.env.REACT_APP_API_URL}/mypage/shelf/${bookinfo.id}`,
           { withCredentials: true }
         )
         .then(() => {
-          setInfoOpen(false);
-          dispatch(removeShelfBook(bookinfo.id));
+          setReviewOpen(false);
+          dispatch(removeFromShelf(bookinfo.id));
           dispatch(notify("책장에서 책이 삭제되었습니다."));
         });
     } else if (e.target.textContent === "리뷰 삭제") {
       axios
         .delete(
-          `${process.env_REACT_APP_API_URL}/mypage/review/${bookinfo.id}`,
+          `${process.env.REACT_APP_API_URL}/mypage/review/${bookinfo.id}`,
           {
             withCredentials: true,
           }
@@ -138,8 +135,8 @@ function BookReviewModal({ bookinfo, setInfoOpen }) {
     setNewValue(e.target.value);
   };
 
-  const openModalHandler = () => {
-    setInfoOpen(false);
+  const closeModalHandler = () => {
+    setReviewOpen(false);
   };
 
   const changeEditMode = () => {
@@ -179,9 +176,9 @@ function BookReviewModal({ bookinfo, setInfoOpen }) {
   }, [isEditMode]);
 
   return (
-    <ModalBackground onClick={openModalHandler}>
+    <ModalBackground onClick={closeModalHandler}>
       <ModalWrapper onClick={(e) => e.stopPropagation()}>
-        <CloseBtn onClick={openModalHandler}>&times;</CloseBtn>
+        <CloseBtn onClick={closeModalHandler}>&times;</CloseBtn>
         <TandW>
           <Title>{bookinfo.title}</Title>
           <Writer>

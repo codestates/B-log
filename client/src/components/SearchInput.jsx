@@ -55,7 +55,7 @@ function SearchInput() {
   const sendRequest = (keyword) => {
     if (searchKeyword.length) {
       axios
-        .get(`${process.env_REACT_APP_API_URL}/books/list/${keyword}`)
+        .get(`${process.env.REACT_APP_API_URL}/books/list/${keyword}`)
         .then((res) => {
           dispatch(getSearchResult(res.data.books));
           navigate("/search");
