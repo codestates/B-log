@@ -13,13 +13,14 @@ function BookGrid({ infoModalHandler, markModalHandler, myBooks, books, col }) {
   return (
     <>
       <Container col={col}>
-        {books.map((book) => (
+        {books.map((book, idx) => (
           <Book
             infoModalHandler={infoModalHandler}
             markModalHandler={markModalHandler}
             isMypage={false}
             bookinfo={book}
-            marked={read.includes(book.isbn13) ? true : false}
+            marked={read.includes(book.isbn13) ? "true" : null}
+            key={idx}
           />
         ))}
       </Container>

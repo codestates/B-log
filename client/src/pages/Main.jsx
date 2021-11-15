@@ -31,10 +31,11 @@ const MainLogo = styled.div`
     src: local("Qwigley"), url(${Qwigley}) format("woff");
   }
   font-family: "Qwigley";
-  font-size: 100px;
+  font-size: 130px;
   font-weight: 400;
   color: #594d49;
   margin-bottom: 20px;
+  text-shadow: 5px 5px #e0e0d8;
 `;
 
 function Main() {
@@ -91,6 +92,7 @@ function Main() {
   useEffect(() => {
     getTop10();
     getMyBooks();
+    // eslint-disable-next-line
   }, []);
 
   return (
