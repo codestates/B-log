@@ -100,7 +100,7 @@ function BookReviewModal({ bookinfo, setReviewOpen }) {
   const inputEl = useRef(null);
   const dispatch = useDispatch();
   const [isEditMode, setEditMode] = useState(false);
-  const [newValue, setNewValue] = useState("");
+  const [newReview, setNewReview] = useState("");
 
   const buttonHandler = (e) => {
     if (e.target.textContent === "리뷰 수정") {
@@ -115,6 +115,11 @@ function BookReviewModal({ bookinfo, setReviewOpen }) {
           setReviewOpen(false);
           dispatch(removeFromShelf(bookinfo.id));
           dispatch(notify("책장에서 책이 삭제되었습니다."));
+        })
+        .catch((err) => {
+          if (err.response.status === 401) {
+            dispatch(notify("로그인이 필요합니다."));
+          }
         });
     } else if (e.target.textContent === "리뷰 삭제") {
       axios
@@ -126,13 +131,18 @@ function BookReviewModal({ bookinfo, setReviewOpen }) {
         )
         .then(() => {
           dispatch(notify("리뷰가 삭제되었습니다."));
-          setNewValue("");
+          setNewReview("");
+        })
+        .catch((err) => {
+          if (err.response.status === 401) {
+            dispatch(notify("로그인이 필요합니다."));
+          }
         });
     }
   };
 
   const inputValueHandler = (e) => {
-    setNewValue(e.target.value);
+    setNewReview(e.target.value);
   };
 
   const closeModalHandler = () => {
@@ -147,12 +157,17 @@ function BookReviewModal({ bookinfo, setReviewOpen }) {
         .patch(
           `${process.env.REACT_APP_API_URL}/mypage/review/${bookinfo.id}`,
           {
-            review: newValue,
+            review: newReview,
           },
           { withCredentials: true }
         )
         .then(() => {
           dispatch(notify("리뷰가 수정 되었습니다."));
+        })
+        .catch((err) => {
+          if (err.response.status === 401) {
+            dispatch(notify("로그인이 필요합니다."));
+          }
         });
     }
   };
@@ -166,14 +181,19 @@ function BookReviewModal({ bookinfo, setReviewOpen }) {
   useEffect(() => {
     if (isEditMode) {
       inputEl.current.focus();
-    } else {
-      axios
-        .get(`${process.env.REACT_APP_API_URL}/mypage/review/${bookinfo.id}`)
-        .then((res) => {
-          setNewValue(res.data);
-        });
     }
   }, [isEditMode]);
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/mypage/review/${bookinfo.id}`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setNewReview(res.data.data);
+      });
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <ModalBackground onClick={closeModalHandler}>
@@ -201,12 +221,12 @@ function BookReviewModal({ bookinfo, setReviewOpen }) {
             {isEditMode ? (
               <InputEdit
                 type="memo"
-                value={newValue}
+                value={newReview}
                 ref={inputEl}
                 onChange={inputValueHandler}
               />
             ) : (
-              <Span>{newValue}</Span>
+              <Span>{newReview}</Span>
             )}
           </InputBox>
         </Box>

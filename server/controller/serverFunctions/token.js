@@ -18,9 +18,8 @@ module.exports = {
     if (!authorization) {
       return null;
     }
-    const token = authorization;
     try {
-      return verify(token, process.env.ACCESS_SECRET);
+      return verify(authorization, process.env.ACCESS_SECRET);
     } catch (err) {
       return null;
     }

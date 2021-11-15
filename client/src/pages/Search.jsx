@@ -14,17 +14,14 @@ const Wrapper = styled.div`
   width: 100%;
   padding: 60px;
 
-  .line {
-    /* width: 540px;
-    height: 1px; */
-    width: 1px;
-    height: 5%;
-    background-color: #e0e0d8;
-    margin: 10px;
-  }
-
   .grid_container {
     padding: 40px;
+
+    > div {
+      margin-top: 25vh;
+      color: #8d8d8d;
+      font-size: 14px;
+    }
   }
 `;
 
@@ -52,16 +49,19 @@ function Search() {
   return (
     <>
       <Wrapper>
-        <SearchInput />
-        <div className="line"></div>
+        <SearchInput isSearchPage={true} />
         <div className="grid_container">
-          <BookGrid
-            infoModalHandler={infoModalHandler}
-            markModalHandler={markModalHandler}
-            myBooks={myBooks}
-            books={searchResult}
-            col={7}
-          />
+          {searchResult.length ? (
+            <BookGrid
+              infoModalHandler={infoModalHandler}
+              markModalHandler={markModalHandler}
+              myBooks={myBooks}
+              books={searchResult}
+              col={7}
+            />
+          ) : (
+            <div>검색 결과가 없습니다.</div>
+          )}
         </div>
       </Wrapper>
       {infoOpen && (
