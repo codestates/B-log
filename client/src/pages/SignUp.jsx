@@ -28,7 +28,6 @@ function SignUp() {
     email: false,
     password: false,
     check: false,
-    username: false,
   });
   const [message, setMessage] = useState({
     email: "",
@@ -44,8 +43,6 @@ function SignUp() {
     if (!signupInfo[key].length) {
       setMessage({ ...message, [key]: "" });
       setIsValid({ ...isValid, [key]: false });
-    } else if (signupInfo.username.length) {
-      setIsValid({ ...isValid, username: true });
     }
   };
 
@@ -100,9 +97,9 @@ function SignUp() {
   };
 
   const buttonHandler = (e) => {
-    const { email, password, check, username } = isValid;
+    const { email, password, check } = isValid;
     const isRequest = e.target.textContent === "회원가입" ? true : false;
-    if (isRequest && email && password && check && username) {
+    if (isRequest && email && password && check && signupInfo.username.length) {
       axios
         .post(`${process.env.REACT_APP_API_URL}/auth/signup`, {
           email: signupInfo.email,
