@@ -69,18 +69,18 @@ module.exports = {
         callback(null);
       });
   },
-  getBestsellerList: (callback) => {
+  getBestsellerList: (type, callback) => {
     axios({
       method: "get",
       url: "https://www.aladin.co.kr/ttb/api/ItemList.aspx",
       params: {
         ttbkey: process.env.ALADIN_API_KEY,
-        QueryType: "BlogBest",
         SearchTarget: "Book",
         output: "js",
         Version: 20131101,
         Cover: "Big",
         MaxResults: 20,
+        ...type,
       },
     })
       .then((response) => {
