@@ -1,13 +1,13 @@
 const { Shelf, Book } = require("../../models");
-const { isAuthorized } = require("../serverFunctions");
+const { token } = require("../serverFunctions");
 
 module.exports = {
   get: (req, res) => {
     //헤더 토큰 해독해서 로그인한 유저의 id 가져오기
-    const userId = isAuthorized(req).id;
+    const user = token.isAuthorized(req);
 
     //토큰이 없거나 유효하지 않음 401 코드 응답
-    if (!userId) {
+    if (!user) {
       res.status(401).send({ message: "access token expired" });
     }
 
@@ -15,7 +15,7 @@ module.exports = {
     else {
       //유저 아이디가 가지고 있는 모든 책의 아이디를 조회
       Shelf.findAll({
-        where: { userId: userId, isDoneReading: true },
+        where: { userId: user.id, isDoneReading: true },
       })
         .then((shelves) => {
           const bookList = [];
@@ -56,10 +56,10 @@ module.exports = {
 
   post: async (req, res) => {
     //헤더 토큰 해독해서 로그인한 유저의 id 가져오기
-    const userId = isAuthorized(req).id;
+    const user = token.isAuthorized(req);
 
     //토큰이 없거나 유효하지 않음 401 코드 응답
-    if (!userId) {
+    if (!user) {
       res.status(401).send({ message: "access token expired" });
     }
 
@@ -76,7 +76,7 @@ module.exports = {
         const exist = await Shelf.findOne({
           where: {
             bookId: bookInfo.dataValues.id,
-            userId: userId,
+            userId: user.id,
           },
         });
 
@@ -99,7 +99,7 @@ module.exports = {
             .then((updatedBook) => {
               Shelf.create({
                 bookId: bookInfo.dataValues.id,
-                userId: userId,
+                userId: user.id,
                 isDoneReading: true,
               })
                 .then((response) => {
@@ -122,48 +122,52 @@ module.exports = {
 
       //book 테이블에 없으면 먼저 추가한 후 추가한 레코드의 아이디를 받아서 Shelf 테이블에 추가
       else {
-        Book.create({ ...req.body, referred: 1 })
-          .then((newBook) => {
-            //Shelf 테이블에 추가
-            Shelf.create({
-              bookId: newBook.dataValues.id,
-              userId: userId,
-              isDoneReading: true,
+        if (req.body.title && req.body.isbn13 && req.body.pages) {
+          Book.create({ ...req.body, referred: 1 })
+            .then((newBook) => {
+              //Shelf 테이블에 추가
+              Shelf.create({
+                bookId: newBook.dataValues.id,
+                userId: user.id,
+                isDoneReading: true,
+              });
+              return newBook.dataValues;
+            })
+            .then((response) => {
+              res.status(201).send({
+                message: "Book is added to the rack",
+                book: response,
+              });
+            })
+            .catch((err) => {
+              res.status(500).send();
             });
-            return newBook.dataValues;
-          })
-          .then((response) => {
-            res.status(201).send({
-              message: "Book is added to the rack",
-              book: response,
-            });
-          })
-          .catch((err) => {
-            res.status(500).send();
-          });
+        } else {
+          res.status(500).send();
+        }
       }
     }
   },
 
   delete: async (req, res) => {
     //헤더 토큰 해독해서 로그인한 유저의 id 가져오기
-    const userId = isAuthorized(req).id;
+    const user = token.isAuthorized(req);
 
     //토큰이 없거나 유효하지 않음 401 코드 응답
-    if (!userId) {
+    if (!user) {
       res.status(401).send({ message: "access token expired" });
     }
 
     //토큰 존재
     else {
       try {
-        const bookId = req.params.bookid.split(":")[1];
+        const bookId = req.params.bookid;
 
         //Shelf에서 책 삭제 요청
         const deletedBook = await Shelf.destroy({
           where: {
             bookId: bookId,
-            userId: userId,
+            userId: user.id,
             isDoneReading: true,
           },
         });

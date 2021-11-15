@@ -1,13 +1,9 @@
 const { User } = require("../../models");
-const {
-  isAuthorized,
-  sendAccessToken,
-  generateAccessToken,
-} = require("../serverFunctions");
+const { token } = require("../serverFunctions");
 
 module.exports = {
   patch: (req, res) => {
-    const userinfo = isAuthorized(req);
+    const userinfo = token.isAuthorized(req);
     if (!userinfo) {
       res.status(401).send({ message: "invalid access token" });
     } else {
@@ -17,12 +13,12 @@ module.exports = {
           { where: { id: userinfo.id } }
         )
           .then((data) => {
-            const accessToken = generateAccessToken({
+            const accessToken = token.generateAccessToken({
               id: userinfo.id,
               username: req.body.username,
               email: userinfo.email,
             });
-            sendAccessToken(res, accessToken);
+            token.sendAccessToken(res, accessToken);
             res.send({
               username: req.body.username,
               message: "ok",

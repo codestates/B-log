@@ -104,7 +104,6 @@ function Main() {
             markModalHandler={markModalHandler}
             myBooks={myBooks}
             books={top10}
-            row={2}
             col={5}
           />
         </div>

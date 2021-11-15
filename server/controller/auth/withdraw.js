@@ -1,9 +1,9 @@
 const { User } = require("../../models");
-const { isAuthorized } = require("../../controller/serverFunctions");
+const { token } = require("../../controller/serverFunctions");
 
 module.exports = {
   delete: async (req, res) => {
-    const userinfo = isAuthorized(req);
+    const userinfo = token.isAuthorized(req);
     if (!userinfo) {
       return res.status(401).send({ message: "invalid access token" });
     } else {

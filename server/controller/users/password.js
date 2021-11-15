@@ -1,12 +1,12 @@
 const { User } = require("../../models");
-const { isAuthorized } = require("../serverFunctions");
+const { token } = require("../serverFunctions");
 
 module.exports = {
   patch: (req, res) => {
-    const userinfo = isAuthorized(req);
+    const userinfo = token.isAuthorized(req);
     if (!userinfo) {
       res.status(401).send({ message: "invalid access token" });
-    } else {
+    } else if (req.body.newPassword) {
       const { id } = userinfo;
       User.findOne({ where: { id } })
         .then((user) => {
@@ -18,13 +18,15 @@ module.exports = {
                 return res.send({ message: "ok" });
               })
               .catch((err) => {
-                return res.status(500).send("Server err");
+                return res.status(500).send();
               });
           }
         })
         .catch((err) => {
           res.status(500).send();
         });
+    } else {
+      res.status(500).send();
     }
   },
 };

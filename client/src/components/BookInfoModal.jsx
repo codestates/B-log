@@ -2,7 +2,13 @@ import styled from "styled-components";
 import Button from "./Button";
 import axios from "axios";
 import { ModalBackground, CloseBtn } from "../components/Reusable";
-import { notify, removeFromRack } from "../actions/index";
+import {
+  notify,
+  addToRack,
+  addToShelf,
+  removeFromShelf,
+  removeFromRack,
+} from "../actions/index";
 import { useSelector, useDispatch } from "react-redux";
 
 const ModalWrapper = styled.div`
@@ -62,7 +68,7 @@ const ButtonWrap = styled.div`
 function BookInfoModal({ bookinfo, setInfoOpen, isMypage }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.bookReducer);
-  const { rack } = state;
+  const { rack, shelf } = state;
 
   const closeModalHandler = () => {
     setInfoOpen(false);
@@ -70,47 +76,80 @@ function BookInfoModal({ bookinfo, setInfoOpen, isMypage }) {
 
   const clickHandler = (e) => {
     if (e.target.textContent === "읽고 있는 책") {
-      axios
-        .post(
-          `${process.env.REACT_APP_API_URL}/mypage/rack`,
-          {
-            ...bookinfo,
-          },
-          { withCredentials: true }
-        )
-        .then(() => {
-          dispatch(notify("읽고 있는 책이 추가되었습니다."));
-        })
-        .catch((err) => {
-          console.log(err);
-          if (err.response.status === 409) {
-            dispatch(notify("이미 읽고있는 책입니다."));
-          }
-        });
+      const isbns = shelf.map((book) => book.isbn13);
+      //책장에 책이 없는 경우
+      if (!isbns.includes(bookinfo.isbn13)) {
+        axios
+          .get(
+            `${process.env.REACT_APP_API_URL}/books/item/${bookinfo.isbn13}`,
+            {
+              withCredentials: true,
+            }
+          )
+          .then((res) => {
+            axios
+              .post(
+                `${process.env.REACT_APP_API_URL}/mypage/rack`,
+                {
+                  ...res.data,
+                },
+                { withCredentials: true }
+              )
+              .then((res) => {
+                dispatch(addToRack(res.data.book));
+                closeModalHandler();
+                dispatch(notify("읽고 있는 책이 추가되었습니다."));
+              })
+              .catch((err) => {
+                if (err.response.status === 401) {
+                  dispatch(notify("로그인이 필요합니다."));
+                }
+                if (err.response.status === 409) {
+                  dispatch(notify("이미 읽고있는 책입니다."));
+                }
+              });
+          });
+        //책장에 책이 있는 경우
+      } else {
+        closeModalHandler();
+        dispatch(notify("이미 다 읽은 책 입니다."));
+      }
     } else if (e.target.textContent === "다 읽은 책") {
       const isbns = rack.map((book) => book.isbn13);
       if (!isbns.includes(bookinfo.isbn13)) {
         axios
-          .post(
-            `${process.env.REACT_APP_API_URL}/mypage/shelf`,
+          .get(
+            `${process.env.REACT_APP_API_URL}/books/item/${bookinfo.isbn13}`,
             {
-              ...bookinfo,
-            },
-            { withCredentials: true }
-          )
-          .then(() => {
-            closeModalHandler();
-            dispatch(notify("책장에 책이 추가되었습니다."));
-          })
-          .catch((err) => {
-            if (err.response.status === 401) {
-              dispatch(notify("로그인이 필요합니다."));
-            } else if (err.response.status === 409) {
-              dispatch(notify("이미 책장에 있는 책입니다."));
+              withCredentials: true,
             }
+          )
+          .then((res) => {
+            axios
+              .post(
+                `${process.env.REACT_APP_API_URL}/mypage/shelf`,
+                {
+                  ...res.data,
+                },
+                { withCredentials: true }
+              )
+              .then((res) => {
+                closeModalHandler();
+                dispatch(addToShelf(res.data.book));
+                dispatch(notify("책장에 책이 추가되었습니다."));
+              })
+              .catch((err) => {
+                if (err.response.status === 401) {
+                  dispatch(notify("로그인이 필요합니다."));
+                } else if (err.response.status === 409) {
+                  closeModalHandler();
+                  dispatch(notify("이미 책장에 있는 책입니다."));
+                }
+              });
           });
       } else {
         const exist = rack.filter((book) => book.isbn13 === bookinfo.isbn13)[0];
+        console.log(exist);
         axios
           .delete(`${process.env.REACT_APP_API_URL}/mypage/rack/${exist.id}`, {
             withCredentials: true,
@@ -121,18 +160,20 @@ function BookInfoModal({ bookinfo, setInfoOpen, isMypage }) {
               .post(
                 `${process.env.REACT_APP_API_URL}/mypage/shelf`,
                 {
-                  ...bookinfo,
+                  ...exist,
                 },
                 { withCredentials: true }
               )
-              .then(() => {
+              .then((res) => {
                 closeModalHandler();
+                dispatch(addToShelf(res.data.book));
                 dispatch(notify("책장에 책이 추가되었습니다."));
               })
               .catch((err) => {
                 if (err.response.status === 401) {
                   dispatch(notify("로그인이 필요합니다."));
                 } else if (err.response.status === 409) {
+                  closeModalHandler();
                   dispatch(notify("이미 책장에 있는 책입니다."));
                 }
               });

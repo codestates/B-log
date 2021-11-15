@@ -1,5 +1,11 @@
 import { useSelector, useDispatch } from "react-redux";
-import { loginStateChange, notify } from "../actions/index";
+import { useNavigate } from "react-router-dom";
+import {
+  loginStateChange,
+  updateRack,
+  updateShelf,
+  notify,
+} from "../actions/index";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -47,8 +53,9 @@ export const Menu = styled.a`
 
 function Header() {
   const state = useSelector((state) => state.loginReducer);
-  const dispatch = useDispatch();
   const { isLogIn } = state;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const logoutHandler = () => {
     axios
@@ -56,7 +63,10 @@ function Header() {
         withCredentials: true,
       })
       .then(() => {
+        navigate("/");
         dispatch(loginStateChange(false));
+        dispatch(updateRack([]));
+        dispatch(updateShelf([]));
         dispatch(notify("로그아웃 되었습니다."));
       });
   };
