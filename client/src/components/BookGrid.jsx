@@ -3,23 +3,16 @@ import Book from "./Book";
 
 const Container = styled.ul`
   display: grid;
-  grid-template-rows: ${(props) => `repeat(${props.row}, 1fr)`};
+  grid-template-rows: repeat(auto-fill, 1fr);
   grid-template-columns: ${(props) => `repeat(${props.col}, 1fr)`};
   gap: 30px;
 `;
-function BookGrid({
-  infoModalHandler,
-  markModalHandler,
-  myBooks,
-  books,
-  row,
-  col,
-}) {
+function BookGrid({ infoModalHandler, markModalHandler, myBooks, books, col }) {
   const read = myBooks.map((book) => book.isbn13);
 
   return (
     <>
-      <Container row={row} col={col}>
+      <Container col={col}>
         {books.map((book) => (
           <Book
             infoModalHandler={infoModalHandler}
