@@ -4,10 +4,10 @@ const { token } = require("../serverFunctions");
 module.exports = {
   get: (req, res) => {
     //헤더 토큰 해독해서 로그인한 유저의 id 가져오기
-    const userId = token.isAuthorized(req).id;
+    const user = token.isAuthorized(req);
 
     //토큰이 없거나 유효하지 않음 401 코드 응답
-    if (!userId) {
+    if (!user) {
       res.status(401).send({ message: "access token expired" });
     }
 
@@ -15,7 +15,7 @@ module.exports = {
     else {
       //유저 아이디가 가지고 있는 모든 책의 아이디를 조회
       Shelf.findAll({
-        where: { userId: userId, isDoneReading: true },
+        where: { userId: user.id, isDoneReading: true },
       })
         .then((shelves) => {
           const bookList = [];
@@ -56,10 +56,10 @@ module.exports = {
 
   post: async (req, res) => {
     //헤더 토큰 해독해서 로그인한 유저의 id 가져오기
-    const userId = token.isAuthorized(req).id;
+    const user = token.isAuthorized(req);
 
     //토큰이 없거나 유효하지 않음 401 코드 응답
-    if (!userId) {
+    if (!user) {
       res.status(401).send({ message: "access token expired" });
     }
 
@@ -76,7 +76,7 @@ module.exports = {
         const exist = await Shelf.findOne({
           where: {
             bookId: bookInfo.dataValues.id,
-            userId: userId,
+            userId: user.id,
           },
         });
 
@@ -99,7 +99,7 @@ module.exports = {
             .then((updatedBook) => {
               Shelf.create({
                 bookId: bookInfo.dataValues.id,
-                userId: userId,
+                userId: user.id,
                 isDoneReading: true,
               })
                 .then((response) => {
@@ -128,7 +128,7 @@ module.exports = {
               //Shelf 테이블에 추가
               Shelf.create({
                 bookId: newBook.dataValues.id,
-                userId: userId,
+                userId: user.id,
                 isDoneReading: true,
               });
               return newBook.dataValues;
@@ -151,10 +151,10 @@ module.exports = {
 
   delete: async (req, res) => {
     //헤더 토큰 해독해서 로그인한 유저의 id 가져오기
-    const userId = token.isAuthorized(req).id;
+    const user = token.isAuthorized(req);
 
     //토큰이 없거나 유효하지 않음 401 코드 응답
-    if (!userId) {
+    if (!user) {
       res.status(401).send({ message: "access token expired" });
     }
 
@@ -167,7 +167,7 @@ module.exports = {
         const deletedBook = await Shelf.destroy({
           where: {
             bookId: bookId,
-            userId: userId,
+            userId: user.id,
             isDoneReading: true,
           },
         });
