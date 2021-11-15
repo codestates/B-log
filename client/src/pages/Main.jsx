@@ -91,6 +91,7 @@ function Main() {
   useEffect(() => {
     getTop10();
     getMyBooks();
+    // eslint-disable-next-line
   }, []);
 
   return (

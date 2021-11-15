@@ -73,7 +73,7 @@ const Rack = styled.section`
 
 const Row = styled.div`
   width: 90%;
-  height: 40%;
+  min-height: 40%;
   display: flex;
   flex-direction: column;
   justify-content: end;
@@ -193,11 +193,9 @@ const ShelfBook = styled.div`
 
 function MyPage() {
   const state = useSelector((state) => state.bookReducer);
-  const loginState = useSelector((state) => state.loginReducer);
   const dispatch = useDispatch();
   const inputEl = useRef(null);
   const navigate = useNavigate();
-  const { isLogIn } = loginState;
   const { rack, shelf } = state;
   const [newUserName, setNewUserName] = useState("");
   const [isEditMode, setEditMode] = useState(false);
@@ -285,10 +283,13 @@ function MyPage() {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/users`, { withCredentials: true })
+      .get(`${process.env.REACT_APP_API_URL}/users`, {
+        withCredentials: true,
+      })
       .then((res) => {
         setNewUserName(res.data.username);
       });
+    // eslint-disable-next-line
   }, []);
 
   return (
