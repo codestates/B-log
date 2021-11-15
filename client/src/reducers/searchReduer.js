@@ -9,7 +9,7 @@ const searchReducer = (state = initialState, action) => {
       });
 
     case GET_SEARCH_RESULT:
-      return Object.assign({}, state, { searchResult: action.payload.book });
+      return Object.assign({}, state, { searchResult: action.payload.books });
 
     default:
       return state;

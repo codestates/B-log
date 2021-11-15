@@ -1,9 +1,9 @@
-const { isAuthorized } = require("../serverFunctions");
+const { token } = require("../serverFunctions");
 
 module.exports = {
   get: (req, res) => {
     try {
-      const userinfo = isAuthorized(req);
+      const userinfo = token.isAuthorized(req);
       if (!userinfo) {
         return res.status(401).send({ message: "invalid access token" });
       } else {
