@@ -128,11 +128,12 @@ module.exports = {
               userId: userId,
               isDoneReading: false,
             });
+            return newBook.dataValues;
           })
           .then((response) => {
             res.status(201).send({
               message: "Book is added to the rack",
-              book: newBook.dataValues,
+              book: response,
             });
           })
           .catch((err) => {
