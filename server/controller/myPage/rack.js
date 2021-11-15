@@ -157,7 +157,7 @@ module.exports = {
     //토큰 존재
     else {
       try {
-        const bookId = req.params.bookid.split(":")[1];
+        const bookId = req.params.bookid;
 
         //Shelf에서 책 삭제 요청
         const deletedBook = await Shelf.destroy({

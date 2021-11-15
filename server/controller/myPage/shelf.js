@@ -122,25 +122,29 @@ module.exports = {
 
       //book 테이블에 없으면 먼저 추가한 후 추가한 레코드의 아이디를 받아서 Shelf 테이블에 추가
       else {
-        Book.create({ ...req.body, referred: 1 })
-          .then((newBook) => {
-            //Shelf 테이블에 추가
-            Shelf.create({
-              bookId: newBook.dataValues.id,
-              userId: userId,
-              isDoneReading: true,
+        if (req.body.title && req.body.isbn13 && req.body.pages) {
+          Book.create({ ...req.body, referred: 1 })
+            .then((newBook) => {
+              //Shelf 테이블에 추가
+              Shelf.create({
+                bookId: newBook.dataValues.id,
+                userId: userId,
+                isDoneReading: true,
+              });
+              return newBook.dataValues;
+            })
+            .then((response) => {
+              res.status(201).send({
+                message: "Book is added to the rack",
+                book: response,
+              });
+            })
+            .catch((err) => {
+              res.status(500).send();
             });
-            return newBook.dataValues;
-          })
-          .then((response) => {
-            res.status(201).send({
-              message: "Book is added to the rack",
-              book: response,
-            });
-          })
-          .catch((err) => {
-            res.status(500).send();
-          });
+        } else {
+          res.status(500).send();
+        }
       }
     }
   },
@@ -157,7 +161,7 @@ module.exports = {
     //토큰 존재
     else {
       try {
-        const bookId = req.params.bookid.split(":")[1];
+        const bookId = req.params.bookid;
 
         //Shelf에서 책 삭제 요청
         const deletedBook = await Shelf.destroy({
