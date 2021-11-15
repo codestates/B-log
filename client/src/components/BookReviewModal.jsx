@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
+import { notify, removeShelfBook } from "../actions/index";
+import { useDispatch } from "react-redux";
+import { ModalBackground, CloseBtn } from "../components/Reusable";
 import styled from "styled-components";
 import Button from "./Button";
 import axios from "axios";
-import img from "../assets/images/book_cover.png";
-import { ModalBackground, CloseBtn } from "../components/Reusable";
 
 const ModalWrapper = styled.div`
   width: 800px;
@@ -95,8 +96,9 @@ const Span = styled.span`
   position: absolute;
 `;
 
-function BookReviewModal({ setIsNotify, setNotify, bookinfo, setInfoOpen }) {
+function BookReviewModal({ bookinfo, setInfoOpen }) {
   const inputEl = useRef(null);
+  const dispatch = useDispatch();
   const [isEditMode, setEditMode] = useState(false);
   const [newValue, setNewValue] = useState("");
 
@@ -113,9 +115,9 @@ function BookReviewModal({ setIsNotify, setNotify, bookinfo, setInfoOpen }) {
           { withCredentials: true }
         )
         .then(() => {
-          setIsNotify(true);
-          setNotify("책장에서 책이 삭제되었습니다.");
           setInfoOpen(false);
+          dispatch(removeShelfBook(bookinfo.id));
+          dispatch(notify("책장에서 책이 삭제되었습니다."));
         });
     } else if (e.target.textContent === "리뷰 삭제") {
       axios
@@ -126,8 +128,7 @@ function BookReviewModal({ setIsNotify, setNotify, bookinfo, setInfoOpen }) {
           }
         )
         .then(() => {
-          setIsNotify(true);
-          setNotify("리뷰가 삭제되었습니다.");
+          dispatch(notify("리뷰가 삭제되었습니다."));
           setNewValue("");
         });
     }
@@ -154,11 +155,8 @@ function BookReviewModal({ setIsNotify, setNotify, bookinfo, setInfoOpen }) {
           { withCredentials: true }
         )
         .then(() => {
-          setIsNotify(true);
-          setNotify("리뷰가 수정 되었습니다.");
+          dispatch(notify("리뷰가 수정 되었습니다."));
         });
-      setIsNotify(true);
-      setNotify("리뷰가 수정 되었습니다.");
     }
   };
 
@@ -171,32 +169,35 @@ function BookReviewModal({ setIsNotify, setNotify, bookinfo, setInfoOpen }) {
   useEffect(() => {
     if (isEditMode) {
       inputEl.current.focus();
+    } else {
+      axios
+        .get(`${process.env.REACT_APP_API_URL}/mypage/review/${bookinfo.id}`)
+        .then((res) => {
+          setNewValue(res.data);
+        });
     }
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/mypage/review/${bookinfo.id}`)
-      .then((res) => {
-        setNewValue(res.data);
-      });
-  }, [isEditMode, newValue]);
+  }, [isEditMode]);
 
   return (
     <ModalBackground onClick={openModalHandler}>
       <ModalWrapper onClick={(e) => e.stopPropagation()}>
         <CloseBtn onClick={openModalHandler}>&times;</CloseBtn>
         <TandW>
-          <Title>지적 대화를 위한 넓고 얕은 지식</Title>
-          <Writer>채사장 | 한빛버즈</Writer>
+          <Title>{bookinfo.title}</Title>
+          <Writer>
+            {bookinfo.author} | {bookinfo.publisher}
+          </Writer>
         </TandW>
         <Box>
           <BookandBtn onClick={buttonHandler}>
-            <BookImg src={img} alt="책 표지" />
+            <BookImg src={bookinfo.coverimg} alt={bookinfo.title} />
             <BtnWrap>
-              <Button message={"책장에서 삭제"} color={null} />
+              <Button message="책장에서 삭제" />
               <Button
-                message={"리뷰 수정"}
+                message="리뷰 수정"
                 color={isEditMode ? "dark" : "light"}
               />
-              <Button message={"리뷰 삭제"} color={null} />
+              <Button message="리뷰 삭제" />
             </BtnWrap>
           </BookandBtn>
           <InputBox onClick={inputClickHandler}>
@@ -216,4 +217,5 @@ function BookReviewModal({ setIsNotify, setNotify, bookinfo, setInfoOpen }) {
     </ModalBackground>
   );
 }
+
 export default BookReviewModal;

@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import styled from "styled-components";
+import { getSearchKeyword, getSearchResult, notify } from "../actions/index";
+import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import styled from "styled-components";
 import axios from "axios";
-import Notification from "./Notification";
 
 const InputWrapper = styled.div`
   width: 540px;
@@ -41,47 +41,39 @@ const Icon = styled(FontAwesomeIcon)`
   }
 `;
 
-function SearchInput({ searchKeyword, setSearchKeyword, setSearchResult }) {
-  const [isNotify, setIsNotify] = useState(false);
+function SearchInput() {
+  const state = useSelector((state) => state.searchReducer);
+  const { searchKeyword } = state;
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const getInput = (event) => setSearchKeyword(event.target.value);
+  const getInput = (event) => dispatch(getSearchKeyword(event.target.value));
+
   const catchEnter = (event) =>
     event.key === "Enter" && sendRequest(searchKeyword);
+
   const sendRequest = (keyword) => {
     if (searchKeyword.length) {
       axios
         .get(`${process.env_REACT_APP_API_URL}/books/list/${keyword}`)
         .then((res) => {
-          setSearchResult(res.books);
+          dispatch(getSearchResult(res.data.books));
           navigate("/search");
-        })
-        .catch((err) => {});
+        });
     } else {
-      setIsNotify(true);
+      dispatch(notify("검색어를 입력해주세요."));
     }
   };
 
-  useEffect(() => {
-    if (isNotify) {
-      setTimeout(() => setIsNotify(false), 3000);
-    }
-  }, [isNotify]);
-
   return (
-    <>
-      {isNotify ? (
-        <Notification message="검색어를 입력해주세요." time={3000} />
-      ) : null}
-      <InputWrapper>
-        <Input
-          placeholder="도서명 또는 저자명으로 검색하기"
-          onChange={getInput}
-          onKeyUp={catchEnter}
-        />
-        <Icon icon={faSearch} onClick={() => sendRequest(searchKeyword)} />
-      </InputWrapper>
-    </>
+    <InputWrapper>
+      <Input
+        placeholder="도서명 또는 저자명으로 검색하기"
+        onChange={getInput}
+        onKeyUp={catchEnter}
+      />
+      <Icon icon={faSearch} onClick={() => sendRequest(searchKeyword)} />
+    </InputWrapper>
   );
 }
 

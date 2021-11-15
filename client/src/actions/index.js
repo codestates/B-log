@@ -1,46 +1,82 @@
-export const LOGIN_STATE_CHANGE = "LOGIN_STATE_CHANGE";
-export const GET_RACK_BOOKS = "ADD_MYBOOKS";
-export const REMOVE_RACK_BOOK = "REMOVE_MYBOOKS";
-export const GET_SHELF_BOOKS = "GET_SHELF_BOOKS";
-export const REMOVE_SHELF_BOOK = "REMOVE_SHELF_BOOK";
+export const CHANGE_LOGIN_STATE = "CHANGE_LOGIN_STATE";
+export const UPDATE_RACK = "UPDATE_RACK";
+export const ADD_TO_RACK = "ADD_TO_RACK";
+export const REMOVE_FROM_RACK = "REMOVE_FROM_RACK";
+export const UPDATE_SHELF = "UPDATE_SHELF";
+export const ADD_TO_SHELF = "ADD_TO_SHELF";
+export const REMOVE_FROM_SHELF = "REMOVE_FROM_SHELF";
+export const GET_SEARCH_KEYWORD = "GET_SEARCH_KEYWORD";
+export const GET_SEARCH_RESULT = "GET_SEARTCH_RESULT";
 export const ENQUEUE_NOTIFICATION = "ENQUEUE_NOTIFICATION";
 export const DEQUEUE_NOTIFICATION = "DEQUEUE_NOTIFICATION";
 
 export const loginStateChange = (boolean) => {
   return {
-    type: LOGIN_STATE_CHANGE,
+    type: CHANGE_LOGIN_STATE,
     payload: boolean,
   };
 };
 
-export const getRackBooks = (books) => {
+export const updateRack = (books) => {
   return {
-    type: GET_RACK_BOOKS,
+    type: UPDATE_RACK,
     payload: { books },
   };
 };
 
-export const removeRackbook = (bookId) => {
+export const addToRack = (book) => {
   return {
-    type: REMOVE_RACK_BOOK,
+    type: ADD_TO_RACK,
+    payload: { book },
+  };
+};
+
+export const removeFromRack = (bookId) => {
+  return {
+    type: REMOVE_FROM_RACK,
     payload: {
       bookId,
     },
   };
 };
 
-export const getShelfBooks = (books) => {
+export const updateShelf = (books) => {
   return {
-    type: GET_SHELF_BOOKS,
+    type: UPDATE_SHELF,
     payload: { books },
   };
 };
 
-export const removeShelfbook = (bookId) => {
+export const addToShelf = (book) => {
   return {
-    type: REMOVE_SHELF_BOOK,
+    type: ADD_TO_SHELF,
+    payload: { book },
+  };
+};
+
+export const removeFromShelf = (bookId) => {
+  return {
+    type: REMOVE_FROM_SHELF,
     payload: {
       bookId,
+    },
+  };
+};
+
+export const getSearchKeyword = (keyword) => {
+  return {
+    type: GET_SEARCH_KEYWORD,
+    payload: {
+      keyword,
+    },
+  };
+};
+
+export const getSearchResult = (books) => {
+  return {
+    type: GET_SEARCH_RESULT,
+    payload: {
+      books,
     },
   };
 };

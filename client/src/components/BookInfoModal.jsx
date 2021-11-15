@@ -2,8 +2,8 @@ import styled from "styled-components";
 import Button from "./Button";
 import axios from "axios";
 import { ModalBackground, CloseBtn } from "../components/Reusable";
-import { notify } from "../actions/index";
-import { useDispatch } from "react-redux";
+import { notify, removeFromRack } from "../actions/index";
+import { useSelector, useDispatch } from "react-redux";
 
 const ModalWrapper = styled.div`
   width: 700px;
@@ -59,12 +59,15 @@ const ButtonWrap = styled.div`
   justify-content: space-between;
 `;
 
-function BookInfoModal({ setIsNotify, setNotify, bookinfo, setInfoOpen }) {
+function BookInfoModal({ bookinfo, setInfoOpen, isMypage }) {
   const dispatch = useDispatch();
-  const openModalHandler = () => {
+  const state = useSelector((state) => state.bookReducer);
+  const { rack } = state;
+
+  const closeModalHandler = () => {
     setInfoOpen(false);
   };
-  console.log(bookinfo);
+
   const clickHandler = (e) => {
     if (e.target.textContent === "읽고 있는 책") {
       axios
@@ -84,32 +87,84 @@ function BookInfoModal({ setIsNotify, setNotify, bookinfo, setInfoOpen }) {
             dispatch(notify("이미 읽고있는 책입니다."));
           }
         });
-      // setIsNotify(true);
-      // setNotify("랙에 책이 추가되었습니다.");
     } else if (e.target.textContent === "다 읽은 책") {
+      const isbns = rack.map((book) => book.isbn13);
+      if (!isbns.includes(bookinfo.isbn13)) {
+        axios
+          .post(
+            `${process.env.REACT_APP_API_URL}/mypage/shelf`,
+            {
+              ...bookinfo,
+            },
+            { withCredentials: true }
+          )
+          .then(() => {
+            closeModalHandler();
+            dispatch(notify("책장에 책이 추가되었습니다."));
+          })
+          .catch((err) => {
+            if (err.response.status === 401) {
+              dispatch(notify("로그인이 필요합니다."));
+            } else if (err.response.status === 409) {
+              dispatch(notify("이미 책장에 있는 책입니다."));
+            }
+          });
+      } else {
+        const exist = rack.filter((book) => book.isbn13 === bookinfo.isbn13)[0];
+        axios
+          .delete(`${process.env.REACT_APP_API_URL}/mypage/rack/${exist.id}`, {
+            withCredentials: true,
+          })
+          .then(() => {
+            dispatch(removeFromRack(exist.id));
+            axios
+              .post(
+                `${process.env.REACT_APP_API_URL}/mypage/shelf`,
+                {
+                  ...bookinfo,
+                },
+                { withCredentials: true }
+              )
+              .then(() => {
+                closeModalHandler();
+                dispatch(notify("책장에 책이 추가되었습니다."));
+              })
+              .catch((err) => {
+                if (err.response.status === 401) {
+                  dispatch(notify("로그인이 필요합니다."));
+                } else if (err.response.status === 409) {
+                  dispatch(notify("이미 책장에 있는 책입니다."));
+                }
+              });
+          });
+      }
+    } else if (e.target.textContent === "삭제") {
       axios
-        .post(
-          `${process.env_REACT_APP_API_URL}/mypage/shelf`,
-          {
-            ...bookinfo,
-          },
-          { withCredentials: true }
-        )
+        .delete(`${process.env.REACT_APP_API_URL}/mypage/rack/${bookinfo.id}`, {
+          withCredentials: true,
+        })
         .then(() => {
-          setIsNotify(true);
-          setNotify("책장에 책이 추가되었습니다.");
+          dispatch(removeFromRack(bookinfo.id));
+          closeModalHandler();
+          dispatch(notify("삭제 되었습니다."));
+        })
+        .catch((err) => {
+          if (err.response.status === 401)
+            dispatch(notify("로그인이 필요합니다."));
+          if (err.response.status === 410)
+            dispatch(notify("이미 삭제된 책입니다."));
         });
     }
   };
 
   return (
-    <ModalBackground onClick={openModalHandler}>
+    <ModalBackground onClick={closeModalHandler}>
       <ModalWrapper
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
-        <CloseBtn onClick={openModalHandler}>&times;</CloseBtn>
+        <CloseBtn onClick={closeModalHandler}>&times;</CloseBtn>
         <BookImg src={bookinfo.coverimg} alt="book_cover" />
         <DescWapper>
           <Title>{bookinfo.title}</Title>
@@ -118,7 +173,7 @@ function BookInfoModal({ setIsNotify, setNotify, bookinfo, setInfoOpen }) {
           </Writer>
           <Description>{bookinfo.description}</Description>
           <ButtonWrap onClick={clickHandler}>
-            <Button message={"읽고 있는 책"} color={null} />
+            <Button message={isMypage ? "삭제" : "읽고 있는 책"} color={null} />
             <Button message={"다 읽은 책"} color={"dark"} />
           </ButtonWrap>
         </DescWapper>

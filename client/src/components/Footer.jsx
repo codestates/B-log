@@ -26,27 +26,25 @@ const Member = styled(Menu)`
 
 function Footer() {
   return (
-    <>
-      <FooterBox>
-        <LogoBox>
-          <TeamLogo src={team_logo} />
-        </LogoBox>
-        <Nav>
-          <Member href="https://github.com/Deb-neal" target="_blank">
-            안민수
-          </Member>
-          <Member href="https://github.com/Gyosic" target="_blank">
-            황교식
-          </Member>
-          <Member href="https://github.com/soominna" target="_blank">
-            나수민
-          </Member>
-          <Member href="https://github.com/yeinMOON" target="_blank">
-            문예인
-          </Member>
-        </Nav>
-      </FooterBox>
-    </>
+    <FooterBox>
+      <LogoBox>
+        <TeamLogo src={team_logo} />
+      </LogoBox>
+      <Nav>
+        <Member href="https://github.com/Deb-neal" target="_blank">
+          안민수
+        </Member>
+        <Member href="https://github.com/Gyosic" target="_blank">
+          황교식
+        </Member>
+        <Member href="https://github.com/soominna" target="_blank">
+          나수민
+        </Member>
+        <Member href="https://github.com/yeinMOON" target="_blank">
+          문예인
+        </Member>
+      </Nav>
+    </FooterBox>
   );
 }
 

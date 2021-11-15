@@ -1,6 +1,8 @@
 export const initialState = {
-  isLogIn: true,
+  isLogIn: false,
   rack: [],
   shelf: [],
+  searchKeyword: "",
+  searchResult: [],
   notifications: [],
 };
