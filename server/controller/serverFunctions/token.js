@@ -10,6 +10,7 @@ module.exports = {
       httpOnly: true,
       samesite: "none",
       secure: true,
+      domain: proces.env.CLIENT_DOMAIN || "localhost:3000",
     });
   },
   isAuthorized: (req) => {
