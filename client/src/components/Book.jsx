@@ -12,7 +12,7 @@ const BookCover = styled.img`
   height: 180px;
   width: 120px;
   object-fit: cover;
-  /* position: relative; */
+  box-shadow: 0px 0px 10px rgba(141, 141, 141, 0.6);
 `;
 
 const Bookmark = styled(FontAwesomeIcon)`
