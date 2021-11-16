@@ -6,6 +6,8 @@ router.get("/list/:keyword", bookController.list);
 
 router.get("/item/:isbn", bookController.item);
 
+router.get("/users", bookController.users);
+
 router.get("/", bookController.bestseller);
 
 module.exports = router;
