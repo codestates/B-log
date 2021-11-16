@@ -82,19 +82,20 @@ export const getSearchResult = (books) => {
 };
 
 export const notify =
-  (message, dismissTime = 3000) =>
+  (message, link, dismissTime = 3000) =>
   (dispatch) => {
-    dispatch(enqueueNotification(message, dismissTime));
+    dispatch(enqueueNotification(message, link, dismissTime));
     setTimeout(() => {
       dispatch(dequeueNotification());
     }, dismissTime);
   };
 
-export const enqueueNotification = (message, dismissTime) => {
+export const enqueueNotification = (message, link, dismissTime) => {
   return {
     type: ENQUEUE_NOTIFICATION,
     payload: {
       message,
+      link,
       dismissTime,
     },
   };
