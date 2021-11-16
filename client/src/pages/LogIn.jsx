@@ -72,7 +72,7 @@ const LoginBtn = styled.div`
   margin: 40px 0;
 `;
 
-function LogIn({ setIsLogin }) {
+function LogIn() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const regExpEmail =
@@ -105,7 +105,7 @@ function LogIn({ setIsLogin }) {
           if (err.response.status === 401) {
             dispatch(notify("잘못된 아이디 이거나 비밀번호가 틀렸습니다."));
           } else {
-            dispatch(notify("네트워크 환경이 불안정 합니다."));
+            dispatch(notify("새로고침 후 다시 시도해주세요."));
           }
         });
     }
