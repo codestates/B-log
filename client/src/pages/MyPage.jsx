@@ -4,6 +4,8 @@ import {
   updateShelf,
   loginStateChange,
   notify,
+  getSearchKeyword,
+  getSearchResult,
 } from "../actions/index";
 import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -20,6 +22,7 @@ const WindowSection = styled.section`
   display: flex;
   width: 100%;
   height: 100%;
+  margin-top: 80px;
 `;
 
 const RackSection = styled.section`
@@ -156,6 +159,9 @@ function MyPage() {
       .then((res) => {
         setNewUserName(res.data.username);
       });
+    dispatch(getSearchKeyword(""));
+    dispatch(getSearchResult([]));
+    localStorage.clear();
     // eslint-disable-next-line
   }, []);
 
