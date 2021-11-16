@@ -13,20 +13,18 @@ require("dotenv").config();
 
 function App() {
   return (
-    <>
+    <section className="app_section">
       <Header />
-      <section className="app_section">
-        <NotificationCenter />
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/mypage" element={<MyPage />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/login" element={<LogIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/edit-password" element={<EditPassword />} />
-        </Routes>
-      </section>
-    </>
+      <NotificationCenter />
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/login" element={<LogIn />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/edit-password" element={<EditPassword />} />
+      </Routes>
+    </section>
   );
 }
 

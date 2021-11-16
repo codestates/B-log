@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { dequeueNotification } from "../actions";
 
 export const Notify = styled.div`
   display: flex;
@@ -13,8 +16,7 @@ export const Notify = styled.div`
   z-index: 999999;
   left: 50% - 200px;
   top: 30px;
-  box-shadow: 0px 0px 5px rgba(141, 141, 141, 0.3);
-  box-shadow: 0px 0px 5px red;
+  box-shadow: 0px 0px 10px rgba(141, 141, 141, 0.8);
   transition: transform 0.6s ease-in-out;
   animation: toast-in-right 0.6s;
   transition: 0.6s ease;
@@ -33,14 +35,32 @@ export const Notify = styled.div`
     border-radius: 1rem;
   }
 
+  > .link {
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: 600;
+    color: #9c5230;
+  }
   > .fade {
     opacity: 0;
     transform: opacity 1.5s;
   }
 `;
 
-function Notification({ message, time }) {
+function Notification({ message, link, time }) {
   const [isFading, setIsFading] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const navigateHandler = (event) => {
+    if (event.target.textContent === "로그인 페이지로 가기") {
+      dispatch(dequeueNotification());
+      navigate("./login");
+    } else if (event.target.textContent === "내 책장으로 가기") {
+      dispatch(dequeueNotification());
+      navigate("./mypage");
+    }
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -55,9 +75,16 @@ function Notification({ message, time }) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <Notify>
-      <div className={`message ${isFading ? "fade" : ""}`}>{message}</div>
+      <span className={`message ${isFading ? "fade" : ""}`}>{message}</span>
+      <span
+        className={`link ${isFading ? "fade" : ""}`}
+        onClick={navigateHandler}
+      >
+        {link}
+      </span>
     </Notify>
   );
 }

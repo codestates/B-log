@@ -21,7 +21,7 @@ export const Title = styled.h2`
     font-family: "Qwigley";
     src: local("Qwigley"), url(${Qwigley}) format("woff");
   }
-  font-family: "Qwigley";
+  font-family: "Qwigley", "cursive";
   font-size: 80px;
   color: #594d49;
   margin-bottom: 40px;
