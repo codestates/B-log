@@ -1,5 +1,5 @@
 const { User } = require("../../models");
-const { token } = require("../serverFunctions");
+
 module.exports = {
   post: (req, res) => {
     const { email, username, password } = req.body;
@@ -18,8 +18,6 @@ module.exports = {
           delete data.dataValues.updatedAt;
           delete data.dataValues.createdAt;
 
-          const accessToken = token.generateAccessToken(data.dataValues);
-          token.sendAccessToken(res, accessToken);
           res.status(201).send({ user: data.dataValues, message: "ok" });
         })
         .catch((err) => {

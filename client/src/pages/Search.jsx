@@ -1,10 +1,17 @@
-import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  updateRack,
+  updateShelf,
+  getSearchResult,
+  loginStateChange,
+} from "../actions/index";
 import styled from "styled-components";
 import SearchInput from "../components/SearchInput";
 import BookGrid from "../components/BookGrid";
 import BookInfoModal from "../components/BookInfoModal";
 import BookMarkModal from "../components/BookMarkModal";
+import axios from "axios";
 
 const Wrapper = styled.div`
   flex: 1;
@@ -29,12 +36,45 @@ function Search() {
   const bookState = useSelector((state) => state.bookReducer);
   const searchState = useSelector((state) => state.searchReducer);
   const { rack, shelf } = bookState;
-  const { searchResult } = searchState;
+  const { searchKeyword, searchResult } = searchState;
   const myBooks = [...rack, ...shelf];
+  const dispatch = useDispatch();
 
   const [infoOpen, setInfoOpen] = useState(false);
   const [markOpen, setMarkOpen] = useState(false);
   const [bookinfo, setBookinfo] = useState({});
+
+  const getMyBooks = async () => {
+    const rackRes = await axios.get(
+      `${process.env.REACT_APP_API_URL}/mypage/rack`,
+      { withCredentials: true }
+    );
+    const shelfRes = await axios.get(
+      `${process.env.REACT_APP_API_URL}/mypage/shelf`,
+      { withCredentials: true }
+    );
+    try {
+      dispatch(updateRack(rackRes.data.books));
+      dispatch(updateShelf(shelfRes.data.books));
+      dispatch(loginStateChange(true));
+    } catch (err) {
+      dispatch(loginStateChange(false));
+      dispatch(updateRack([]));
+      dispatch(updateShelf([]));
+    }
+  };
+
+  const setSearchInfo = () => {
+    if (searchKeyword.length && searchResult.length) {
+      localStorage.setItem("result", JSON.stringify(searchResult));
+    }
+  };
+  const getSearchInfo = async () => {
+    if (!searchKeyword.length && !searchResult.length) {
+      const result = await localStorage.getItem("result");
+      dispatch(getSearchResult(JSON.parse(result)));
+    }
+  };
 
   const infoModalHandler = (book) => {
     setBookinfo(book);
@@ -45,6 +85,13 @@ function Search() {
     setBookinfo(book);
     setMarkOpen(true);
   };
+
+  useEffect(() => {
+    getMyBooks();
+    setSearchInfo();
+    getSearchInfo();
+    // eslint-disable-next-line
+  }, [searchResult]);
 
   return (
     <>

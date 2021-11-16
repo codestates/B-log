@@ -18,7 +18,7 @@ const LoginSection = styled.section`
 `;
 
 const ImgAndLogin = styled.div`
-  height: 700px;
+  height: 650px;
   width: 1000px;
   display: flex;
 `;
@@ -27,6 +27,9 @@ const Img = styled.img`
   width: 50%;
   height: 100%;
   object-fit: cover;
+  //border-top-left-radius: 5%;
+  //border-bottom-left-radius: 5%;
+  box-shadow: -30px -30px 76px #d8d8d8;
 `;
 
 const LoginWrapper = styled.div`
@@ -34,7 +37,10 @@ const LoginWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #f4f4f4;
+  background-color: #f5f5f5;
+  box-shadow: 19px 19px 76px #d8d8d8;
+  //border-top-right-radius: 5%;
+  //border-bottom-right-radius: 5%;
   width: 50%;
   height: 100%;
   > a {
@@ -56,9 +62,17 @@ const LoginLogo = styled.h2`
   }
   font-family: "Qwigley";
   font-size: 80px;
-  font-weight: 400;
+  font-weight: 500;
   margin-bottom: 40px;
   letter-spacing: 2px;
+  text-shadow: 2px 2px #dadada7a;
+  color: #5a5553;
+`;
+
+const Icon = styled(FontAwesomeIcon)`
+  position: absolute;
+  right: 0;
+  top: 10px;
 `;
 
 const LoginInput = styled.input`
@@ -72,12 +86,13 @@ const LoginInput = styled.input`
   :focus {
     background-color: transparent;
   }
-`;
-
-const Icon = styled(FontAwesomeIcon)`
-  position: absolute;
-  right: 0;
-  top: 10px;
+  ::placeholder,
+  ::-webkit-input-placeholder {
+    color: #6e6e6e;
+    text-shadow: 0.5px 0.5px #ffffff;
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
 `;
 
 const LoginBtn = styled.div`

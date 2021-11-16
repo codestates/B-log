@@ -10,7 +10,7 @@ export const Notify = styled.div`
   align-items: center;
   background-color: #f5f5f5;
   border-radius: 3rem;
-  position: absolute;
+  position: fixed;
   width: 400px;
   height: 50px;
   z-index: 999999;
