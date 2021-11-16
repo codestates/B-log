@@ -118,7 +118,7 @@ function BookReviewModal({ bookinfo, setReviewOpen }) {
         })
         .catch((err) => {
           if (err.response.status === 401) {
-            dispatch(notify("로그인이 필요합니다."));
+            dispatch(notify("로그인이 필요합니다.", "로그인 페이지로 가기"));
           }
         });
     } else if (e.target.textContent === "리뷰 삭제") {
@@ -135,7 +135,7 @@ function BookReviewModal({ bookinfo, setReviewOpen }) {
         })
         .catch((err) => {
           if (err.response.status === 401) {
-            dispatch(notify("로그인이 필요합니다."));
+            dispatch(notify("로그인이 필요합니다.", "로그인 페이지로 가기"));
           }
         });
     }
@@ -166,7 +166,7 @@ function BookReviewModal({ bookinfo, setReviewOpen }) {
         })
         .catch((err) => {
           if (err.response.status === 401) {
-            dispatch(notify("로그인이 필요합니다."));
+            dispatch(notify("로그인이 필요합니다.", "로그인 페이지로 가기"));
           }
         });
     }
