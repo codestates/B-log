@@ -16,7 +16,7 @@ const RackBox = styled.section`
   > .select_icon_box {
     margin-top: 20px;
     display: flex;
-    width: 190px;
+    width: 220px;
     justify-content: space-between;
     > select {
       display: inline-block;

@@ -61,6 +61,17 @@ function Main() {
       });
   };
 
+  const getAuthorized = () => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/users`, { withCredentials: true })
+      .then(() => {
+        dispatch(loginStateChange(true));
+      })
+      .catch(() => {
+        console.clear();
+      });
+  };
+
   const getMyBooks = async () => {
     if (isLogIn) {
       const rackRes = await axios.get(
@@ -96,6 +107,7 @@ function Main() {
   useEffect(() => {
     getMyBooks();
     getTop10();
+    getAuthorized();
     // eslint-disable-next-line
   }, []);
 
