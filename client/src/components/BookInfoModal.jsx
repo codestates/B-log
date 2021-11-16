@@ -64,6 +64,17 @@ const ButtonWrap = styled.div`
   justify-content: space-between;
 `;
 
+function decodeHTMLEntity(str) {
+  if (str !== undefined && str !== null && str !== "") {
+    str = String(str);
+    const element = document.createElement("div");
+    element.innerHTML = str;
+    str = element.textContent;
+    element.textContent = "";
+  }
+  return str;
+}
+
 function BookInfoModal({ bookinfo, setInfoOpen, isMypage }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.bookReducer);
@@ -226,7 +237,7 @@ function BookInfoModal({ bookinfo, setInfoOpen, isMypage }) {
           <Writer>
             {bookinfo.author} | {bookinfo.publisher}
           </Writer>
-          <Description>{bookinfo.description}</Description>
+          <Description>{decodeHTMLEntity(bookinfo.description)}</Description>
           <ButtonWrap onClick={clickHandler}>
             <Button message={isMypage ? "삭제" : "읽고 있는 책"} color={null} />
             <Button message={"다 읽은 책"} color={"dark"} />
