@@ -13,8 +13,7 @@ export const Notify = styled.div`
   z-index: 999999;
   left: 50% - 200px;
   top: 30px;
-  box-shadow: 0px 0px 5px rgba(141, 141, 141, 0.3);
-  box-shadow: 0px 0px 5px red;
+  box-shadow: 0px 0px 10px rgba(141, 141, 141, 0.8);
   transition: transform 0.6s ease-in-out;
   animation: toast-in-right 0.6s;
   transition: 0.6s ease;
