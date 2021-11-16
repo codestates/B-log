@@ -40,10 +40,9 @@ const Row = styled.div`
 const BookWrapper = styled.div`
   display: flex;
   width: 100%;
-  justify-content: center;
   > div {
     height: 200px;
-    margin: 0 20px;
+    margin: 0 23px;
   }
 `;
 
