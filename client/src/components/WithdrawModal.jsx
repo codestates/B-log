@@ -21,6 +21,7 @@ const ModalWrapper = styled.div`
   }
   > input {
     width: 120px;
+    height: 24px;
     margin-bottom: 20px;
     border: none;
     border-bottom: 1px solid #8d8d8d;
