@@ -14,15 +14,23 @@ const RackBox = styled.section`
   height: 500px;
   margin: 50px 0;
   > .select_icon_box {
+    margin-top: 20px;
     display: flex;
-    width: 180px;
+    width: 190px;
     justify-content: space-between;
+    > select {
+      display: inline-block;
+      padding: 6px;
+      background-color: transparent;
+      overflow: hidden;
+      text-align: center;
+    }
   }
 `;
 
 const Row = styled.div`
   width: 90%;
-  min-height: 40%;
+  min-height: 50%;
   display: flex;
   flex-direction: column;
   justify-content: end;
@@ -31,9 +39,11 @@ const Row = styled.div`
 
 const BookWrapper = styled.div`
   display: flex;
+  width: 100%;
+  justify-content: center;
   > div {
-    height: 180px;
-    margin: 0 30px;
+    height: 200px;
+    margin: 0 20px;
   }
 `;
 
@@ -95,7 +105,7 @@ function Rack({ setBookinfo, setInfoOpen }) {
       </Row>
       <div className="select_icon_box">
         <select name="rack" onChange={selectHandler}>
-          <option value="">---읽고있는 책 목록---</option>
+          <option value="">읽고있는 책 목록</option>
           {rack.map((book, idx) => {
             return (
               <option value={book.title} key={idx}>
