@@ -18,38 +18,38 @@ module.exports = {
         where: { userId: user.id, isDoneReading: false },
       })
         .then((shelves) => {
-          const bookList = [];
           try {
             if (!shelves.length) {
               res.status(200).send({ books: bookList });
             } else {
-              //조회한 배열을 순회한다
-              shelves.map((book, index) => {
-                //아이디에 해당하는 책 정보를 불러온다
-                Book.findByPk(book.dataValues.bookId)
-                  .then((bookInfo) => {
-                    //필요 없는 데이터를 지우고 응답할 배열에 넣어 줌
-                    const data = bookInfo.dataValues;
-                    delete data.createdAt;
-                    delete data.updatedAt;
-                    bookList.push(data);
-
-                    //마지막 요소까지 순회했을 때 도서 정보 배열과 함께 200 코드로 응답
-                    if (index === shelves.length - 1) {
-                      res.status(200).json({ books: bookList });
-                    }
-                  })
-                  .catch((err) => {
-                    res.status(500).send();
-                  });
-              });
+              const bookIds = shelves.map((book) => book.dataValues.bookId);
+              Book.findAll({
+                attributes: [
+                  "id",
+                  "author",
+                  "title",
+                  "coverimg",
+                  "description",
+                  "isbn13",
+                  "pages",
+                  "referred",
+                ],
+                where: { id: bookIds },
+                raw: true,
+              })
+                .then((bookList) => {
+                  res.status(200).json({ books: bookList });
+                })
+                .catch((err) => {
+                  res.status(500).send(err);
+                });
             }
           } catch {
             res.status(500).send();
           }
         })
         .catch((err) => {
-          res.status(500).send();
+          res.status(500).send(err);
         });
     }
   },
