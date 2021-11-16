@@ -48,10 +48,11 @@ export const Input = styled.input`
   width: 200px;
   margin: 0;
   margin: 5px 0px;
-
+  background-color: transparent;
   :focus {
-    background-color: #f5f5f5;
     outline: none;
+    border-bottom: 1px solid #8d8d8d;
+    background-color: #f0f0f0;
   }
 `;
 
