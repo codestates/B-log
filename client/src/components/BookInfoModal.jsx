@@ -76,7 +76,6 @@ function BookInfoModal({ bookinfo, setInfoOpen, isMypage }) {
   const clickHandler = (e) => {
     if (e.target.textContent === "읽고 있는 책") {
       const isbns = shelf.map((book) => book.isbn13);
-      //책장에 책이 없는 경우
       if (!isbns.includes(bookinfo.isbn13)) {
         axios
           .get(
@@ -86,7 +85,6 @@ function BookInfoModal({ bookinfo, setInfoOpen, isMypage }) {
             }
           )
           .then((res) => {
-            console.log(res.data);
             axios
               .post(
                 `${process.env.REACT_APP_API_URL}/mypage/rack`,
@@ -98,21 +96,26 @@ function BookInfoModal({ bookinfo, setInfoOpen, isMypage }) {
               .then((res) => {
                 dispatch(addToRack(res.data.book));
                 closeModalHandler();
-                dispatch(notify("읽고 있는 책이 추가되었습니다."));
+                dispatch(
+                  notify("읽고 있는 책이 추가되었습니다.", "내 책장으로 가기")
+                );
               })
               .catch((err) => {
                 if (err.response.status === 401) {
-                  dispatch(notify("로그인이 필요합니다."));
+                  dispatch(
+                    notify("로그인이 필요합니다.", "로그인 페이지로 가기")
+                  );
                 }
                 if (err.response.status === 409) {
-                  dispatch(notify("이미 읽고있는 책입니다."));
+                  dispatch(
+                    notify("이미 읽고있는 책입니다.", "내 책장으로 가기")
+                  );
                 }
               });
           });
-        //책장에 책이 있는 경우
       } else {
         closeModalHandler();
-        dispatch(notify("이미 다 읽은 책 입니다."));
+        dispatch(notify("이미 다 읽은 책 입니다.", "내 책장으로 가기"));
       }
     } else if (e.target.textContent === "다 읽은 책") {
       const isbns = rack.map((book) => book.isbn13);
@@ -136,20 +139,25 @@ function BookInfoModal({ bookinfo, setInfoOpen, isMypage }) {
               .then((res) => {
                 closeModalHandler();
                 dispatch(addToShelf(res.data.book));
-                dispatch(notify("책장에 책이 추가되었습니다."));
+                dispatch(
+                  notify("책장에 책이 추가되었습니다.", "내 책장으로 가기")
+                );
               })
               .catch((err) => {
                 if (err.response.status === 401) {
-                  dispatch(notify("로그인이 필요합니다."));
+                  dispatch(
+                    notify("로그인이 필요합니다.", "로그인 페이지로 가기")
+                  );
                 } else if (err.response.status === 409) {
                   closeModalHandler();
-                  dispatch(notify("이미 책장에 있는 책입니다."));
+                  dispatch(
+                    notify("이미 책장에 있는 책입니다.", "내 책장으로 가기")
+                  );
                 }
               });
           });
       } else {
         const exist = rack.filter((book) => book.isbn13 === bookinfo.isbn13)[0];
-        console.log(exist);
         axios
           .delete(`${process.env.REACT_APP_API_URL}/mypage/rack/${exist.id}`, {
             withCredentials: true,
@@ -167,14 +175,20 @@ function BookInfoModal({ bookinfo, setInfoOpen, isMypage }) {
               .then((res) => {
                 closeModalHandler();
                 dispatch(addToShelf(res.data.book));
-                dispatch(notify("책장에 책이 추가되었습니다."));
+                dispatch(
+                  notify("책장에 책이 추가되었습니다.", "내 책장으로 가기")
+                );
               })
               .catch((err) => {
                 if (err.response.status === 401) {
-                  dispatch(notify("로그인이 필요합니다."));
+                  dispatch(
+                    notify("로그인이 필요합니다.", "로그인 페이지로 가기")
+                  );
                 } else if (err.response.status === 409) {
                   closeModalHandler();
-                  dispatch(notify("이미 책장에 있는 책입니다."));
+                  dispatch(
+                    notify("이미 책장에 있는 책입니다.", "내 책장으로 가기")
+                  );
                 }
               });
           });
@@ -191,7 +205,7 @@ function BookInfoModal({ bookinfo, setInfoOpen, isMypage }) {
         })
         .catch((err) => {
           if (err.response.status === 401)
-            dispatch(notify("로그인이 필요합니다."));
+            dispatch(notify("다시 로그인해주세요.", "로그인 페이지로 가기"));
           if (err.response.status === 410)
             dispatch(notify("이미 삭제된 책입니다."));
         });
