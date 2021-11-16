@@ -17,7 +17,7 @@ const StyledButton = styled.div`
   border-radius: 40px;
   cursor: pointer;
   :hover {
-    box-shadow: 5px 5px 25px 0.5px #8d8d8d;
+    box-shadow: 0px 0px 10px 0.1px rgba(141, 141, 141, 0.5);
   }
 `;
 
