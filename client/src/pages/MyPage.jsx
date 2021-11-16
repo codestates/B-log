@@ -114,9 +114,9 @@ function MyPage() {
         .catch((err) => {
           if (err.response.status === 401) {
             navigate("/");
-            dispatch(notify("로그인이 필요합니다."));
+            dispatch(notify("다시 로그인해주세요.", "로그인 페이지로 가기"));
           } else {
-            dispatch(notify("네트워크가 불안정 합니다."));
+            dispatch(notify("새로고침 후 다시 시도해주세요."));
           }
         });
     }
@@ -146,7 +146,7 @@ function MyPage() {
     getMyBooks().catch(() => {
       dispatch(loginStateChange(false));
       navigate("/");
-      dispatch(notify("로그인이 필요합니다."));
+      dispatch(notify("다시 로그인해주세요.", "로그인 페이지로 가기"));
     });
     // eslint-disable-next-line
   }, []);
