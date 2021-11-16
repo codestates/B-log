@@ -72,7 +72,7 @@ function Book({
     <>
       <Container isMypage={isMypage} onClick={() => infoModalHandler(bookinfo)}>
         <BookCover isMypage={isMypage} src={bookinfo.coverimg}></BookCover>
-        <HoverContainer isMypage={isMypage} r>
+        <HoverContainer isMypage={isMypage}>
           <div onClick={(event) => event.stopPropagation()}>
             {isMypage ? null : (
               <Bookmark

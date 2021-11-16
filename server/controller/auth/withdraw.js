@@ -17,7 +17,9 @@ module.exports = {
           User.destroy({ where: { id: userinfo.id } })
             .then((data) => {
               if (data) {
-                res.clearCookie("authorization");
+                res.clearCookie("authorization", {
+                  domain: process.env.CLIENT_DOMAIN,
+                });
                 res.status(204).send();
               }
             })

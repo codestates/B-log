@@ -40,7 +40,9 @@ const MainLogo = styled.div`
 
 function Main() {
   const state = useSelector((state) => state.bookReducer);
+  const loginState = useSelector((state) => state.loginReducer);
   const dispatch = useDispatch();
+  const { isLogIn } = loginState;
   const { rack, shelf } = state;
   const [infoOpen, setInfoOpen] = useState(false);
   const [markOpen, setMarkOpen] = useState(false);
@@ -60,22 +62,24 @@ function Main() {
   };
 
   const getMyBooks = async () => {
-    const rackRes = await axios.get(
-      `${process.env.REACT_APP_API_URL}/mypage/rack`,
-      { withCredentials: true }
-    );
-    const shelfRes = await axios.get(
-      `${process.env.REACT_APP_API_URL}/mypage/shelf`,
-      { withCredentials: true }
-    );
-    try {
-      dispatch(updateRack(rackRes.data.books));
-      dispatch(updateShelf(shelfRes.data.books));
-      dispatch(loginStateChange(true));
-    } catch (err) {
-      dispatch(loginStateChange(false));
-      dispatch(updateRack([]));
-      dispatch(updateShelf([]));
+    if (isLogIn) {
+      const rackRes = await axios.get(
+        `${process.env.REACT_APP_API_URL}/mypage/rack`,
+        { withCredentials: true }
+      );
+      const shelfRes = await axios.get(
+        `${process.env.REACT_APP_API_URL}/mypage/shelf`,
+        { withCredentials: true }
+      );
+      try {
+        dispatch(updateRack(rackRes.data.books));
+        dispatch(updateShelf(shelfRes.data.books));
+        dispatch(loginStateChange(true));
+      } catch (err) {
+        dispatch(loginStateChange(false));
+        dispatch(updateRack([]));
+        dispatch(updateShelf([]));
+      }
     }
   };
 
@@ -90,8 +94,8 @@ function Main() {
   };
 
   useEffect(() => {
-    getTop10();
     getMyBooks();
+    getTop10();
     // eslint-disable-next-line
   }, []);
 
