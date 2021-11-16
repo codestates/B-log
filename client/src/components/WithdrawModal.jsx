@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "./Button";
 import axios from "axios";
@@ -33,6 +34,7 @@ const ModalWrapper = styled.div`
 
 function WithdrawModal({ setWithdrawModalOpen }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [confirm, setConfirm] = useState(true);
   const [password, setPassword] = useState("");
 
@@ -47,23 +49,22 @@ function WithdrawModal({ setWithdrawModalOpen }) {
         dispatch(notify("비밀번호를 입력해주세요."));
       } else {
         axios
-          .delete(
-            `${process.env.REACT_APP_API_URL}/auth/withdraw`,
-            {
-              password,
-            },
-            { withCredentials: true }
-          )
+          .delete(`${process.env.REACT_APP_API_URL}/auth/withdraw`, {
+            data: { password },
+            withCredentials: true,
+          })
           .then(() => {
-            dispatch(notify("회원탈퇴 완료."));
             setWithdrawModalOpen(false);
             dispatch(loginStateChange(false));
+            navigate("/");
+            dispatch(notify("회원탈퇴 완료가 완료되었습니다."));
           })
           .catch((err) => {
             if (err.response.status === 403) {
               dispatch(notify("비밀번호가 일치하지 않습니다."));
             }
             if (err.response.status === 401) {
+              navigate("/login");
               dispatch(notify("다시 로그인하여 이용해 주십시오."));
             }
           });
