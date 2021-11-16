@@ -13,7 +13,7 @@ import logo from "../assets/images/logo.svg";
 export const HeaderBox = styled.div`
   width: 100vw;
   padding: 10px 0;
-  background-color: #e0e0d8;
+  /* background-color: #e0e0d8; */
   display: flex;
   align-items: center;
   position: relative;
