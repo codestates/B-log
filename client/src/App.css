@@ -3,18 +3,20 @@
   src: url("./assets/fonts/NotoSansKR-Regular.woff") format("woff");
 }
 * {
-  font-family: "Noto Sans KR";
+  font-family: "Noto Sans KR", "Noto Sans", "sans-serif";
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   font-size: 12px;
 }
+
 body {
   margin: 0;
   padding: 0;
   height: 100vh;
   background-color: #f5f5f5;
 }
+
 .app_section {
   display: flex;
   flex-direction: column;

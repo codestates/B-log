@@ -10,6 +10,7 @@ function NofiticationCenter() {
         <Notification
           key={idx}
           message={noti.message}
+          link={noti.link}
           time={noti.dismissTime}
         />
       ))}

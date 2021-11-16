@@ -118,7 +118,7 @@ function SignUp() {
   useEffect(() => {
     checkMatched();
     // eslint-disable-next-line
-  }, [signupInfo.check]);
+  }, [signupInfo.password, signupInfo.check]);
 
   return (
     <>
