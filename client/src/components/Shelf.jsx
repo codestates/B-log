@@ -15,7 +15,7 @@ const FrameH = styled.div`
   width: calc(100% - 30px);
   margin-left: 15px;
   height: 15px;
-  background-color: #ffefe0;
+  background-color: #debea0;
   z-index: 50;
   :first-child {
     height: 21px;
@@ -35,7 +35,7 @@ const FrameV = styled.div`
   width: 15px;
   margin-top: -15px;
   height: calc(100% + 30px);
-  background-color: #ffefe0;
+  background-color: #debea0;
   z-index: 100;
 `;
 
@@ -45,7 +45,7 @@ const FrameInnerH1 = styled.div`
   left: 15px;
   padding: 7.5px;
   width: calc(100% - 30px);
-  background-color: #ffefe0;
+  background-color: #debea0;
   border-bottom: 6px solid rgb(0, 0, 0, 0.1);
 `;
 

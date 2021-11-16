@@ -24,6 +24,7 @@ const RackBox = styled.section`
       background-color: transparent;
       overflow: hidden;
       text-align: center;
+      outline: none;
     }
   }
 `;
