@@ -91,7 +91,8 @@ const BookWrapper = styled.div`
 const Bar = styled.div`
   width: 100%;
   height: 15px;
-  background-color: #594d49;
+  background-color: #6c5852;
+  box-shadow: 2px 2px 5px #8d8d8d;
 `;
 
 const ButtonBox = styled.div`
@@ -113,19 +114,27 @@ const ShelfSection = styled.section`
 
 const Shelf = styled.section`
   width: 80%;
-  min-width: 450px;
+  min-width: 600px;
   max-width: 600px;
   height: 705px;
   margin-top: 40px;
   position: relative;
-  background-color: #e1e1d7;
+  background-color: #a69883;
+  /* display: flex;
+  align-items: center; */
 `;
 
 const FrameH = styled.div`
-  width: 100%;
+  width: calc(100% - 30px);
+  margin-left: 15px;
   height: 15px;
-  background-color: #594d49;
-  z-index: 100;
+  background-color: #ffefe0;
+  z-index: 50;
+  :first-child {
+    height: 21px;
+    margin-bottom: -6px;
+    border-bottom: 6px solid rgb(0, 0, 0, 0.1);
+  }
 `;
 
 const FrameVBox = styled.div`
@@ -137,8 +146,9 @@ const FrameVBox = styled.div`
 
 const FrameV = styled.div`
   width: 15px;
-  height: 100%;
-  background-color: #594d49;
+  margin-top: -15px;
+  height: calc(100% + 30px);
+  background-color: #ffefe0;
   z-index: 100;
 `;
 
@@ -148,7 +158,8 @@ const FrameInnerH1 = styled.div`
   left: 15px;
   padding: 7.5px;
   width: calc(100% - 30px);
-  background-color: #594d49;
+  background-color: #ffefe0;
+  border-bottom: 6px solid rgb(0, 0, 0, 0.1);
 `;
 
 const FrameInnerH2 = styled(FrameInnerH1)`
@@ -168,26 +179,45 @@ const InnerFrame = styled.div`
   display: flex;
   align-content: start;
   flex-wrap: wrap;
+  /* box-shadow: inset 3px 3px black; */
+  /* border: 3px solid black; */
 `;
 
 const ShelfBook = styled.div`
-  height: 157.5px;
+  /* height: 157.5px; */
+  height: 140px;
   width: ${(props) => (props.page <= 300 ? "30px" : `${props.page * 0.1}px`)};
-  margin: 0 2px 15px 1px;
-  /* box-shadow: 5px 5px 25px 1px #8d8d8d; */
+  margin: 17.5px 2px 15px 1px;
   background-color: ${(props) => props.color};
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 3px;
   cursor: pointer;
+  box-shadow: inset -3px -3px 1px grey;
+  :nth-child(8n) {
+    transform-origin: 13px 0;
+    transform: rotate(-3deg);
+    margin-right: ${(props) => (props.idx === 7 ? "0px" : "16px")};
+  }
+  :nth-child(9n) {
+    transform-origin: 13px 0;
+    transform: rotate(-5deg);
+    margin-right: 26px;
+    margin-left: ${(props) => (props.idx === 8 ? "2px" : "0")};
+  }
   :hover {
-    box-shadow: 5px 5px 25px 1px #8d8d8d;
+    border: 2px solid #f5f5f5;
+    box-shadow: none;
   }
   > span {
     display: inline-block;
     writing-mode: vertical-rl;
     text-orientation: mixed;
+    padding: 20px 0;
+    font-size: 8px;
+    color: #525151;
+    text-shadow: 0.5px 1px #f5f5f5;
   }
 `;
 
@@ -205,7 +235,7 @@ function MyPage() {
   const [bookinfo, setBookinfo] = useState({});
 
   const randomColor = () => {
-    const color = ["red", "orange", "green", "gray", "blue"];
+    const color = ["#f4f4f4", "#cccbc6", "#efd9c1", "#c7d8c6", "#a9b7c0"];
     const randomIndex = Math.floor(Math.random() * 5);
     return color[randomIndex];
   };
@@ -244,7 +274,12 @@ function MyPage() {
           dispatch(notify("닉네임이 수정되었습니다."));
         })
         .catch((err) => {
-          dispatch(notify("네트워크가 불안정 합니다."));
+          if (err.response.status === 401) {
+            navigate("/");
+            dispatch(notify("로그인이 필요합니다."));
+          } else {
+            dispatch(notify("네트워크가 불안정 합니다."));
+          }
         });
     }
   };
@@ -258,16 +293,9 @@ function MyPage() {
       `${process.env.REACT_APP_API_URL}/mypage/shelf`,
       { withCredentials: true }
     );
-    try {
-      dispatch(updateRack(rackRes.data.books));
-      dispatch(updateShelf(shelfRes.data.books));
-      dispatch(loginStateChange(true));
-    } catch (err) {
-      dispatch(loginStateChange(false));
-      dispatch(updateRack([]));
-      dispatch(updateShelf([]));
-      navigate("/");
-    }
+    dispatch(updateRack(rackRes.data.books));
+    dispatch(updateShelf(shelfRes.data.books));
+    dispatch(loginStateChange(true));
   };
 
   useEffect(() => {
@@ -277,7 +305,11 @@ function MyPage() {
   }, [isEditMode]);
 
   useEffect(() => {
-    getMyBooks();
+    getMyBooks().catch(() => {
+      dispatch(loginStateChange(false));
+      navigate("/");
+      dispatch(notify("로그인이 필요합니다."));
+    });
     // eslint-disable-next-line
   }, []);
 
@@ -352,9 +384,14 @@ function MyPage() {
             </BookWrapper>
             <Bar />
           </Row>
-          <a className="search_icon" href="/search">
+          <div
+            className="search_icon"
+            onClick={() => {
+              navigate("/search");
+            }}
+          >
             <FontAwesomeIcon icon={faSearchPlus} size="2x" />
-          </a>
+          </div>
         </Rack>
         <ButtonBox>
           <div onClick={editModeChange}>
@@ -386,8 +423,13 @@ function MyPage() {
                 page={book.pages}
                 color={randomColor()}
                 onClick={() => reviewHandler(book)}
+                idx={idx}
               >
-                <span>{book.title}</span>
+                <span>
+                  {book.title.length >= 16
+                    ? book.title.slice(0, 16) + "..."
+                    : book.title}
+                </span>
               </ShelfBook>
             ))}
           </InnerFrame>

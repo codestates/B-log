@@ -25,6 +25,7 @@ const Input = styled.input`
   width: 460px;
   height: 100%;
   border: none;
+  background-color: transparent;
 
   &:focus {
     outline: none;
