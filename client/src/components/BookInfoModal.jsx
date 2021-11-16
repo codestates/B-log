@@ -24,7 +24,7 @@ const ModalWrapper = styled.div`
 const BookImg = styled.img`
   height: 90%;
   width: 40%;
-  box-shadow: 5px 5px 20px 5px #8d8d8d;
+  box-shadow: 0px 0px 20px rgba(141, 141, 141, 1);
   object-fit: cover;
 `;
 
