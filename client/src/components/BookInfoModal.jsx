@@ -51,7 +51,7 @@ const Writer = styled.div`
 const Description = styled.div`
   line-height: 1.5;
   margin-top: 40px;
-  font-size: 10px;
+  font-size: 12px;
 `;
 
 const ButtonWrap = styled.div`
