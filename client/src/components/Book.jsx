@@ -6,11 +6,15 @@ const Container = styled.li`
   list-style: none;
   position: relative;
   cursor: pointer;
+  transition: 0.3s ease;
+  :hover {
+    transform: ${(props) => (props.isMypage ? "none" : "scale(1.1)")};
+  }
 `;
 
 const BookCover = styled.img`
-  height: 180px;
-  width: 120px;
+  height: ${(props) => (props.isMypage ? "200px" : "180px")};
+  width: ${(props) => (props.isMypage ? "134px" : "120px")};
   object-fit: cover;
   box-shadow: 0px 0px 10px rgba(141, 141, 141, 0.6);
 `;
@@ -28,8 +32,8 @@ const Bookmark = styled(FontAwesomeIcon)`
 `;
 
 const HoverContainer = styled.div`
-  height: 180px;
-  width: 120px;
+  height: ${(props) => (props.isMypage ? "200px" : "180px")};
+  width: ${(props) => (props.isMypage ? "134px" : "120px")};
   position: absolute;
   top: 0;
   opacity: 0;
@@ -66,9 +70,9 @@ function Book({
 }) {
   return (
     <>
-      <Container onClick={() => infoModalHandler(bookinfo)}>
-        <BookCover src={bookinfo.coverimg}></BookCover>
-        <HoverContainer>
+      <Container isMypage={isMypage} onClick={() => infoModalHandler(bookinfo)}>
+        <BookCover isMypage={isMypage} src={bookinfo.coverimg}></BookCover>
+        <HoverContainer isMypage={isMypage} r>
           <div onClick={(event) => event.stopPropagation()}>
             {isMypage ? null : (
               <Bookmark

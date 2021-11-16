@@ -44,6 +44,9 @@ const LoginWrapper = styled.div`
       font-weight: 700;
     }
   }
+  .input_container {
+    position: relative;
+  }
 `;
 
 const LoginLogo = styled.h2`
@@ -64,15 +67,24 @@ const LoginInput = styled.input`
   border-bottom: 1px solid #8d8d8d;
   outline: none;
   width: 180px;
-  height: 24px;
+  height: 36px;
   background-color: transparent;
+  :focus {
+    background-color: transparent;
+  }
+`;
+
+const Icon = styled(FontAwesomeIcon)`
+  position: absolute;
+  right: 0;
+  top: 10px;
 `;
 
 const LoginBtn = styled.div`
   margin: 40px 0;
 `;
 
-function LogIn({ setIsLogin }) {
+function LogIn() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const regExpEmail =
@@ -105,7 +117,7 @@ function LogIn({ setIsLogin }) {
           if (err.response.status === 401) {
             dispatch(notify("잘못된 아이디 이거나 비밀번호가 틀렸습니다."));
           } else {
-            dispatch(notify("네트워크 환경이 불안정 합니다."));
+            dispatch(notify("새로고침 후 다시 시도해주세요."));
           }
         });
     }
@@ -123,22 +135,22 @@ function LogIn({ setIsLogin }) {
         <Img src={welcome} alt="welcome page" />
         <LoginWrapper>
           <LoginLogo>Login</LoginLogo>
-          <div>
+          <div className="input_container">
             <LoginInput
               type="text"
               placeholder=" 이메일"
               onChange={handleInputValue("email")}
             />
-            <FontAwesomeIcon icon={faUser} />
+            <Icon icon={faUser} />
           </div>
-          <div>
+          <div className="input_container">
             <LoginInput
               type="password"
               placeholder=" 비밀번호"
               onChange={handleInputValue("password")}
               onKeyUp={(e) => pressEnter(e)}
             />
-            <FontAwesomeIcon icon={faLock} />
+            <Icon icon={faLock} />
           </div>
           <LoginBtn onClick={loginHandler}>
             <Button message={"로그인"} />
