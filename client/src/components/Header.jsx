@@ -38,7 +38,7 @@ export const Nav = styled.nav`
   flex: 0 0 auto;
 `;
 
-export const Menu = styled.a`
+export const Menu = styled.div`
   display: inline-block;
   padding: 10px 20px;
   letter-spacing: 0.1em;
@@ -79,11 +79,15 @@ function Header() {
         </Link>
       </LogoBox>
       <Nav>
-        {isLogIn ? <Menu href="/mypage">내 책장</Menu> : null}
+        {isLogIn ? (
+          <Menu onClick={() => navigate("/mypage")}>내 책장</Menu>
+        ) : null}
         {isLogIn ? (
           <Menu onClick={logoutHandler}>로그아웃</Menu>
         ) : (
-          <Menu href="/login">로그인</Menu>
+          <Link to="/login">
+            <Menu>로그인</Menu>
+          </Link>
         )}
       </Nav>
     </HeaderBox>
