@@ -9,7 +9,7 @@ module.exports = {
         if (item) {
           res.status(200).send(item);
         } else {
-          res.status(501).send();
+          res.status(404).send({ message: "Resource not found" });
         }
       });
     } catch {
