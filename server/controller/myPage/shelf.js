@@ -20,7 +20,7 @@ module.exports = {
         .then((shelves) => {
           try {
             if (!shelves.length) {
-              res.status(200).send({ books: bookList });
+              res.status(200).send({ books: [] });
             } else {
               const bookIds = shelves.map((book) => book.dataValues.bookId);
               Book.findAll({
