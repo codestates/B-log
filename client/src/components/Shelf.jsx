@@ -136,18 +136,14 @@ function Shelf({
   pageMinusHandler,
   num,
 }) {
-  const randomColor = () => {
-    const color = [
-      "#e76438",
-      "#e48365",
-      "#eebb3a",
-      "#4f8f91",
-      "#2c5854",
-      "#3a506b",
-    ];
-    const randomIndex = Math.floor(Math.random() * 6);
-    return color[randomIndex];
-  };
+  const color = [
+    "#e76438",
+    "#4f8f91",
+    "#e48365",
+    "#2c5854",
+    "#eebb3a",
+    "#3a506b",
+  ];
 
   const reviewHandler = (book) => {
     setBookinfo(book);
@@ -171,7 +167,7 @@ function Shelf({
             <ShelfBook
               key={idx}
               page={book.pages}
-              color={randomColor()}
+              color={color[idx % 6]}
               onClick={() => reviewHandler(book)}
               idx={idx}
             >
