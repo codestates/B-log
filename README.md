@@ -29,7 +29,7 @@ B : log는 책장에 차곡차곡 쌓여가는 종이책만의 아날로그 감�
 
 <br />
 
-## 🧩  플로우 차트 
+## 🧩 Flow Chart
 <img src="https://user-images.githubusercontent.com/85681803/140853219-af0bcf8c-2800-457e-bc23-23cec47f0324.jpg"  heigt="200" width="1000"/>
 
 <br />
