@@ -1,5 +1,22 @@
+const { User } = require("../../models");
+
 module.exports = {
-  post: (req, res) => {
-    res.send()
-  }
-}
+  get: (req, res) => {
+    const email = req.params.email;
+    if (email) {
+      User.findOne({ where: { email } })
+        .then((data) => {
+          if (data) {
+            res.status(409).send({ message: "email exist" });
+          } else {
+            res.send({ email: email, message: "ok" });
+          }
+        })
+        .catch((err) => {
+          res.status(500).send({ err, message: "Server err" });
+        });
+    } else {
+      res.status(500).send();
+    }
+  },
+};

@@ -1,15 +1,16 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const {authController} = require('../controller');
+const { authController } = require("../controller");
+const checkAuth = require("../middleware/checkAuth");
 
-router.post('/login', authController.login.post);
+router.post("/login", authController.login.post);
 
-router.post('/logout', authController.logout.post);
+router.post("/logout", authController.logout.post);
 
-router.post('checkuseremail', authController.checkuseremail.post);
+router.get("/checkuseremail/:email", authController.checkuseremail.get);
 
-router.post('signup', authController.signup.post);
+router.post("/signup", authController.signup.post);
 
-router.delete('/withdraw', authController.withdraw.delete);
+router.delete("/withdraw", checkAuth, authController.withdraw.delete);
 
 module.exports = router;
