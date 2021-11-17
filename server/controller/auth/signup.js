@@ -10,8 +10,7 @@ module.exports = {
       })
         .then(([data, created]) => {
           if (!created) {
-            //gitbook 응답으로 추가하기
-            return res.status(401).send({ message: "exist email" });
+            return res.status(409).send({ message: "exist email" });
           }
 
           delete data.dataValues.password;
@@ -21,7 +20,7 @@ module.exports = {
           res.status(201).send({ user: data.dataValues, message: "ok" });
         })
         .catch((err) => {
-          res.status(500).send(err);
+          res.status(500).send({ err, message: "Server err" });
         });
     } else {
       res.status(500).send();
