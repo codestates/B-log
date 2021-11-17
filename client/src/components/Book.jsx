@@ -84,7 +84,11 @@ function Book({
             )}
           </div>
           <Title>{bookinfo.title}</Title>
-          <Author>{bookinfo.author}</Author>
+          <Author>
+            {bookinfo.author.length > 8
+              ? bookinfo.author.slice(0, 8) + " ..."
+              : bookinfo.author}
+          </Author>
         </HoverContainer>
       </Container>
     </>

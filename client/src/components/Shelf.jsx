@@ -177,7 +177,7 @@ function Shelf({
             >
               <span>
                 {book.title.length >= 16
-                  ? book.title.slice(0, 16) + "..."
+                  ? book.title.slice(0, 16) + " ..."
                   : book.title}
               </span>
             </ShelfBook>
