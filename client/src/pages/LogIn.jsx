@@ -2,14 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { notify, loginStateChange } from "../actions/index";
 import { useDispatch } from "react-redux";
+import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import styled from "styled-components";
 import welcome from "../assets/images/welcome-page.jpg";
-import Qwigley from "../assets/fonts/Qwigley-Regular.woff";
 import Poppins from "../assets/fonts/Poppins-ExtraLight.woff";
-
-import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../components/Button";
 
 const LoginSection = styled.section`
@@ -27,23 +25,30 @@ const ImgAndLogin = styled.div`
 `;
 
 const Img = styled.img`
+  @media screen and (max-width: 900px) {
+    display: none;
+  }
   width: 50%;
   height: 100%;
   object-fit: cover;
-  //border-top-left-radius: 5%;
-  //border-bottom-left-radius: 5%;
   box-shadow: -30px -30px 76px #d8d8d8;
 `;
 
 const LoginWrapper = styled.div`
+  @media screen and (max-width: 900px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    margin-left: 250px;
+  }
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: #f5f5f5;
   box-shadow: 19px 19px 76px #d8d8d8;
-  //border-top-right-radius: 5%;
-  //border-bottom-right-radius: 5%;
   width: 50%;
   height: 100%;
   > a {
@@ -59,11 +64,6 @@ const LoginWrapper = styled.div`
 `;
 
 const LoginLogo = styled.h2`
-  /* @font-face {
-    font-family: "Qwigley";
-    src: local("Qwigley"), url(${Qwigley}) format("woff");
-  }
-  font-family: "Qwigley"; */
   @font-face {
     font-family: "Poppins";
     src: local("Poppins"), url(${Poppins}) format("woff");

@@ -3,6 +3,9 @@ import team_logo from "../assets/images/team_logo.svg";
 import { LogoBox, Nav, Menu } from "./Header";
 
 const FooterBox = styled.div`
+  @media screen and (max-width: 760px) {
+    display: none;
+  }
   width: 100vw;
   padding: 10px 0;
   display: flex;
