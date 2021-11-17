@@ -1,8 +1,11 @@
 import styled from "styled-components";
 import team_logo from "../assets/images/team_logo.svg";
-import { LogoBox, Nav, Menu } from "./Header";
+import { LogoBox, Nav } from "./Header";
 
 const FooterBox = styled.div`
+  @media screen and (max-width: 760px) {
+    display: none;
+  }
   width: 100vw;
   padding: 10px 0;
   display: flex;
@@ -17,7 +20,10 @@ const TeamLogo = styled.img`
   margin-left: 40px;
 `;
 
-const Member = styled(Menu)`
+const Member = styled.a`
+  display: inline-block;
+  letter-spacing: 0.1em;
+  cursor: pointer;
   padding: 10px 30px;
 
   &:last-child {

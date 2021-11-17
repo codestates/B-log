@@ -13,13 +13,10 @@ import BookGrid from "../components/BookGrid";
 import BookInfoModal from "../components/BookInfoModal";
 import BookMarkModal from "../components/BookMarkModal";
 import Footer from "../components/Footer";
-import Qwigley from "../assets/fonts/Qwigley-Regular.woff";
-// import Poppins from "../assets/fonts/Poppins-ExtraLightItalic.woff";
-// import Poppins from "../assets/fonts/Poppins-Light.woff";
 import Poppins from "../assets/fonts/Poppins-ExtraLight.woff";
 import axios from "axios";
 
-import { noTop10 } from "../assets/dummy/noResponse";
+import { noResponse } from "../assets/dummy/noResponse";
 
 const Wrapper = styled.div`
   flex: 1;
@@ -44,11 +41,6 @@ const Wrapper = styled.div`
 `;
 
 const MainLogo = styled.div`
-  /* @font-face {
-    font-family: "Qwigley";
-    src: local("Qwigley"), url(${Qwigley}) format("woff");
-  }
-  font-family: "Qwigley", "cursive"; */
   @font-face {
     font-family: "Poppins";
     src: local("Poppins"), url(${Poppins}) format("woff");
@@ -70,22 +62,22 @@ function Main() {
   const [infoOpen, setInfoOpen] = useState(false);
   const [markOpen, setMarkOpen] = useState(false);
   const [bookinfo, setBookinfo] = useState({});
-  const [top10, setTop10] = useState(noTop10);
-  const [new10, setNew10] = useState(noTop10);
+  const [top10, setTop10] = useState(noResponse);
+  const [new10, setNew10] = useState(noResponse);
   const myBooks = [...rack, ...shelf];
 
   const getTop10 = () => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/books`)
       .then((res) => setTop10(res.data.books))
-      .catch(() => setTop10(noTop10));
+      .catch(() => setTop10(noResponse));
   };
 
   const getPopular = () => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/books/users`)
       .then((res) => setNew10(res.data.books))
-      .catch(() => setNew10(noTop10));
+      .catch(() => setNew10(noResponse));
   };
 
   const getAuthorized = () => {

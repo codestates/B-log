@@ -40,7 +40,6 @@ function BookMarkModal({ bookinfo, setMarkOpen }) {
   const clickHandler = (e) => {
     if (e.target.textContent === "읽고 있는 책") {
       const isbns = shelf.map((book) => book.isbn13);
-      //책장에 책이 없는 경우
       if (!isbns.includes(bookinfo.isbn13)) {
         axios
           .get(
@@ -78,7 +77,6 @@ function BookMarkModal({ bookinfo, setMarkOpen }) {
                 }
               });
           });
-        //책장에 책이 있는 경우
       } else {
         closeModalHandler();
         dispatch(notify("이미 다 읽은 책 입니다.", "내 책장으로 가기"));
@@ -124,7 +122,6 @@ function BookMarkModal({ bookinfo, setMarkOpen }) {
           });
       } else {
         const exist = rack.filter((book) => book.isbn13 === bookinfo.isbn13)[0];
-        console.log(exist);
         axios
           .delete(`${process.env.REACT_APP_API_URL}/mypage/rack/${exist.id}`, {
             withCredentials: true,
