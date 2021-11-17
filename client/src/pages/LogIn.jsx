@@ -17,6 +17,7 @@ const LoginSection = styled.section`
   justify-content: center;
   align-items: center;
   height: 100%;
+  margin-top: 80px;
 `;
 
 const ImgAndLogin = styled.div`
