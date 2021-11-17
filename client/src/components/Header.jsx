@@ -13,10 +13,13 @@ import logo from "../assets/images/logo.svg";
 export const HeaderBox = styled.div`
   width: 100vw;
   padding: 10px 0;
-  /* background-color: #e0e0d8; */
   display: flex;
   align-items: center;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #f5f5f5;
+  box-shadow: 0px 2px 20px rgba(141, 141, 141, 0.3);
   z-index: 1000;
 `;
 

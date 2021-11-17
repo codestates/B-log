@@ -1,8 +1,13 @@
 import styled from "styled-components";
 import team_logo from "../assets/images/team_logo.svg";
-import { HeaderBox, LogoBox, Nav, Menu } from "./Header";
+import { LogoBox, Nav, Menu } from "./Header";
 
-const FooterBox = styled(HeaderBox)`
+const FooterBox = styled.div`
+  width: 100vw;
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  position: relative;
   padding: 20px 0;
   background: rgb(214, 170, 125, 0.3);
 `;

@@ -51,7 +51,7 @@ const Writer = styled.div`
 const Description = styled.div`
   line-height: 1.5;
   margin-top: 40px;
-  font-size: 10px;
+  font-size: 12px;
 `;
 
 const ButtonWrap = styled.div`
@@ -216,7 +216,9 @@ function BookInfoModal({ bookinfo, setInfoOpen, isMypage }) {
         })
         .catch((err) => {
           if (err.response.status === 401)
-            dispatch(notify("다시 로그인해주세요.", "로그인 페이지로 가기"));
+            dispatch(
+              notify("로그인이 만료되었습니다.", "로그인 페이지로 가기")
+            );
           if (err.response.status === 410)
             dispatch(notify("이미 삭제된 책입니다."));
         });
