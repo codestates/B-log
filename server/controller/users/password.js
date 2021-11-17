@@ -4,9 +4,7 @@ const { token } = require("../serverFunctions");
 module.exports = {
   patch: (req, res) => {
     const userinfo = token.isAuthorized(req);
-    if (!userinfo) {
-      res.status(401).send({ message: "invalid access token" });
-    } else if (req.body.newPassword) {
+    if (req.body.newPassword) {
       const { id } = userinfo;
       User.findOne({ where: { id } })
         .then((user) => {

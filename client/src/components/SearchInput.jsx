@@ -7,7 +7,9 @@ import styled from "styled-components";
 import axios from "axios";
 
 const Container = styled.div`
-  width: 540px;
+  min-width: 300px;
+  width: 54%;
+  max-width: 540px;
   height: 40px;
   display: flex;
   justify-content: left;
@@ -22,7 +24,7 @@ const Container = styled.div`
 
 const Input = styled.input`
   flex: 1 0 auto;
-  width: 460px;
+  width: 46%;
   height: 100%;
   border: none;
   background-color: transparent;

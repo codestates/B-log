@@ -19,6 +19,13 @@ import Rack from "../components/Rack";
 import Shelf from "../components/Shelf";
 
 const WindowSection = styled.section`
+  @media screen and (max-width: 800px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 200vh;
+  }
   display: flex;
   width: 100%;
   height: 100%;
@@ -51,6 +58,9 @@ const UserNameInput = styled.input`
   border: none;
   border-bottom: 1px solid #8d8d8d;
   outline: none;
+  :focus {
+    background-color: transparent;
+  }
 `;
 
 const UserNameSpan = styled.span`
@@ -70,6 +80,13 @@ const ButtonBox = styled.div`
 `;
 
 const ShelfSection = styled.section`
+  @media screen and (max-width: 800px) {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-left: 0px;
+  }
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -232,6 +249,7 @@ function MyPage() {
           shelf={shelf.slice(0 + 49 * num, 49 * (num + 1))}
           pagePlusHandler={pagePlusHandler}
           pageMinusHandler={pageMinusHandler}
+          num={num}
         />
       </ShelfSection>
       {infoOpen ? (
