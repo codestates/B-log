@@ -19,35 +19,29 @@ module.exports = {
       })
         .then((shelves) => {
           try {
-            if (!shelves.length) {
-              res.status(200).send({ books: [] });
-            } else {
-              console.log("sheleves:", shelves);
-              const bookIds = shelves.map((book) => book.dataValues.bookId);
-              Book.findAll({
-                attributes: [
-                  "id",
-                  "author",
-                  "title",
-                  "coverimg",
-                  "description",
-                  "isbn13",
-                  "pages",
-                  "referred",
-                ],
-                where: { id: bookIds },
-                raw: true,
+            const bookIds = shelves.map((book) => book.dataValues.bookId);
+            Book.findAll({
+              attributes: [
+                "id",
+                "author",
+                "title",
+                "coverimg",
+                "description",
+                "isbn13",
+                "pages",
+                "referred",
+              ],
+              where: { id: bookIds },
+              raw: true,
+            })
+              .then((bookList) => {
+                res.status(200).json({ books: bookList });
               })
-                .then((bookList) => {
-                  res.status(200).json({ books: bookList });
-                })
-                .catch((err) => {
-                  res.status(501).send(err);
-                });
-            }
-          } catch (err) {
-            console.log(err);
-            res.status(502).send();
+              .catch((err) => {
+                res.status(500).send(err);
+              });
+          } catch {
+            res.status(500).send();
           }
         })
         .catch((err) => {
