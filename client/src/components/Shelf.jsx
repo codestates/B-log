@@ -1,5 +1,9 @@
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import {
+  faChevronRight,
+  faChevronLeft,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ShelfBox = styled.section`
   width: 80%;
@@ -15,7 +19,7 @@ const FrameH = styled.div`
   width: calc(100% - 30px);
   margin-left: 15px;
   height: 15px;
-  background-color: #ffefe0;
+  background-color: #debea0;
   z-index: 50;
   :first-child {
     height: 21px;
@@ -35,7 +39,7 @@ const FrameV = styled.div`
   width: 15px;
   margin-top: -15px;
   height: calc(100% + 30px);
-  background-color: #ffefe0;
+  background-color: #debea0;
   z-index: 100;
 `;
 
@@ -45,7 +49,7 @@ const FrameInnerH1 = styled.div`
   left: 15px;
   padding: 7.5px;
   width: calc(100% - 30px);
-  background-color: #ffefe0;
+  background-color: #debea0;
   border-bottom: 6px solid rgb(0, 0, 0, 0.1);
 `;
 
@@ -73,7 +77,12 @@ const InnerFrame = styled.div`
 const ShelfBook = styled.div`
   /* height: 157.5px; */
   height: 140px;
-  width: ${(props) => (props.page <= 300 ? "30px" : `${props.page * 0.1}px`)};
+  width: ${(props) =>
+    props.page >= 800
+      ? "80px"
+      : props.page <= 300
+      ? "30px"
+      : `${props.page * 0.1}px`};
   margin: 17.5px 2px 15px 1px;
   background-color: ${(props) => props.color};
   display: flex;
@@ -108,10 +117,23 @@ const ShelfBook = styled.div`
   }
 `;
 
-function Shelf({ setReviewOpen, setBookinfo }) {
-  const state = useSelector((state) => state.bookReducer);
-  const { shelf } = state;
+const PageIcon = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  > div {
+    margin: 10px;
+    cursor: pointer;
+  }
+`;
 
+function Shelf({
+  setReviewOpen,
+  setBookinfo,
+  shelf,
+  pagePlusHandler,
+  pageMinusHandler,
+}) {
   const randomColor = () => {
     const color = ["#f4f4f4", "#cccbc6", "#efd9c1", "#c7d8c6", "#a9b7c0"];
     const randomIndex = Math.floor(Math.random() * 5);
@@ -124,34 +146,44 @@ function Shelf({ setReviewOpen, setBookinfo }) {
   };
 
   return (
-    <ShelfBox>
-      <FrameH />
-      <FrameVBox>
-        <FrameV />
-        <FrameV />
-      </FrameVBox>
-      <FrameH />
-      <FrameInnerH1 />
-      <FrameInnerH2 />
-      <FrameInnerH3 />
-      <InnerFrame>
-        {shelf.map((book, idx) => (
-          <ShelfBook
-            key={idx}
-            page={book.pages}
-            color={randomColor()}
-            onClick={() => reviewHandler(book)}
-            idx={idx}
-          >
-            <span>
-              {book.title.length >= 16
-                ? book.title.slice(0, 16) + "..."
-                : book.title}
-            </span>
-          </ShelfBook>
-        ))}
-      </InnerFrame>
-    </ShelfBox>
+    <>
+      <ShelfBox>
+        <FrameH />
+        <FrameVBox>
+          <FrameV />
+          <FrameV />
+        </FrameVBox>
+        <FrameH />
+        <FrameInnerH1 />
+        <FrameInnerH2 />
+        <FrameInnerH3 />
+        <InnerFrame>
+          {shelf.map((book, idx) => (
+            <ShelfBook
+              key={idx}
+              page={book.pages}
+              color={randomColor()}
+              onClick={() => reviewHandler(book)}
+              idx={idx}
+            >
+              <span>
+                {book.title.length >= 16
+                  ? book.title.slice(0, 16) + "..."
+                  : book.title}
+              </span>
+            </ShelfBook>
+          ))}
+        </InnerFrame>
+      </ShelfBox>
+      <PageIcon>
+        <div onClick={() => pageMinusHandler()}>
+          <FontAwesomeIcon icon={faChevronLeft} size="2x" />
+        </div>
+        <div onClick={() => pagePlusHandler()}>
+          <FontAwesomeIcon icon={faChevronRight} size="2x" />
+        </div>
+      </PageIcon>
+    </>
   );
 }
 

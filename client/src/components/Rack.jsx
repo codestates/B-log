@@ -16,7 +16,7 @@ const RackBox = styled.section`
   > .select_icon_box {
     margin-top: 20px;
     display: flex;
-    width: 190px;
+    width: 220px;
     justify-content: space-between;
     > select {
       display: inline-block;
@@ -24,6 +24,7 @@ const RackBox = styled.section`
       background-color: transparent;
       overflow: hidden;
       text-align: center;
+      outline: none;
     }
   }
 `;
@@ -40,10 +41,9 @@ const Row = styled.div`
 const BookWrapper = styled.div`
   display: flex;
   width: 100%;
-  justify-content: center;
   > div {
     height: 200px;
-    margin: 0 20px;
+    margin: 0 23px;
   }
 `;
 

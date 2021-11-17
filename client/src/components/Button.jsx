@@ -4,7 +4,7 @@ const StyledButton = styled.div`
   color: ${(props) => (props.color === "dark" ? "#f5f5f5" : "#202123")};
   background-color: ${(props) =>
     props.color === "dark" ? "#594d49;" : "transparent"};
-  padding: 4px 10px;
+  padding: 5px 10px 4px 10px;
   width: 120px;
   height: 30px;
   display: flex;

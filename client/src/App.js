@@ -18,7 +18,7 @@ function App() {
       <NotificationCenter />
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage/*" element={<MyPage />} />
         <Route path="/search" element={<Search />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
