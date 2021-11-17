@@ -1,4 +1,4 @@
-const { Bestseller } = require("../models");
+const { Bestseller, Shelf, Book } = require("../models");
 const { api, random } = require("./serverFunctions");
 
 module.exports = {
@@ -42,6 +42,19 @@ module.exports = {
       const index = random.uniqueRandomMaker(num, count);
       const bestsellerList = index.map((idx) => rows[idx]);
       res.status(200).json({ books: bestsellerList });
+    } catch {
+      res.status(500).send();
+    }
+  },
+
+  users: async (req, res) => {
+    try {
+      const usersBooks = await Book.findAll({
+        limit: 10,
+        order: [["updatedAt", "DESC"]],
+        raw: true,
+      });
+      res.send({ books: usersBooks });
     } catch {
       res.status(500).send();
     }

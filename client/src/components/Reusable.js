@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import Qwigley from "../assets/fonts/Qwigley-Regular.woff";
+// import Poppins from "../assets/fonts/Poppins-ExtraLightItalic.woff";
+import Poppins from "../assets/fonts/Poppins-ExtraLight.woff";
 
 export const Container = styled.div`
   height: 100%;
@@ -17,12 +19,17 @@ export const Section = styled.section`
 `;
 
 export const Title = styled.h2`
-  @font-face {
+  /* @font-face {
     font-family: "Qwigley";
     src: local("Qwigley"), url(${Qwigley}) format("woff");
   }
-  font-family: "Qwigley", "cursive";
-  font-size: 80px;
+  font-family: "Qwigley", "cursive"; */
+  @font-face {
+    font-family: "Poppins";
+    src: local("Poppins"), url(${Poppins}) format("woff");
+  }
+  font-family: "Poppins", sans-serif;
+  font-size: 40px;
   color: #594d49;
   margin-bottom: 40px;
   display: block;

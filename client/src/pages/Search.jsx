@@ -19,6 +19,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  margin-top: 80px;
   padding: 60px;
 
   .grid_container {
@@ -33,10 +34,10 @@ const Wrapper = styled.div`
 `;
 
 function Search() {
-  const bookState = useSelector((state) => state.bookReducer);
-  const searchState = useSelector((state) => state.searchReducer);
-  const { rack, shelf } = bookState;
-  const { searchKeyword, searchResult } = searchState;
+  const { rack, shelf } = useSelector((state) => state.bookReducer);
+  const { searchKeyword, searchResult } = useSelector(
+    (state) => state.searchReducer
+  );
   const myBooks = [...rack, ...shelf];
   const dispatch = useDispatch();
 
@@ -45,14 +46,16 @@ function Search() {
   const [bookinfo, setBookinfo] = useState({});
 
   const getMyBooks = async () => {
-    const rackRes = await axios.get(
-      `${process.env.REACT_APP_API_URL}/mypage/rack`,
-      { withCredentials: true }
-    );
-    const shelfRes = await axios.get(
-      `${process.env.REACT_APP_API_URL}/mypage/shelf`,
-      { withCredentials: true }
-    );
+    const rackRes = await axios
+      .get(`${process.env.REACT_APP_API_URL}/mypage/rack`, {
+        withCredentials: true,
+      })
+      .catch(() => console.clear());
+    const shelfRes = await axios
+      .get(`${process.env.REACT_APP_API_URL}/mypage/shelf`, {
+        withCredentials: true,
+      })
+      .catch(() => console.clear());
     try {
       dispatch(updateRack(rackRes.data.books));
       dispatch(updateShelf(shelfRes.data.books));
@@ -69,10 +72,14 @@ function Search() {
       localStorage.setItem("result", JSON.stringify(searchResult));
     }
   };
+
   const getSearchInfo = async () => {
     if (!searchKeyword.length && !searchResult.length) {
       const result = await localStorage.getItem("result");
-      dispatch(getSearchResult(JSON.parse(result)));
+      const books = JSON.parse(result);
+      if (Array.isArray(books)) {
+        dispatch(getSearchResult(books));
+      }
     }
   };
 

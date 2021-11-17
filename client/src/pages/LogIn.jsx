@@ -6,6 +6,8 @@ import axios from "axios";
 import styled from "styled-components";
 import welcome from "../assets/images/welcome-page.jpg";
 import Qwigley from "../assets/fonts/Qwigley-Regular.woff";
+import Poppins from "../assets/fonts/Poppins-ExtraLight.woff";
+
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../components/Button";
@@ -56,12 +58,17 @@ const LoginWrapper = styled.div`
 `;
 
 const LoginLogo = styled.h2`
-  @font-face {
+  /* @font-face {
     font-family: "Qwigley";
     src: local("Qwigley"), url(${Qwigley}) format("woff");
   }
-  font-family: "Qwigley";
-  font-size: 80px;
+  font-family: "Qwigley"; */
+  @font-face {
+    font-family: "Poppins";
+    src: local("Poppins"), url(${Poppins}) format("woff");
+  }
+  font-family: "Poppins", sans-serif;
+  font-size: 40px;
   font-weight: 500;
   margin-bottom: 40px;
   letter-spacing: 2px;
