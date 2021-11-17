@@ -58,6 +58,7 @@ const MainLogo = styled.div`
   color: #594d49;
   margin: 70px 0px 30px 0;
   text-shadow: 5px 5px #e0e0d8;
+  min-width: 290px;
 `;
 
 function Main() {

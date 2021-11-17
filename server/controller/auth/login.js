@@ -15,17 +15,16 @@ module.exports = {
             delete data.dataValues.password;
             delete data.dataValues.createdAt;
             delete data.dataValues.updatedAt;
-
             const accessToken = token.generateAccessToken(data.dataValues);
             token.sendAccessToken(res, accessToken);
             res.send({ user: data.dataValues });
           }
         })
         .catch((err) => {
-          res.status(500).send();
+          res.status(500).send({ err, message: "Server err" });
         });
     } else {
-      res.status(500).send();
+      res.status(500).send({ message: "Server err" });
     }
   },
 };

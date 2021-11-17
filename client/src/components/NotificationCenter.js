@@ -6,9 +6,9 @@ function NofiticationCenter() {
 
   return (
     <>
-      {state.notifications.map((noti, idx) => (
+      {state.notifications.map((noti) => (
         <Notification
-          key={idx}
+          key={noti.uuid}
           message={noti.message}
           link={noti.link}
           time={noti.dismissTime}

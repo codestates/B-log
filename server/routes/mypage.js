@@ -1,23 +1,24 @@
 const express = require("express");
 const router = express.Router();
 const { mypageController } = require("../controller");
+const checkAuth = require("../middleware/checkAuth");
 
-router.get("/rack", mypageController.rack.get);
+router.get("/rack", checkAuth, mypageController.rack.get);
 
-router.post("/rack", mypageController.rack.post);
+router.post("/rack", checkAuth, mypageController.rack.post);
 
-router.delete("/rack/:bookid", mypageController.rack.delete);
+router.delete("/rack/:bookid", checkAuth, mypageController.rack.delete);
 
-router.get("/shelf", mypageController.shelf.get);
+router.get("/shelf", checkAuth, mypageController.shelf.get);
 
-router.post("/shelf", mypageController.shelf.post);
+router.post("/shelf", checkAuth, mypageController.shelf.post);
 
-router.delete("/shelf/:bookid", mypageController.shelf.delete);
+router.delete("/shelf/:bookid", checkAuth, mypageController.shelf.delete);
 
-router.get("/review/:bookid", mypageController.review.get);
+router.get("/review/:bookid", checkAuth, mypageController.review.get);
 
-router.patch("/review/:bookid", mypageController.review.patch);
+router.patch("/review/:bookid", checkAuth, mypageController.review.patch);
 
-router.delete("/review/:bookid", mypageController.review.delete);
+router.delete("/review/:bookid", checkAuth, mypageController.review.delete);
 
 module.exports = router;

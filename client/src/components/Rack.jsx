@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import Book from "../components/Book";
-import { faSearchPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import search from "../assets/images/search.svg";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -117,10 +116,9 @@ function Rack({ setBookinfo, setInfoOpen }) {
             );
           })}
         </select>
-        <FontAwesomeIcon
-          icon={faSearchPlus}
-          size="2x"
-          style={{ cursor: "pointer" }}
+        <img
+          src={search}
+          style={{ cursor: "pointer", width: "28px" }}
           onClick={() => {
             navigate("/search");
           }}
