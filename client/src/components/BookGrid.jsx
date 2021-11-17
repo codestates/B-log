@@ -2,6 +2,12 @@ import styled from "styled-components";
 import Book from "./Book";
 
 const Container = styled.ul`
+  @media screen and (max-width: 760px) {
+    display: grid;
+    grid-template-rows: repeat(auto-fill, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 35px;
+  }
   display: grid;
   grid-template-rows: repeat(auto-fill, 1fr);
   grid-template-columns: ${(props) => `repeat(${props.col}, 1fr)`};
