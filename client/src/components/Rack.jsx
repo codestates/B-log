@@ -118,6 +118,7 @@ function Rack({ setBookinfo, setInfoOpen }) {
         </select>
         <img
           src={search}
+          alt="search icon"
           style={{ cursor: "pointer", width: "28px" }}
           onClick={() => {
             navigate("/search");

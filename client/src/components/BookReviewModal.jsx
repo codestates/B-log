@@ -155,7 +155,6 @@ function BookReviewModal({ bookinfo, setReviewOpen }) {
 
   const changeEditMode = () => {
     setEditMode(!isEditMode);
-    //이 함수 내에서는 아직 isEditMode가 false이다. 즉 edit 모드가 열렸는데도 이 함수 내에서는 isEditMode가 false이기 때문에 isEditMode가 true이면 axios 요청을 보내야 한다.
     if (isEditMode === true) {
       axios
         .patch(
