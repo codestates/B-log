@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import EditPassword from "./pages/EditPassword";
 import LogIn from "./pages/LogIn";
+import axios from "axios";
 import Main from "./pages/Main";
 import MyPage from "./pages/MyPage";
 import Search from "./pages/Search";
