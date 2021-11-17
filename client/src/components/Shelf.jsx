@@ -1,9 +1,6 @@
 import styled from "styled-components";
-import {
-  faChevronRight,
-  faChevronLeft,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import left from "../assets/images/left.svg";
+import right from "../assets/images/right.svg";
 
 const ShelfBox = styled.section`
   width: 80%;
@@ -74,7 +71,11 @@ const InnerFrame = styled.div`
   /* border: 3px solid black; */
 `;
 
-const ShelfBook = styled.div`
+const ShelfBook = styled.div.attrs((props) => ({
+  style: {
+    background: props.background,
+  },
+}))`
   /* height: 157.5px; */
   height: 140px;
   width: ${(props) =>
@@ -90,7 +91,7 @@ const ShelfBook = styled.div`
   align-items: center;
   border-radius: 3px;
   cursor: pointer;
-  box-shadow: inset -3px -3px 1px grey;
+  box-shadow: inset -3px -3px 3px #4a4a4a;
   :nth-child(8n) {
     transform-origin: 13px 0;
     transform: rotate(-3deg);
@@ -103,27 +104,30 @@ const ShelfBook = styled.div`
     margin-left: ${(props) => (props.idx === 8 ? "2px" : "0")};
   }
   :hover {
-    border: 2px solid #f5f5f5;
-    box-shadow: none;
+    box-shadow: 0px 0px 7px #4a4a4a;
   }
   > span {
     display: inline-block;
-    writing-mode: vertical-rl;
+    writing-mode: vertical-lr;
     text-orientation: mixed;
-    padding: 20px 0;
+    padding: 20px 2px 20px 0px;
     font-size: 8px;
-    color: #525151;
-    text-shadow: 0.5px 1px #f5f5f5;
+    color: #f5f5f5;
   }
 `;
 
 const PageIcon = styled.div`
   display: flex;
   justify-content: center;
-  width: 100%;
+  align-items: center;
+  width: 600px;
   > div {
     margin: 10px;
     cursor: pointer;
+  }
+  > span {
+    padding: 15px;
+    margin-bottom: 2.4px;
   }
 `;
 
@@ -133,10 +137,18 @@ function Shelf({
   shelf,
   pagePlusHandler,
   pageMinusHandler,
+  num,
 }) {
   const randomColor = () => {
-    const color = ["#f4f4f4", "#cccbc6", "#efd9c1", "#c7d8c6", "#a9b7c0"];
-    const randomIndex = Math.floor(Math.random() * 5);
+    const color = [
+      "#e76438",
+      "#e48365",
+      "#eebb3a",
+      "#4f8f91",
+      "#2c5854",
+      "#3a506b",
+    ];
+    const randomIndex = Math.floor(Math.random() * 6);
     return color[randomIndex];
   };
 
@@ -177,10 +189,19 @@ function Shelf({
       </ShelfBox>
       <PageIcon>
         <div onClick={() => pageMinusHandler()}>
-          <FontAwesomeIcon icon={faChevronLeft} size="2x" />
+          <img
+            src={left}
+            alt="left"
+            style={{ width: "17.5px", cursor: "pointer" }}
+          ></img>
         </div>
+        <span>{num + 1}</span>
         <div onClick={() => pagePlusHandler()}>
-          <FontAwesomeIcon icon={faChevronRight} size="2x" />
+          <img
+            src={right}
+            alt="right"
+            style={{ width: "17.5px", cursor: "pointer" }}
+          ></img>
         </div>
       </PageIcon>
     </>
