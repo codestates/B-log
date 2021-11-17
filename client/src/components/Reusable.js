@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import Qwigley from "../assets/fonts/Qwigley-Regular.woff";
-// import Poppins from "../assets/fonts/Poppins-ExtraLightItalic.woff";
 import Poppins from "../assets/fonts/Poppins-ExtraLight.woff";
 
 export const Container = styled.div`
@@ -9,6 +7,7 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
+  margin-top: 80px;
 `;
 
 export const Section = styled.section`
@@ -19,11 +18,6 @@ export const Section = styled.section`
 `;
 
 export const Title = styled.h2`
-  /* @font-face {
-    font-family: "Qwigley";
-    src: local("Qwigley"), url(${Qwigley}) format("woff");
-  }
-  font-family: "Qwigley", "cursive"; */
   @font-face {
     font-family: "Poppins";
     src: local("Poppins"), url(${Poppins}) format("woff");
@@ -66,6 +60,7 @@ export const Input = styled.input`
 export const ErrorMsg = styled.span`
   display: inline-block;
   color: #9c5230;
+  font-size: 12px;
 `;
 
 export const ButtonContainer = styled.div`

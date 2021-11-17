@@ -67,8 +67,6 @@ const InnerFrame = styled.div`
   display: flex;
   align-content: start;
   flex-wrap: wrap;
-  /* box-shadow: inset 3px 3px black; */
-  /* border: 3px solid black; */
 `;
 
 const ShelfBook = styled.div.attrs((props) => ({
@@ -76,7 +74,6 @@ const ShelfBook = styled.div.attrs((props) => ({
     background: props.background,
   },
 }))`
-  /* height: 157.5px; */
   height: 140px;
   width: ${(props) =>
     props.page >= 800

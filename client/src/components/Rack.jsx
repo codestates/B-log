@@ -10,10 +10,10 @@ const RackBox = styled.section`
   align-items: end;
   justify-content: space-evenly;
   width: 600px;
-  height: 500px;
+  height: 533.5px;
   margin: 50px 0;
   > .select_icon_box {
-    margin-top: 20px;
+    margin: 40px 0;
     display: flex;
     width: 220px;
     justify-content: space-between;
@@ -118,6 +118,7 @@ function Rack({ setBookinfo, setInfoOpen }) {
         </select>
         <img
           src={search}
+          alt="search icon"
           style={{ cursor: "pointer", width: "28px" }}
           onClick={() => {
             navigate("/search");
