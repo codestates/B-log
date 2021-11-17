@@ -21,10 +21,10 @@ module.exports = {
           }
         })
         .catch((err) => {
-          res.status(500).send({ err, message: "Server error" });
+          res.status(500).send();
         });
     } else {
-      res.status(500).send({ message: "Server error" });
+      res.status(500).send();
     }
   },
 };

@@ -62,12 +62,12 @@ module.exports = {
               });
               res.status(201).send();
             } else {
-              return res.status(401).send({ message: "Not exist Reviwes" });
+              return res.status(401).send({ message: "Not exist" });
             }
           });
         }
       } catch (err) {
-        res.status(500).send({ err, message: "Server err" });
+        res.status(500).send();
       }
     }
   },
