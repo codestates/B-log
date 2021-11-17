@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { notify, loginStateChange } from "../actions/index";
+import { useDispatch } from "react-redux";
+import { ModalBackground, CloseBtn } from "./Reusable";
 import styled from "styled-components";
 import Button from "./Button";
 import axios from "axios";
-import { ModalBackground, CloseBtn } from "./Reusable";
-import { notify, loginStateChange } from "../actions/index";
-import { useDispatch } from "react-redux";
 
 const ModalWrapper = styled.div`
   width: 300px;

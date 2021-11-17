@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import styled from "styled-components";
 import { dequeueNotification } from "../actions";
+import styled from "styled-components";
 
 export const Notify = styled.div`
   display: flex;
