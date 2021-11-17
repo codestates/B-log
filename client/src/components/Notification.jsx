@@ -15,7 +15,7 @@ export const Notify = styled.div`
   height: 50px;
   z-index: 999999;
   left: 50% - 200px;
-  top: 30px;
+  top: 55px;
   box-shadow: 0px 0px 10px rgba(141, 141, 141, 0.8);
   transition: transform 0.6s ease-in-out;
   animation: toast-in-right 0.6s;
