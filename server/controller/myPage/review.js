@@ -3,7 +3,6 @@ const { token } = require("../serverFunctions");
 
 module.exports = {
   get: (req, res) => {
-    //헤더 토큰 해독해서 로그인한 유저의 id 가져오기
     const user = token.isAuthorized(req);
 
     try {
@@ -24,9 +23,7 @@ module.exports = {
   },
 
   patch: (req, res) => {
-    //헤더 토큰 해독해서 로그인한 유저의 id 가져오기
     const user = token.isAuthorized(req);
-
     try {
       const bookId = req.params.bookid;
       Shelf.update(

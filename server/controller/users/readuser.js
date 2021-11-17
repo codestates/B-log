@@ -4,7 +4,6 @@ module.exports = {
   get: (req, res) => {
     try {
       const userinfo = token.isAuthorized(req);
-
       delete userinfo.iat;
       delete userinfo.exp;
       res.send(userinfo);

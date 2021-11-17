@@ -6,7 +6,6 @@ module.exports = {
     try {
       const isbn = req.params.isbn;
       api.getSearchedItem(isbn, (item) => {
-        console.log(item);
         if (item) {
           res.status(200).send(item);
         } else {
@@ -20,7 +19,6 @@ module.exports = {
 
   list: (req, res) => {
     try {
-      console.log(req.params);
       const keyword = req.params.keyword;
 
       api.getSearchList(keyword, 28, (searchList) => {

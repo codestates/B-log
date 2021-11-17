@@ -23,7 +23,7 @@ module.exports = {
           });
         })
         .catch((err) => {
-          res.status(500).send("Server err");
+          res.status(500).send("Server error");
         });
     } else {
       res.send({
