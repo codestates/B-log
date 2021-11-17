@@ -110,7 +110,7 @@ function SignUp() {
           dispatch(notify("회원가입이 완료되었습니다."));
           navigate("/login");
         });
-    } else if (!signupInfo.username.length) {
+    } else if (!signupInfo.username.length && isRequest) {
       dispatch(notify("닉네임을 입력해주세요."));
     }
   };

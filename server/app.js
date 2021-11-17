@@ -25,19 +25,16 @@ app.use(
   })
 );
 
-//경로 설정
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/auth", authRouter);
 app.use("/mypage", mypageRouter);
 app.use("/books", booksRouter);
 
-// catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
 });
 
-// error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
@@ -52,7 +49,6 @@ const HTTPS_PORT = process.env.HTTPS_PORT || 4000;
 
 let server;
 
-//인증서 파일 존재하면 https 서버 실행
 if (fs.existsSync("./key.pem") && fs.existsSync("./cert.pem")) {
   const privateKey = fs.readFileSync(__dirname + "/key.pem", "utf8");
   const certificate = fs.readFileSync(__dirname + "/cert.pem", "utf8");

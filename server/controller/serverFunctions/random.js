@@ -1,5 +1,4 @@
 module.exports = {
-  //1과 max사이 n개의 정수 난수를 중복 없이 반환하는 함수
   uniqueRandomMaker: (n, max) => {
     const rand = (min, max) => {
       return Math.floor(Math.random() * (max - min)) + min;
