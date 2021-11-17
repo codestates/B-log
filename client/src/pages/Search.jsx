@@ -45,14 +45,16 @@ function Search() {
   const [bookinfo, setBookinfo] = useState({});
 
   const getMyBooks = async () => {
-    const rackRes = await axios.get(
-      `${process.env.REACT_APP_API_URL}/mypage/rack`,
-      { withCredentials: true }
-    );
-    const shelfRes = await axios.get(
-      `${process.env.REACT_APP_API_URL}/mypage/shelf`,
-      { withCredentials: true }
-    );
+    const rackRes = await axios
+      .get(`${process.env.REACT_APP_API_URL}/mypage/rack`, {
+        withCredentials: true,
+      })
+      .catch(() => console.clear());
+    const shelfRes = await axios
+      .get(`${process.env.REACT_APP_API_URL}/mypage/shelf`, {
+        withCredentials: true,
+      })
+      .catch(() => console.clear());
     try {
       dispatch(updateRack(rackRes.data.books));
       dispatch(updateShelf(shelfRes.data.books));

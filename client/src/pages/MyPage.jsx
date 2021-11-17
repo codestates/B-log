@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   updateRack,
   updateShelf,
@@ -75,6 +75,8 @@ const ShelfSection = styled.section`
 `;
 
 function MyPage() {
+  const state = useSelector((state) => state.bookReducer);
+  const { shelf } = state;
   const dispatch = useDispatch();
   const inputEl = useRef(null);
   const navigate = useNavigate();
@@ -84,6 +86,7 @@ function MyPage() {
   const [infoOpen, setInfoOpen] = useState(false);
   const [reviewOpen, setReviewOpen] = useState(false);
   const [bookinfo, setBookinfo] = useState({});
+  const [num, setNum] = useState(0);
 
   const withdrawHandler = () => {
     setWithdrawModalOpen(true);
@@ -132,6 +135,26 @@ function MyPage() {
     dispatch(updateShelf(shelfRes.data.books));
     dispatch(loginStateChange(true));
   };
+
+  const pagePlusHandler = () => {
+    setNum(() => num + 1);
+  };
+
+  const pageMinusHandler = () => {
+    if (num === 0) {
+      return;
+    }
+    setNum(() => num - 1);
+  };
+
+  const pageHandler = () => {
+    navigate(`/mypage/${num}`);
+  };
+
+  useEffect(() => {
+    pageHandler();
+    // eslint-disable-next-line
+  }, [num]);
 
   useEffect(() => {
     if (isEditMode) {
@@ -197,7 +220,13 @@ function MyPage() {
         </ButtonBox>
       </RackSection>
       <ShelfSection>
-        <Shelf setReviewOpen={setReviewOpen} setBookinfo={setBookinfo} />
+        <Shelf
+          setReviewOpen={setReviewOpen}
+          setBookinfo={setBookinfo}
+          shelf={shelf.slice(0 + 49 * num, 49 * (num + 1))}
+          pagePlusHandler={pagePlusHandler}
+          pageMinusHandler={pageMinusHandler}
+        />
       </ShelfSection>
       {infoOpen ? (
         <BookInfoModal
