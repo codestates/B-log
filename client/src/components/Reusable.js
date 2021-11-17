@@ -7,6 +7,7 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
+  margin-top: 80px;
 `;
 
 export const Section = styled.section`
@@ -59,6 +60,7 @@ export const Input = styled.input`
 export const ErrorMsg = styled.span`
   display: inline-block;
   color: #9c5230;
+  font-size: 12px;
 `;
 
 export const ButtonContainer = styled.div`
