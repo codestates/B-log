@@ -20,7 +20,7 @@ module.exports = {
           res.status(201).send({ user: data.dataValues, message: "ok" });
         })
         .catch((err) => {
-          res.status(500).send({ err, message: "Server err" });
+          res.status(500).send({ err, message: "Server error" });
         });
     } else {
       res.status(500).send();

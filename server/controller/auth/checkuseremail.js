@@ -13,7 +13,7 @@ module.exports = {
           }
         })
         .catch((err) => {
-          res.status(500).send({ err, message: "Server err" });
+          res.status(500).send({ err, message: "Server error" });
         });
     } else {
       res.status(500).send();
