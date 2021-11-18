@@ -16,6 +16,7 @@ module.exports = {
               "id",
               "author",
               "title",
+              "publisher",
               "coverimg",
               "description",
               "isbn13",
