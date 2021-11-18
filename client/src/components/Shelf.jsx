@@ -76,11 +76,11 @@ const ShelfBook = styled.div.attrs((props) => ({
 }))`
   height: 140px;
   width: ${(props) =>
-    props.page >= 800
-      ? "80px"
-      : props.page <= 300
-      ? "30px"
-      : `${props.page * 0.1}px`};
+    props.page >= 700
+      ? "70px"
+      : props.page <= 150
+      ? "25px"
+      : `${25 + (props.page - 150) * 0.082}px`};
   margin: 17.5px 2px 15px 1px;
   background-color: ${(props) => props.color};
   display: flex;
