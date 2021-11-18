@@ -5,6 +5,7 @@ import { ModalBackground, CloseBtn } from "../components/Reusable";
 import styled from "styled-components";
 import Button from "./Button";
 import axios from "axios";
+import ConfirmModal from "./ConfirmModal";
 
 const ModalWrapper = styled.div`
   width: 800px;
@@ -101,28 +102,13 @@ function BookReviewModal({ bookinfo, setReviewOpen }) {
   const dispatch = useDispatch();
   const [isEditMode, setEditMode] = useState(false);
   const [newReview, setNewReview] = useState("");
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   const buttonHandler = (e) => {
     if (e.target.textContent === "리뷰 수정") {
       changeEditMode();
     } else if (e.target.textContent === "책장에서 삭제") {
-      axios
-        .delete(
-          `${process.env.REACT_APP_API_URL}/mypage/shelf/${bookinfo.id}`,
-          { withCredentials: true }
-        )
-        .then(() => {
-          setReviewOpen(false);
-          dispatch(removeFromShelf(bookinfo.id));
-          dispatch(notify("책장에서 책이 삭제되었습니다."));
-        })
-        .catch((err) => {
-          if (err.response.status === 401) {
-            dispatch(
-              notify("로그인이 만료되었습니다.", "로그인 페이지로 가기")
-            );
-          }
-        });
+      setDeleteOpen(true);
     } else if (e.target.textContent === "리뷰 삭제") {
       axios
         .delete(
@@ -201,42 +187,51 @@ function BookReviewModal({ bookinfo, setReviewOpen }) {
   }, []);
 
   return (
-    <ModalBackground onClick={closeModalHandler}>
-      <ModalWrapper onClick={(e) => e.stopPropagation()}>
-        <CloseBtn onClick={closeModalHandler}>&times;</CloseBtn>
-        <TandW>
-          <Title>{bookinfo.title}</Title>
-          <Writer>
-            {bookinfo.author} | {bookinfo.publisher}
-          </Writer>
-        </TandW>
-        <Box>
-          <BookandBtn onClick={buttonHandler}>
-            <BookImg src={bookinfo.coverimg} alt={bookinfo.title} />
-            <BtnWrap>
-              <Button message="책장에서 삭제" />
-              <Button
-                message="리뷰 수정"
-                color={isEditMode ? "dark" : "light"}
-              />
-              <Button message="리뷰 삭제" />
-            </BtnWrap>
-          </BookandBtn>
-          <InputBox onClick={inputClickHandler}>
-            {isEditMode ? (
-              <InputEdit
-                type="memo"
-                value={newReview}
-                ref={inputEl}
-                onChange={inputValueHandler}
-              />
-            ) : (
-              <Span>{newReview}</Span>
-            )}
-          </InputBox>
-        </Box>
-      </ModalWrapper>
-    </ModalBackground>
+    <>
+      <ModalBackground onClick={closeModalHandler}>
+        <ModalWrapper onClick={(e) => e.stopPropagation()}>
+          <CloseBtn onClick={closeModalHandler}>&times;</CloseBtn>
+          <TandW>
+            <Title>{bookinfo.title}</Title>
+            <Writer>
+              {bookinfo.author} | {bookinfo.publisher}
+            </Writer>
+          </TandW>
+          <Box>
+            <BookandBtn onClick={buttonHandler}>
+              <BookImg src={bookinfo.coverimg} alt={bookinfo.title} />
+              <BtnWrap>
+                <Button message="책장에서 삭제" />
+                <Button
+                  message="리뷰 수정"
+                  color={isEditMode ? "dark" : "light"}
+                />
+                <Button message="리뷰 삭제" />
+              </BtnWrap>
+            </BookandBtn>
+            <InputBox onClick={inputClickHandler}>
+              {isEditMode ? (
+                <InputEdit
+                  type="memo"
+                  value={newReview}
+                  ref={inputEl}
+                  onChange={inputValueHandler}
+                />
+              ) : (
+                <Span>{newReview}</Span>
+              )}
+            </InputBox>
+          </Box>
+        </ModalWrapper>
+      </ModalBackground>
+      {deleteOpen ? (
+        <ConfirmModal
+          setReviewOpen={setReviewOpen}
+          setDeleteOpen={setDeleteOpen}
+          bookinfo={bookinfo}
+        />
+      ) : null}
+    </>
   );
 }
 
