@@ -150,9 +150,13 @@ function BookInfoModal({ bookinfo, setInfoOpen, isMypage }) {
               .then((res) => {
                 closeModalHandler();
                 dispatch(addToShelf(res.data.book));
-                dispatch(
-                  notify("책장에 책이 추가되었습니다.", "내 책장으로 가기")
-                );
+                if (isMypage) {
+                  dispatch(notify("책장에 책이 추가되었습니다."));
+                } else {
+                  dispatch(
+                    notify("책장에 책이 추가되었습니다.", "내 책장으로 가기")
+                  );
+                }
               })
               .catch((err) => {
                 if (err.response.status === 401) {

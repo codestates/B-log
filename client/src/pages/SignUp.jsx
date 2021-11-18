@@ -36,7 +36,7 @@ function SignUp() {
   });
   const regExpEmail =
     /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-  const regExpPwd = /^(?=.*?[a-z])(?=.*?[0-9]).{8,16}$/;
+  const regExpPwd = /^(?=.*?[a-z])(?=.*?[0-9]).{8,16}$/i;
 
   const handleInputValue = (key) => (e) => {
     setSignupInfo({ ...signupInfo, [key]: e.target.value });
