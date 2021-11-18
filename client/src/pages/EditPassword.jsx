@@ -27,7 +27,7 @@ function EditPassword() {
   });
   const [errorMessage, setErrorMessage] = useState({ fresh: "", check: "" });
   const [isValid, setIsValid] = useState({ fresh: false, check: false });
-  const regExpPwd = /^(?=.*?[a-z])(?=.*?[0-9]).{8,16}$/;
+  const regExpPwd = /^(?=.*?[a-z])(?=.*?[0-9]).{8,16}$/i;
 
   const getPassword = (key) => (e) => {
     setPassword({ ...password, [key]: e.target.value });
@@ -72,7 +72,7 @@ function EditPassword() {
   const sendRequest = (event) => {
     const isRequest =
       event.target.textContent === "회원정보 수정" ? true : false;
-    if (!password.current.length) {
+    if (isRequest && !password.current.length) {
       dispatch(notify("현재 비밀번호를 입력해주세요."));
       currentPwInput.current.focus();
     } else if (isRequest && isValid.fresh && isValid.check) {
@@ -90,12 +90,12 @@ function EditPassword() {
           navigate("/mypage");
         })
         .catch((err) => {
-          if (err.reponse.status === 401) {
+          if (err.response.status === 401) {
             dispatch(notify("현재 비밀번호가 일치하지 않습니다."));
             currentPwInput.current.focus();
           }
         });
-    } else {
+    } else if (isRequest) {
       dispatch(notify("새 비밀번호를 바르게 입력해주세요."));
       newPwInput.current.focus();
     }
