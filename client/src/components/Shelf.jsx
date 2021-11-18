@@ -76,11 +76,11 @@ const ShelfBook = styled.div.attrs((props) => ({
 }))`
   height: 140px;
   width: ${(props) =>
-    props.page >= 800
-      ? "80px"
-      : props.page <= 300
-      ? "30px"
-      : `${props.page * 0.1}px`};
+    props.page >= 700
+      ? "70px"
+      : props.page <= 150
+      ? "25px"
+      : `${25 + (props.page - 150) * 0.082}px`};
   margin: 17.5px 2px 15px 1px;
   background-color: ${(props) => props.color};
   display: flex;
@@ -136,18 +136,14 @@ function Shelf({
   pageMinusHandler,
   num,
 }) {
-  const randomColor = () => {
-    const color = [
-      "#e76438",
-      "#e48365",
-      "#eebb3a",
-      "#4f8f91",
-      "#2c5854",
-      "#3a506b",
-    ];
-    const randomIndex = Math.floor(Math.random() * 6);
-    return color[randomIndex];
-  };
+  const color = [
+    "#e76438",
+    "#4f8f91",
+    "#e48365",
+    "#2c5854",
+    "#eebb3a",
+    "#3a506b",
+  ];
 
   const reviewHandler = (book) => {
     setBookinfo(book);
@@ -171,7 +167,7 @@ function Shelf({
             <ShelfBook
               key={idx}
               page={book.pages}
-              color={randomColor()}
+              color={color[idx % 6]}
               onClick={() => reviewHandler(book)}
               idx={idx}
             >

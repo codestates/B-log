@@ -15,6 +15,7 @@ module.exports = {
             attributes: [
               "id",
               "author",
+              "publisher",
               "title",
               "coverimg",
               "description",
