@@ -72,7 +72,7 @@ function EditPassword() {
   const sendRequest = (event) => {
     const isRequest =
       event.target.textContent === "회원정보 수정" ? true : false;
-    if (!password.current.length) {
+    if (isRequest && !password.current.length) {
       dispatch(notify("현재 비밀번호를 입력해주세요."));
       currentPwInput.current.focus();
     } else if (isRequest && isValid.fresh && isValid.check) {
@@ -95,7 +95,7 @@ function EditPassword() {
             currentPwInput.current.focus();
           }
         });
-    } else {
+    } else if (isRequest) {
       dispatch(notify("새 비밀번호를 바르게 입력해주세요."));
       newPwInput.current.focus();
     }
