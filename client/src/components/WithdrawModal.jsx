@@ -58,7 +58,7 @@ function WithdrawModal({ setWithdrawModalOpen }) {
             setWithdrawModalOpen(false);
             dispatch(loginStateChange(false));
             navigate("/");
-            dispatch(notify("회원탈퇴 완료가 완료되었습니다."));
+            dispatch(notify("회원탈퇴가 완료되었습니다."));
           })
           .catch((err) => {
             if (err.response.status === 403) {
